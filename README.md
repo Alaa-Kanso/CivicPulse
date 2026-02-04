@@ -48,7 +48,7 @@ CivicPulse provides a simple, trackable workflow from **report creation → revi
   - city + region (dropdown)
   - street text (free form)
   - location (GPS / map pin)
-  - optional photo upload _(planned)_
+  - photo upload _(planned)_
 - View “My Reports” and track status:
   - InReview → InProgress → Done
 - Receive **in-app notifications** when a report status changes _(not push notifications)_
