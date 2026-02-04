@@ -2,6 +2,6 @@
 **/obj/
 
 # user-specific / secrets
-**/appsettings.Local.json
+**/appsettings.Development.json
 **/.env
 .vscode/
