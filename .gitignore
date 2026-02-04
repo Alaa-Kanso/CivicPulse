@@ -1,0 +1,7 @@
+**/bin/
+**/obj/
+
+# user-specific / secrets
+**/appsettings.Local.json
+**/.env
+.vscode/
