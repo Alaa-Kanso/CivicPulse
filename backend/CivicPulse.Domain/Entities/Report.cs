@@ -32,8 +32,8 @@ public class Report
     public double Lng { get; set; }
 
     // File storage URL
-    [MaxLength(1000)]
-    public string? PhotoUrl { get; set; }
+    [Required, MaxLength(1000)]
+    public string PhotoUrl { get; set; } = default!;
 
     public ReportStatus Status { get; set; } = ReportStatus.InReview;
 
