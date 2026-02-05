@@ -124,6 +124,7 @@ namespace CivicPulse.Infrastructure.Data.Migrations
                         .HasColumnType("double precision");
 
                     b.Property<string>("PhotoUrl")
+                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
