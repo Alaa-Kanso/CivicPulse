@@ -14,8 +14,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<CivicPulseDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("CivicPulseDb")));
-
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        o => o.UseNetTopologySuite()));
+    
 builder.Services.AddSingleton<IPasswordHasher, BcryptPasswordHasher>();
 
 builder.Services.Configure<AdminSeedOptions>(
@@ -24,6 +26,7 @@ builder.Services.Configure<AdminSeedOptions>(
 var app = builder.Build();
 
 await AdminSeeder.SeedAsync(app.Services);
+await ReportTypesSeeder.SeedAsync(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

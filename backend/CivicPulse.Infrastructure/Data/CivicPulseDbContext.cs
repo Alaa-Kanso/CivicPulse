@@ -1,99 +1,135 @@
 using Microsoft.EntityFrameworkCore;
 using CivicPulse.Domain.Entities;
 
-namespace  CivicPulse.Infrastructure.Data;
+namespace CivicPulse.Infrastructure.Data;
 
 public class CivicPulseDbContext : DbContext
 {
     public CivicPulseDbContext(DbContextOptions<CivicPulseDbContext> options) : base(options) { }
 
     public DbSet<User> Users => Set<User>();
+    public DbSet<Municipality> Municipalities => Set<Municipality>();
+    public DbSet<ReportType> ReportTypes => Set<ReportType>();
     public DbSet<Report> Reports => Set<Report>();
-    public DbSet<Notification> Notifications => Set<Notification>();
+    public DbSet<ReportGroup> ReportGroups => Set<ReportGroup>();
+    public DbSet<EmailBan> EmailBans => Set<EmailBan>();
+    public DbSet<AbuseReport> AbuseReports => Set<AbuseReport>();
     public DbSet<RefreshTokenSession> RefreshTokenSessions => Set<RefreshTokenSession>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // -------------------------
-        // USER
-        // -------------------------
+        base.OnModelCreating(modelBuilder);
+
+        // USERS
         modelBuilder.Entity<User>(e =>
         {
             e.HasIndex(x => x.Email).IsUnique();
-
-            // Unique GoogleSubjectId only when not null
-            e.HasIndex(x => x.GoogleSubjectId)
-             .IsUnique()
-             .HasFilter("\"GoogleSubjectId\" IS NOT NULL");
-
-            e.HasIndex(x => new { x.Role, x.AssignedCity, x.AssignedRegion });
-
             e.Property(x => x.Email).HasMaxLength(320);
+
+            e.HasOne(x => x.AssignedMunicipality)
+             .WithMany(m => m.Operators)
+             .HasForeignKey(x => x.AssignedMunicipalityId)
+             .OnDelete(DeleteBehavior.Restrict);
         });
 
-        // -------------------------
-        // REPORT
-        // -------------------------
+        // MUNICIPALITIES
+        modelBuilder.Entity<Municipality>(e =>
+        {
+            e.HasIndex(x => x.Adm3Pcode).IsUnique();
+            e.Property(x => x.Geometry).HasColumnType("geometry(MultiPolygon,4326)");
+            e.HasIndex(x => x.Geometry).HasMethod("GIST");
+        });
+
+        // REPORT TYPES
+        modelBuilder.Entity<ReportType>(e =>
+        {
+            e.HasIndex(x => x.Name).IsUnique();
+        });
+
+        // REPORT GROUPS
+        modelBuilder.Entity<ReportGroup>(e =>
+        {
+            e.Property(x => x.Center).HasColumnType("geometry(Point,4326)");
+            e.HasIndex(x => x.Center).HasMethod("GIST");
+
+            e.HasOne(x => x.Municipality)
+             .WithMany()
+             .HasForeignKey(x => x.MunicipalityId)
+             .OnDelete(DeleteBehavior.Restrict);
+
+            e.HasOne(x => x.ReportType)
+             .WithMany()
+             .HasForeignKey(x => x.ReportTypeId)
+             .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // REPORTS
         modelBuilder.Entity<Report>(e =>
         {
-            e.HasOne(r => r.CreatedByUser)
+            e.Property(x => x.Location).HasColumnType("geometry(Point,4326)");
+            e.HasIndex(x => x.Location).HasMethod("GIST");
+
+            e.HasOne(x => x.CreatedByUser)
              .WithMany(u => u.ReportsCreated)
-             .HasForeignKey(r => r.CreatedByUserId)
+             .HasForeignKey(x => x.CreatedByUserId)
              .OnDelete(DeleteBehavior.Restrict);
 
-            e.HasOne(r => r.StatusUpdatedByUser)
+            e.HasOne(x => x.Municipality)
+             .WithMany(m => m.Reports)
+             .HasForeignKey(x => x.MunicipalityId)
+             .OnDelete(DeleteBehavior.Restrict);
+
+            e.HasOne(x => x.ReportType)
              .WithMany()
-             .HasForeignKey(r => r.StatusUpdatedByUserId)
+             .HasForeignKey(x => x.ReportTypeId)
              .OnDelete(DeleteBehavior.Restrict);
 
-            // Citizen "My reports" list
-            e.HasIndex(r => new { r.CreatedByUserId, r.CreatedAtUtc });
-
-            // Operator regional queue
-            e.HasIndex(r => new { r.City, r.Region, r.Status, r.CreatedAtUtc });
-
-            // to filter by status only
-            e.HasIndex(r => new { r.Status, r.CreatedAtUtc });
+            e.HasOne(x => x.ReportGroup)
+             .WithMany(g => g.Reports)
+             .HasForeignKey(x => x.ReportGroupId)
+             .OnDelete(DeleteBehavior.SetNull);
         });
 
-        // -------------------------
-        // NOTIFICATION
-        // -------------------------
-        modelBuilder.Entity<Notification>(e =>
+        // EMAIL BANS
+        modelBuilder.Entity<EmailBan>(e =>
         {
-            e.HasOne(n => n.User)
-             .WithMany(u => u.Notifications)
-             .HasForeignKey(n => n.UserId)
-             .OnDelete(DeleteBehavior.Cascade);
+            e.HasIndex(x => x.Email).IsUnique();
+            e.Property(x => x.Email).HasMaxLength(320);
 
-            e.HasOne(n => n.Report)
-             .WithMany(r => r.Notifications)
-             .HasForeignKey(n => n.ReportId)
-             .OnDelete(DeleteBehavior.Cascade);
-
-            // Fetch user's notifications newest first
-            e.HasIndex(n => new { n.UserId, n.CreatedAtUtc });
-
-            // Unread filter/count
-            e.HasIndex(n => new { n.UserId, n.IsRead, n.CreatedAtUtc });
+            e.HasOne(x => x.CreatedByAdmin)
+             .WithMany()
+             .HasForeignKey(x => x.CreatedByAdminId)
+             .OnDelete(DeleteBehavior.Restrict);
         });
 
-        // -------------------------
-        // REFRESH TOKEN SESSION
-        // -------------------------
+        // ABUSE REPORTS
+        modelBuilder.Entity<AbuseReport>(e =>
+        {
+            e.HasOne(x => x.Report)
+             .WithMany()
+             .HasForeignKey(x => x.ReportId)
+             .OnDelete(DeleteBehavior.Cascade);
+
+            e.HasOne(x => x.ReportedUser)
+             .WithMany()
+             .HasForeignKey(x => x.ReportedUserId)
+             .OnDelete(DeleteBehavior.Restrict);
+
+            e.HasOne(x => x.ReportedByOperator)
+             .WithMany()
+             .HasForeignKey(x => x.ReportedByOperatorId)
+             .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // REFRESH TOKENS
         modelBuilder.Entity<RefreshTokenSession>(e =>
         {
-            e.HasOne(s => s.User)
+            e.HasIndex(x => x.RefreshTokenHash).IsUnique();
+
+            e.HasOne(x => x.User)
              .WithMany(u => u.RefreshTokenSessions)
-             .HasForeignKey(s => s.UserId)
+             .HasForeignKey(x => x.UserId)
              .OnDelete(DeleteBehavior.Cascade);
-
-            e.HasIndex(s => new { s.UserId });
-
-            //useful during refresh
-            e.HasIndex(s => new { s.RefreshTokenHash }).IsUnique(false);
         });
-
-        base.OnModelCreating(modelBuilder);
     }
 }

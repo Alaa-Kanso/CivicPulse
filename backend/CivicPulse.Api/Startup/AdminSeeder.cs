@@ -23,7 +23,7 @@ public static class AdminSeeder
 
         var email = options.Email.Trim().ToLowerInvariant();
 
-        var exists = await db.Users.AnyAsync(u => u.Email.ToLower() == email);
+        var exists = await db.Users.AnyAsync(u => u.Email == email);
         if (exists) return;
 
         var admin = new User
@@ -32,7 +32,6 @@ public static class AdminSeeder
             PasswordHash = hasher.Hash(options.Password),
             Role = UserRole.Admin,
             Status = UserStatus.Active,
-            AuthProvider = AuthProvider.Local,
             CreatedAtUtc = DateTime.UtcNow
         };
 
