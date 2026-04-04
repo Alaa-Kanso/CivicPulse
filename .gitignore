@@ -1,7 +1,42 @@
+# Build output
 **/bin/
 **/obj/
 
-# user-specific / secrets
-**/appsettings.Development.json
-**/.env
+# Visual Studio / Rider / VS Code
+.vs/
 .vscode/
+.idea/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment / secrets
+**/appsettings.Development.json
+**/appsettings.*.local.json
+**/.env
+.env
+
+# Generated files / local caches
+*.cache
+*.pdb
+*.pidb
+*.ipch
+
+# NuGet / packages (only if not intentionally committed)
+packages/
+
+# Test / coverage output
+TestResults/
+coverage/
+*.coverage
+*.coveragexml

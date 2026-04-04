@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using NetTopologySuite.Geometries;
 using CivicPulse.Domain.Enums;
 
 namespace CivicPulse.Domain.Entities;
@@ -6,43 +7,38 @@ namespace CivicPulse.Domain.Entities;
 public class Report
 {
     public Guid Id { get; set; } = Guid.NewGuid();
+
+    [Required]
     public Guid CreatedByUserId { get; set; }
     public User CreatedByUser { get; set; } = default!;
 
-    [Required, MaxLength(120)]
-    public string Title { get; set; } = default!;
+    [Required]
+    public int ReportTypeId { get; set; }
+    public ReportType ReportType { get; set; } = default!;
 
-    [Required, MaxLength(2000)]
-    public string Description { get; set; } = default!;
+    // Location pin
+    [Required]
+    public Point Location { get; set; } = default!;
 
-    [Required, MaxLength(100)]
-    public string Category { get; set; } = default!;
-
-    [Required, MaxLength(100)]
-    public string City { get; set; } = default!;
-
-    [Required, MaxLength(150)]
-    public string Region { get; set; } = default!;
-
-    [MaxLength(250)]
-    public string? StreetText { get; set; }
-
-    // Location
-    public double Lat { get; set; }
-    public double Lng { get; set; }
-
-    // File storage URL
     [Required, MaxLength(1000)]
-    public string PhotoUrl { get; set; } = default!;
+    public string ImageUrl { get; set; } = default!;
 
-    public ReportStatus Status { get; set; } = ReportStatus.InReview;
+    [Required]
+    public long MunicipalityId { get; set; }
+    public Municipality Municipality { get; set; } = default!;
 
-    public Guid? StatusUpdatedByUserId { get; set; }
-    public User? StatusUpdatedByUser { get; set; }
-    public DateTime? StatusUpdatedAtUtc { get; set; }
+    [MaxLength(300)]
+    public string? AddressDetails { get; set; }
+
+    [MaxLength(2000)]
+    public string? Description { get; set; }
+
+    public ReportStatus Status { get; set; } = ReportStatus.Submitted;
+
+    // Aggregation (50m)
+    public Guid? ReportGroupId { get; set; }
+    public ReportGroup? ReportGroup { get; set; }
 
     public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
-    public DateTime UpdatedAtUtc { get; set; } = DateTime.UtcNow;
-
-    public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
+    public DateTime? UpdatedAtUtc { get; set; }
 }
