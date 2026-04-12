@@ -1,6 +1,6 @@
+using CivicPulse.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CivicPulse.Infrastructure.Data;
 
 namespace CivicPulse.Api.Controllers;
 
@@ -18,28 +18,10 @@ public class DbPingController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        try
-        {
-            //Connectivity check
-            var canConnect = await _db.Database.CanConnectAsync();
+        var canConnect = await _db.Database.CanConnectAsync();
+        var municipalities = await _db.Municipalities.CountAsync();
+        var reports = await _db.Reports.CountAsync();
 
-            //Ensure DB exists
-            return Ok(new
-            {
-                status = canConnect ? "ok" : "error",
-                canConnect,
-                database = _db.Database.GetDbConnection().Database,
-                timestampUtc = DateTime.UtcNow
-            });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new
-            {
-                status = "error",
-                message = "Database connection failed",
-                details = ex.Message
-            });
-        }
+        return Ok(new { canConnect, municipalities, reports });
     }
 }
