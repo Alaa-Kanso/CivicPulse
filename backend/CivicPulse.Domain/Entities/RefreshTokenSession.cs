@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using CivicPulse.Domain.Enums;
 
 namespace CivicPulse.Domain.Entities;
 
 public class RefreshTokenSession
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+     public Guid Id { get; set; } = Guid.NewGuid();
 
     [Required]
     public Guid UserId { get; set; }
@@ -12,6 +13,9 @@ public class RefreshTokenSession
 
     [Required, MaxLength(200)]
     public string RefreshTokenHash { get; set; } = default!;
+
+    [Required]
+    public AuthClientType ClientType { get; set; }
 
     public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
     public DateTime ExpiresAtUtc { get; set; }
