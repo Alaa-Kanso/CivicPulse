@@ -78,7 +78,7 @@ public sealed class AuthService : IAuthService
 
         _db.Users.Add(user);
 
-        var response = await CreateAuthResponseAsync(user, AuthClientType.App);
+        var response = IssueAuthTokens(user, AuthClientType.App);
 
         await _db.SaveChangesAsync();
         return response;
@@ -102,7 +102,7 @@ public sealed class AuthService : IAuthService
 
         user.LastLoginAtUtc = DateTime.UtcNow;
 
-        var response = await CreateAuthResponseAsync(user, clientType);
+        var response = IssueAuthTokens(user, clientType);
 
         await _db.SaveChangesAsync();
         return response;
@@ -139,7 +139,7 @@ public sealed class AuthService : IAuthService
 
         session.User.LastLoginAtUtc = DateTime.UtcNow;
 
-        var response = await CreateAuthResponseAsync(session.User, clientType);
+        var response = IssueAuthTokens(session.User, clientType);
 
         await _db.SaveChangesAsync();
         return response;
@@ -165,10 +165,11 @@ public sealed class AuthService : IAuthService
         await _db.SaveChangesAsync();
     }
 
-    private async Task<AuthResponseDto> CreateAuthResponseAsync(
-        User user,
-        AuthClientType clientType)
+    private AuthResponseDto IssueAuthTokens(
+    User user,
+    AuthClientType clientType)
     {
+        var now = DateTime.UtcNow;
         var accessTokenExpiresAtUtc = _tokenService.GetAccessTokenExpiresAtUtc();
         var accessToken = _tokenService.GenerateAccessToken(user);
         var refreshToken = _tokenService.GenerateRefreshToken();
@@ -178,8 +179,8 @@ public sealed class AuthService : IAuthService
             UserId = user.Id,
             RefreshTokenHash = HashRefreshToken(refreshToken),
             ClientType = clientType,
-            CreatedAtUtc = DateTime.UtcNow,
-            ExpiresAtUtc = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenDays)
+            CreatedAtUtc = now,
+            ExpiresAtUtc = now.AddDays(_jwtSettings.RefreshTokenDays)
         };
 
         _db.RefreshTokenSessions.Add(refreshSession);
@@ -188,10 +189,7 @@ public sealed class AuthService : IAuthService
         {
             AccessToken = accessToken,
             RefreshToken = refreshToken,
-            AccessTokenExpiresAtUtc = accessTokenExpiresAtUtc,
-            UserId = user.Id,
-            Email = user.Email,
-            Role = user.Role.ToString()
+            AccessTokenExpiresAtUtc = accessTokenExpiresAtUtc
         };
     }
 
