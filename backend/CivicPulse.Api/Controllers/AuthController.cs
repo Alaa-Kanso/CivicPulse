@@ -38,16 +38,16 @@ public class AuthController : ControllerBase
         }
     }
 
-    [HttpPost("app/login")]
+    [HttpPost("login")]
     [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult<AuthResponseDto>> LoginForApp([FromBody] LoginRequestDto request)
+    public async Task<ActionResult<AuthResponseDto>> Login([FromBody] LoginRequestDto request)
     {
         try
         {
-            var response = await _authService.LoginForAppAsync(request);
+            var response = await _authService.LoginAsync(request);
             return Ok(response);
         }
         catch (UnauthorizedException ex)
@@ -60,16 +60,16 @@ public class AuthController : ControllerBase
         }
     }
 
-    [HttpPost("web/login")]
+    [HttpPost("refresh")]
     [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult<AuthResponseDto>> LoginForWeb([FromBody] LoginRequestDto request)
+    public async Task<ActionResult<AuthResponseDto>> Refresh([FromBody] RefreshTokenRequestDto request)
     {
         try
         {
-            var response = await _authService.LoginForWebAsync(request);
+            var response = await _authService.RefreshTokenAsync(request);
             return Ok(response);
         }
         catch (UnauthorizedException ex)
@@ -82,65 +82,12 @@ public class AuthController : ControllerBase
         }
     }
 
-    [HttpPost("app/refresh")]
-    [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult<AuthResponseDto>> RefreshForApp([FromBody] RefreshTokenRequestDto request)
-    {
-        try
-        {
-            var response = await _authService.RefreshForAppAsync(request);
-            return Ok(response);
-        }
-        catch (UnauthorizedException ex)
-        {
-            return Unauthorized(new ErrorResponseDto { Message = ex.Message });
-        }
-        catch (ForbiddenException ex)
-        {
-            return StatusCode(StatusCodes.Status403Forbidden, new ErrorResponseDto { Message = ex.Message });
-        }
-    }
-
-    [HttpPost("web/refresh")]
-    [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult<AuthResponseDto>> RefreshForWeb([FromBody] RefreshTokenRequestDto request)
-    {
-        try
-        {
-            var response = await _authService.RefreshForWebAsync(request);
-            return Ok(response);
-        }
-        catch (UnauthorizedException ex)
-        {
-            return Unauthorized(new ErrorResponseDto { Message = ex.Message });
-        }
-        catch (ForbiddenException ex)
-        {
-            return StatusCode(StatusCodes.Status403Forbidden, new ErrorResponseDto { Message = ex.Message });
-        }
-    }
-
-    [HttpPost("app/logout")]
+    [HttpPost("logout")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> LogoutFromApp([FromBody] LogoutRequestDto request)
+    public async Task<IActionResult> Logout([FromBody] LogoutRequestDto request)
     {
-        await _authService.LogoutFromAppAsync(request);
-        return NoContent();
-    }
-
-    [HttpPost("web/logout")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> LogoutFromWeb([FromBody] LogoutRequestDto request)
-    {
-        await _authService.LogoutFromWebAsync(request);
+        await _authService.LogoutAsync(request);
         return NoContent();
     }
 }

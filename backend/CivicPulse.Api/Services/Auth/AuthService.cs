@@ -34,26 +34,20 @@ public sealed class AuthService : IAuthService
     public Task<AuthResponseDto> RegisterAsync(RegisterRequestDto request)
         => RegisterInternalAsync(request);
 
-    public Task<AuthResponseDto> LoginForAppAsync(LoginRequestDto request)
-        => LoginInternalAsync(request, AuthClientType.App);
+    public Task<AuthResponseDto> LoginAsync(LoginRequestDto request)
+        => LoginInternalAsync(request, request.ClientType);
 
-    public Task<AuthResponseDto> LoginForWebAsync(LoginRequestDto request)
-        => LoginInternalAsync(request, AuthClientType.Web);
+    public Task<AuthResponseDto> RefreshTokenAsync(RefreshTokenRequestDto request)
+        => RefreshInternalAsync(request, request.ClientType);
 
-    public Task<AuthResponseDto> RefreshForAppAsync(RefreshTokenRequestDto request)
-        => RefreshInternalAsync(request, AuthClientType.App);
-
-    public Task<AuthResponseDto> RefreshForWebAsync(RefreshTokenRequestDto request)
-        => RefreshInternalAsync(request, AuthClientType.Web);
-
-    public Task LogoutFromAppAsync(LogoutRequestDto request)
-        => LogoutInternalAsync(request, AuthClientType.App);
-
-    public Task LogoutFromWebAsync(LogoutRequestDto request)
-        => LogoutInternalAsync(request, AuthClientType.Web);
+    public Task LogoutAsync(LogoutRequestDto request)
+        => LogoutInternalAsync(request, request.ClientType);
 
     private async Task<AuthResponseDto> RegisterInternalAsync(RegisterRequestDto request)
     {
+        if (request.ClientType != AuthClientType.App)
+            throw new ForbiddenException("Registration is only available through the app.");
+    
         var email = NormalizeEmail(request.Email);
 
         var userExists = await _db.Users.AnyAsync(u => u.Email == email);
@@ -78,7 +72,7 @@ public sealed class AuthService : IAuthService
 
         _db.Users.Add(user);
 
-        var response = IssueAuthTokens(user, AuthClientType.App);
+        var response = IssueAuthTokens(user, request.ClientType);
 
         await _db.SaveChangesAsync();
         return response;
@@ -120,13 +114,7 @@ public sealed class AuthService : IAuthService
                 s.RefreshTokenHash == refreshTokenHash &&
                 s.ClientType == clientType);
 
-        if (session is null)
-            throw new UnauthorizedException("Invalid or expired refresh token.");
-
-        if (session.RevokedAtUtc is not null)
-            throw new UnauthorizedException("Invalid or expired refresh token.");
-
-        if (session.ExpiresAtUtc <= DateTime.UtcNow)
+        if (session is null || session.RevokedAtUtc is not null || session.ExpiresAtUtc <= DateTime.UtcNow)
             throw new UnauthorizedException("Invalid or expired refresh token.");
 
         if (session.User.Status == UserStatus.Banned)
@@ -166,8 +154,8 @@ public sealed class AuthService : IAuthService
     }
 
     private AuthResponseDto IssueAuthTokens(
-    User user,
-    AuthClientType clientType)
+        User user,
+        AuthClientType clientType)
     {
         var now = DateTime.UtcNow;
         var accessTokenExpiresAtUtc = _tokenService.GetAccessTokenExpiresAtUtc();
