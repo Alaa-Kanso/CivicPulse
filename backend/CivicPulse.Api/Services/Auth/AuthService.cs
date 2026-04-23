@@ -158,7 +158,6 @@ public sealed class AuthService : IAuthService
         AuthClientType clientType)
     {
         var now = DateTime.UtcNow;
-        var accessTokenExpiresAtUtc = _tokenService.GetAccessTokenExpiresAtUtc();
         var accessToken = _tokenService.GenerateAccessToken(user);
         var refreshToken = _tokenService.GenerateRefreshToken();
 
@@ -176,8 +175,7 @@ public sealed class AuthService : IAuthService
         return new AuthResponseDto
         {
             AccessToken = accessToken,
-            RefreshToken = refreshToken,
-            AccessTokenExpiresAtUtc = accessTokenExpiresAtUtc
+            RefreshToken = refreshToken
         };
     }
 
