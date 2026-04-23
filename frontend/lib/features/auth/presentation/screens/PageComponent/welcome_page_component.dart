@@ -1,0 +1,446 @@
+import 'package:flutter/material.dart';
+import 'package:frontend/Component/components.dart';
+
+class WelcomeMobileHeader extends StatelessWidget {
+  const WelcomeMobileHeader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFF5B6FAA),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          padding: const EdgeInsets.all(10.0),
+          child: const Icon(
+            Icons.location_city,
+            color: Colors.white,
+            size: 100,
+          ),
+        ),
+        const SizedBox(height: 15),
+        const BoldText(text: "CivicPulse", size: 40, color: Colors.white),
+        const SizedBox(height: 10),
+        const NormalText(
+          text: "Report. Track. Improve Your City",
+          size: 20,
+          color: Color(0xFFC6CCE0),
+        ),
+      ],
+    );
+  }
+}
+
+class WelcomeWebHeader extends StatelessWidget {
+  const WelcomeWebHeader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: .infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            const Color(0xFF22458B),
+            const Color(0xFF2c3479),
+            const Color(0xFF2d2d7b),
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+        image: DecorationImage(
+          image: AssetImage("assets/images/welcome_header_background.png"),
+          fit: .fill,
+          colorFilter: ColorFilter.mode(
+            Colors.blue.withOpacity(0.1),
+            BlendMode.dstATop,
+          ),
+        ),
+      ),
+      padding: EdgeInsets.all(30.0),
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          final bool isSmall = constraints.maxWidth < 650;
+          return Column(
+            children: [
+              Center(
+                child: Column(
+                  children: [
+                    const BoldText(
+                      text: "Smart Municipal",
+                      size: 30.0,
+                      color: Colors.white,
+                    ),
+                    const BoldText(
+                      text: "Operations Platform",
+                      size: 30.0,
+                      color: Color(0xFF60a5fa),
+                    ),
+                    const SizedBox(height: 15),
+                    const NormalText(
+                      text:
+                          "Unified infrastructure oversight for the modern city. Streamline report workflows and resolution analytics in one secure hub.",
+                      size: 20.0,
+                      color: Color(0xFFC6CCE0),
+                      textAlign: .center,
+                    ),
+                    const SizedBox(height: 20.0),
+                    ActionButton(
+                      text: "Portal Login",
+                      textColor: Color(0xFF2d2d7b),
+                      textSize: 20.0,
+                      buttonColor: Colors.white,
+                      onPressed: () {},
+                      borderColor: Colors.transparent,
+                      buttonWidth: 200,
+                    ),
+                    const SizedBox(height: 30.0),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class WelcomeWebBodyTop extends StatelessWidget {
+  const WelcomeWebBodyTop({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: .all(20.0),
+      child: Container(
+        constraints: BoxConstraints(maxWidth: 700),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const NormalText(
+              text: "PLATFORM CAPABILITIES",
+              size: 20.0,
+              color: Color(0xFF2d2d7b),
+            ),
+            const BoldText(
+              text: "Reliable Infrastructure Management",
+              size: 40.0,
+              color: Colors.black,
+            ),
+            const SizedBox(height: 20),
+            const NormalText(
+              text:
+                  "Designed for municipal operators to track, resolve, and audit public service requests efficiently.",
+              size: 20.0,
+              color: Colors.black54,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FeatureContainer extends StatelessWidget {
+  const FeatureContainer({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.subTitle,
+  });
+
+  final IconData icon;
+  final String title;
+  final String subTitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Color(0xFFE0E3EC),
+        borderRadius: BorderRadius.circular(13),
+        border: Border.all(color: Color(0xFFE0E3EC), width: 2.0),
+      ),
+      padding: .all(20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Color(0xFFe0e3ec),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(icon, size: 50, color: Color(0xFF2c3479)),
+          ),
+          const SizedBox(height: 10.0),
+          BoldText(text: title, size: 20.0, color: Colors.black87),
+          const SizedBox(height: 5.0),
+          NormalText(text: subTitle, size: 15, color: Colors.black54),
+        ],
+      ),
+    );
+  }
+}
+
+class WelcomeWebBodyFeatures extends StatelessWidget {
+  const WelcomeWebBodyFeatures({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final bool isSmall = constraints.maxWidth < 700;
+          return (isSmall)
+              ? Column(
+                  children: [
+                    SizedBox(
+                      width: .infinity,
+                      child: FeatureContainer(
+                        icon: Icons.map_outlined,
+                        title: 'Regional Report Management',
+                        subTitle:
+                            'Localized tracking for specific jurisdictions with geo-fencing capabilities.',
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: .infinity,
+                      child: FeatureContainer(
+                        icon: Icons.sync_alt_outlined,
+                        title: 'Structured Status Workflow',
+                        subTitle:
+                            'End-to-end lifecycle management for every report from intake to resolution.',
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: .infinity,
+                      child: FeatureContainer(
+                        icon: Icons.analytics_outlined,
+                        title: 'Centralized Dashboard',
+                        subTitle:
+                            'Data-driven oversight for departmental performance and real-time trends.',
+                      ),
+                    ),
+                  ],
+                )
+              : Row(
+                  children: [
+                    Expanded(
+                      child: FeatureContainer(
+                        icon: Icons.map_outlined,
+                        title: 'Regional Report Management',
+                        subTitle:
+                            'Localized tracking for specific jurisdictions with geo-fencing capabilities.',
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: FeatureContainer(
+                        icon: Icons.sync_alt_outlined,
+                        title: 'Structured Status Workflow',
+                        subTitle:
+                            'End-to-end lifecycle management for every report from intake to resolution.',
+                      ),
+                    ),
+
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: FeatureContainer(
+                        icon: Icons.analytics_outlined,
+                        title: 'Centralized Dashboard',
+                        subTitle:
+                            'Data-driven oversight for departmental performance and real-time trends.',
+                      ),
+                    ),
+                  ],
+                );
+        },
+      ),
+    );
+  }
+}
+
+class WorksContainer extends StatelessWidget {
+  const WorksContainer({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.subTitle,
+  });
+
+  final IconData icon;
+  final String title;
+  final String subTitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: Color(0xFF2d2d7b),
+            borderRadius: BorderRadius.circular(100),
+          ),
+          padding: .all(8.0),
+          child: Icon(icon, size: 30, color: Colors.white),
+        ),
+        const SizedBox(width: 4.0),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: .start,
+              children: [
+                BoldText(text: title, size: 25.0, color: Colors.black87),
+                const SizedBox(height: 10.0),
+                NormalText(text: subTitle, size: 15.0, color: Colors.black54),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class WelcomeWebBodyWorks extends StatelessWidget {
+  const WelcomeWebBodyWorks({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: .infinity,
+      decoration: BoxDecoration(color: Color(0xFFE0E3EC)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const BoldText(
+              text: "How It Works",
+              size: 30.0,
+              color: Colors.black,
+            ),
+            const SizedBox(height: 20),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final bool isSmall = constraints.maxWidth < 700;
+                return (isSmall)
+                    ? Column(
+                        children: [
+                          WorksContainer(
+                            icon: Icons.description_outlined,
+                            title: 'Capture Report',
+                            subTitle:
+                                'Citizen input via structured intake forms, including photo evidence and precise GPS coordinates.',
+                          ),
+                          const SizedBox(height: 15),
+                          WorksContainer(
+                            icon: Icons.settings_outlined,
+                            title: 'Process & Assign',
+                            subTitle:
+                                'Automated routing to responsible departments based on category and region of the report.',
+                          ),
+                          const SizedBox(height: 15),
+                          WorksContainer(
+                            icon: Icons.verified_user,
+                            title: 'Resolve & Audit',
+                            subTitle:
+                                'Final verification with immutable logging for departmental compliance and citizen feedback.',
+                          ),
+                        ],
+                      )
+                    : Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: WorksContainer(
+                              icon: Icons.description_outlined,
+                              title: 'Capture Report',
+                              subTitle:
+                                  'Citizen input via structured intake forms, including photo evidence and precise GPS coordinates.',
+                            ),
+                          ),
+                          const SizedBox(width: 15),
+                          Expanded(
+                            child: WorksContainer(
+                              icon: Icons.settings_outlined,
+                              title: 'Process & Assign',
+                              subTitle:
+                                  'Automated routing to responsible departments based on category and region of the report.',
+                            ),
+                          ),
+                          const SizedBox(width: 15),
+                          Expanded(
+                            child: WorksContainer(
+                              icon: Icons.verified_user,
+                              title: 'Resolve & Audit',
+                              subTitle:
+                                  'Final verification with immutable logging for departmental compliance and citizen feedback.',
+                            ),
+                          ),
+                        ],
+                      );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class WelcomeWebFooter extends StatelessWidget {
+  const WelcomeWebFooter({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: .infinity,
+      decoration: BoxDecoration(color: Color(0xFFE0E3EC)),
+      child: Padding(
+        padding: .all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.public_outlined,
+                  color: Color(0xFF2d2d7b),
+                  size: 40.0,
+                ),
+                const SizedBox(width: 10),
+                BoldText(text: "CivicPulse", size: 30.0, color: Colors.black),
+              ],
+            ),
+            const SizedBox(height: 10),
+            const NormalText(
+              text:
+                  "Connecting citizens and city services through reliable, transparent, and efficient management software.",
+              size: 20.0,
+              color: Colors.black54,
+            ),
+            const SizedBox(height: 30),
+            const Divider(),
+            const Center(
+              child: NormalText(
+                text:
+                    "© 2026 CivicPulse Municipal Systems. All rights reserved.",
+                size: 20.0,
+                color: Colors.black54,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
