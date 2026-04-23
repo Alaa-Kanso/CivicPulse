@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/Component/components.dart';
-import 'package:frontend/PageComponent/welcome_page_component.dart';
+import 'package:frontend/features/auth/presentation/screens/PageComponent/welcome_page_component.dart';
 
 class WebWelcomePage extends StatefulWidget {
   const WebWelcomePage({super.key});

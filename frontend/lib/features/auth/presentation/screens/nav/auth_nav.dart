@@ -7,10 +7,10 @@ class AuthNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Navigator(
-      onGenerateRoute: (settings){
-        switch(settings.name){
-          default: return MaterialPageRoute(builder: (context) => const WelcomePage());
-
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          default:
+            return MaterialPageRoute(builder: (context) => const WelcomePage());
         }
       },
     );
