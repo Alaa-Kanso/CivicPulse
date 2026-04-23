@@ -29,3 +29,9 @@ public enum AbuseReportStatus
     ActionTaken = 1, // admin banned user
     Dismissed = 2    // admin decided it wasn't abuse
 }
+
+public enum AuthClientType
+{
+    App = 0,
+    Web = 1
+}

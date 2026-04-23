@@ -164,6 +164,9 @@ namespace CivicPulse.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<int>("ClientType")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("timestamp with time zone");
 
@@ -189,7 +192,7 @@ namespace CivicPulse.Infrastructure.Migrations
                     b.HasIndex("RefreshTokenHash")
                         .IsUnique();
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId", "ClientType");
 
                     b.ToTable("RefreshTokenSessions");
                 });

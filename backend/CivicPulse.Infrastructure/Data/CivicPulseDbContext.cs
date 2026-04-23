@@ -125,11 +125,12 @@ public class CivicPulseDbContext : DbContext
         modelBuilder.Entity<RefreshTokenSession>(e =>
         {
             e.HasIndex(x => x.RefreshTokenHash).IsUnique();
+            e.HasIndex(x => new { x.UserId, x.ClientType });
 
             e.HasOne(x => x.User)
-             .WithMany(u => u.RefreshTokenSessions)
-             .HasForeignKey(x => x.UserId)
-             .OnDelete(DeleteBehavior.Cascade);
+            .WithMany(u => u.RefreshTokenSessions)
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
