@@ -42,7 +42,9 @@ class _MobileWelcomePageState extends State<MobileWelcomePage> {
                     textSize: 20.0,
                     buttonColor: Colors.white,
                     borderColor: Colors.transparent,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, "/sign-up");
+                    },
                   ),
                   const SizedBox(height: 20),
                   ActionButton(

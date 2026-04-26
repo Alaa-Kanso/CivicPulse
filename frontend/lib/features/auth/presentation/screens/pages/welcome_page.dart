@@ -11,3 +11,4 @@ class WelcomePage extends StatelessWidget {
     return (kIsWeb) ? const WebWelcomePage() : const MobileWelcomePage();
   }
 }
+
