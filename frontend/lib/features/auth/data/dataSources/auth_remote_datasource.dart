@@ -18,4 +18,16 @@ class AuthRemoteDatasource {
     });
     return AuthResponseModel.fromJson(response);
   }
+
+  Future<AuthResponseModel> logIn({
+    required String email,
+    required String password,
+  }) async {
+    final Map<String, dynamic> response = await api.post("/auth/login", {
+      "email": email,
+      "password": password,
+      "clientType": DeviceInfo.getDevicePlatform(),
+    });
+    return AuthResponseModel.fromJson(response);
+  }
 }

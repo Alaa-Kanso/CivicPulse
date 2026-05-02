@@ -75,7 +75,9 @@ class _MobileSignUpPageState extends State<MobileSignUpPage> {
                               color: AppColors.textSecondary,
                             ),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushReplacementNamed(context, "/log-in");
+                              },
                               child: Text(
                                 "Log In",
                                 style: TextStyle(fontSize: 15.0),
