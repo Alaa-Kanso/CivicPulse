@@ -38,7 +38,7 @@ class SignUpMobileHeader extends StatelessWidget {
   }
 }
 
-class SignUpForm extends StatelessWidget {
+class SignUpForm extends StatefulWidget {
   const SignUpForm({
     super.key,
     required this.emailController,
@@ -51,6 +51,11 @@ class SignUpForm extends StatelessWidget {
   final TextEditingController confirmPasswordController;
 
   @override
+  State<SignUpForm> createState() => _SignUpFormState();
+}
+
+class _SignUpFormState extends State<SignUpForm> {
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<SignUpCubit, SignUpState>(
       builder: (BuildContext context, SignUpState state) {
@@ -59,22 +64,25 @@ class SignUpForm extends StatelessWidget {
             CustomField(
               text: "Email",
               hintText: "Joe@example.com",
-              controller: emailController,
+              controller: widget.emailController,
               enabled: (state is SignUpLoading)?false:true,
+
             ),
             const SizedBox(height: 10.0),
             CustomField(
               text: "Password",
               hintText: "********",
-              controller: passwordController,
+              controller: widget.passwordController,
               enabled: (state is SignUpLoading)?false:true,
+              isPassword: true,
             ),
             const SizedBox(height: 10.0),
             CustomField(
               text: "Confirm Password",
               hintText: "********",
-              controller: confirmPasswordController,
+              controller: widget.confirmPasswordController,
               enabled: (state is SignUpLoading)?false:true,
+              isPassword: true,
             ),
           ],
         );

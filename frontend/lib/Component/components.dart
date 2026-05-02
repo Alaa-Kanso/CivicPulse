@@ -99,19 +99,35 @@ class ActionButton extends StatelessWidget {
   }
 }
 
-class CustomField extends StatelessWidget {
+class CustomField extends StatefulWidget {
   const CustomField({
     super.key,
     required this.text,
     required this.hintText,
     required this.controller,
     this.enabled = true,
+    this.isPassword = false,
   });
 
   final String text;
   final String hintText;
   final TextEditingController controller;
   final bool enabled;
+  final bool isPassword;
+
+  @override
+  State<CustomField> createState() => _CustomFieldState();
+}
+
+class _CustomFieldState extends State<CustomField> {
+  late bool obscureText;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    obscureText = (widget.isPassword) ? true : false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,10 +135,12 @@ class CustomField extends StatelessWidget {
       mainAxisAlignment: .start,
       crossAxisAlignment: .start,
       children: [
-        BoldText(text: text, size: 20.0, color: AppColors.textPrimary),
+        BoldText(text: widget.text, size: 20.0, color: AppColors.textPrimary),
         const SizedBox(height: 5.0),
         TextField(
-          enabled: enabled,
+          textInputAction: .next,
+          enabled: widget.enabled,
+          obscureText: obscureText,
           decoration: InputDecoration(
             fillColor: AppColors.surface,
             filled: true,
@@ -130,9 +148,23 @@ class CustomField extends StatelessWidget {
               borderRadius: .circular(10),
               borderSide: BorderSide(color: AppColors.border),
             ),
-            hint: Text(hintText),
+            suffixIcon: (widget.isPassword)
+                ? IconButton(
+                    onPressed: () {
+                      setState(() {
+                        obscureText = !obscureText;
+                      });
+                    },
+                    icon: Icon(
+                      (obscureText)
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                    ),
+                  )
+                : const SizedBox(),
+            hint: Text(widget.hintText),
           ),
-          controller: controller,
+          controller: widget.controller,
         ),
       ],
     );
