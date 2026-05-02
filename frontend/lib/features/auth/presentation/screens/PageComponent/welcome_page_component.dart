@@ -86,7 +86,9 @@ class WelcomeWebHeader extends StatelessWidget {
                   textColor: AppColors.primary,
                   textSize: 20.0,
                   buttonColor: Colors.white,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, "/log-in");
+                  },
                   borderColor: Colors.transparent,
                   buttonWidth: 200,
                 ),

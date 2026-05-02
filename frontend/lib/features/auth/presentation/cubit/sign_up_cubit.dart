@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/features/auth/domain/usecases/sign_up_usecase.dart';
+import 'package:frontend/features/auth/domain/useCases/sign_up_use_case.dart';
 import 'package:frontend/features/auth/presentation/cubit/sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
@@ -12,7 +12,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     String confirmPassword,
   ) async {
     if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
-      emit(SignUpError(error: 'All fields should be filled'));
+      emit(SignUpError(error: "All fields are required"));
       return;
     }
     if (!email.contains("@")) {

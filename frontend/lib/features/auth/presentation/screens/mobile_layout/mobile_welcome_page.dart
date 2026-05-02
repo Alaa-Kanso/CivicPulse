@@ -53,7 +53,9 @@ class _MobileWelcomePageState extends State<MobileWelcomePage> {
                     textSize: 20,
                     buttonColor: Colors.transparent,
                     borderColor: Colors.white,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, "/log-in");
+                    },
                   ),
                 ],
               ),

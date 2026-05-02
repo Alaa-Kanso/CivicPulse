@@ -19,7 +19,15 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<void> signUp(String email, String password) async {
     final response = await remote.signUp(email: email, password: password);
     final user = TokenDecoder.decode(response.accessToken);
-    await local.saveRefreshToken(response.refreshToken);
     session.saveSession(accessToken: response.accessToken, user: user);
+    await local.saveRefreshToken(response.refreshToken);
+  }
+
+  @override
+  Future<void> logIn(String email, String password) async {
+    final response = await remote.logIn(email: email, password: password);
+    final user = TokenDecoder.decode(response.accessToken);
+    session.saveSession(accessToken: response.accessToken, user: user);
+    await local.saveRefreshToken(response.refreshToken);
   }
 }
