@@ -6,37 +6,9 @@ A new Flutter project.
 
 📱 Connecting Flutter App to Local Backend
 
-To allow the Flutter mobile app to communicate with the local ASP.NET API, you must expose the
-backend to your local network and configure the correct base URL.
+To allow the Flutter mobile app to communicate with the local ASP.NET API, you must configure the correct base URL.
 
-1) Configure ASP.NET to Accept External Connections
-
-By default, ASP.NET runs only on localhost, which is not accessible from a physical device or
-emulator.
-
-Update the following file:
-
-backend/CivicPulse.Api/Properties/launchSettings.json
-
-Modify the applicationUrl:
-
-    "profiles": {
-        "http": {
-        ...
-        "applicationUrl": "http://localhost:5024;http://0.0.0.0:5024",
-        ...
-        },
-        "https": {
-        ...
-        "applicationUrl": "https://localhost:7181;http://localhost:5024;http://0.0.0.0:5024",
-        ...
-    },
-
-- Why 0.0.0.0?
-  - Allows the API to listen on all network interfaces
-  - Makes the backend accessible from other devices on the same network
-
-2) Get Your Local IPv4 Address
+1) Get Your Local IPv4 Address
 
 Run the following command:
 
@@ -48,7 +20,7 @@ Look for:
 
 This is your local network IP address.
 
-3) Configure Flutter Base URL
+2) Configure Flutter Base URL
 
 In your Flutter project (e.g., lib/core/network/dio_client.dart), set the base URL:
 
@@ -58,12 +30,12 @@ Example:
 
       baseUrl = "http://192.168.0.194:5139/api";
 
-4) Requirements: 
+3) Requirements: 
    - Backend and mobile device must be on the same Wi-Fi network
    - Backend must be running
    - Port must match (5139 in this example)
    - Do not use localhost or 127.0.0.1 on a physical device
-5) HTTPS (Development Note)
+4) HTTPS (Development Note)
 
 - Using HTTPS locally may result in certificate errors such as:
 
@@ -75,7 +47,7 @@ Recommendation: use HTTP for local development:
 
       http://<YOUR_IPV4>:5139
 
-6) Troubleshooting
+5) Troubleshooting
 - Mobile shows “No Internet Connection”
 - Verify the correct IPv4 address
 - Ensure backend is running
