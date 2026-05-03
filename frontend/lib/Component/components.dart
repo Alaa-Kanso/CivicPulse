@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/config/settings/app_colors.dart';
 
 class NormalText extends StatelessWidget {
   const NormalText({
@@ -62,6 +63,7 @@ class ActionButton extends StatelessWidget {
     required this.onPressed,
     this.buttonWidth,
     required this.borderColor,
+    this.isValid = true,
   });
 
   final String text;
@@ -71,6 +73,7 @@ class ActionButton extends StatelessWidget {
   final VoidCallback onPressed;
   final double? buttonWidth;
   final Color borderColor;
+  final bool isValid;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +81,8 @@ class ActionButton extends StatelessWidget {
       width: (buttonWidth != null) ? buttonWidth : double.infinity,
 
       child: FilledButton(
-        onPressed: onPressed,
+        onPressed: (isValid) ? onPressed : null,
+
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.all(buttonColor),
           shape: WidgetStateProperty.all(
@@ -87,11 +91,82 @@ class ActionButton extends StatelessWidget {
               side: BorderSide(color: borderColor),
             ),
           ),
-
           padding: WidgetStateProperty.all(EdgeInsets.all(10)),
         ),
         child: NormalText(text: text, size: textSize, color: textColor),
       ),
+    );
+  }
+}
+
+class CustomField extends StatefulWidget {
+  const CustomField({
+    super.key,
+    required this.text,
+    required this.hintText,
+    required this.controller,
+    this.enabled = true,
+    this.isPassword = false,
+  });
+
+  final String text;
+  final String hintText;
+  final TextEditingController controller;
+  final bool enabled;
+  final bool isPassword;
+
+  @override
+  State<CustomField> createState() => _CustomFieldState();
+}
+
+class _CustomFieldState extends State<CustomField> {
+  late bool obscureText;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    obscureText = (widget.isPassword) ? true : false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: .start,
+      crossAxisAlignment: .start,
+      children: [
+        BoldText(text: widget.text, size: 20.0, color: AppColors.textPrimary),
+        const SizedBox(height: 5.0),
+        TextField(
+          textInputAction: .next,
+          enabled: widget.enabled,
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            fillColor: AppColors.surface,
+            filled: true,
+            border: OutlineInputBorder(
+              borderRadius: .circular(10),
+              borderSide: BorderSide(color: AppColors.border),
+            ),
+            suffixIcon: (widget.isPassword)
+                ? IconButton(
+                    onPressed: () {
+                      setState(() {
+                        obscureText = !obscureText;
+                      });
+                    },
+                    icon: Icon(
+                      (obscureText)
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                    ),
+                  )
+                : const SizedBox(),
+            hint: Text(widget.hintText),
+          ),
+          controller: widget.controller,
+        ),
+      ],
     );
   }
 }

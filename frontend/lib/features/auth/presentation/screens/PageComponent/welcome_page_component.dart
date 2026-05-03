@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Component/components.dart';
+import 'package:frontend/config/settings/app_colors.dart';
 
 class WelcomeMobileHeader extends StatelessWidget {
   const WelcomeMobileHeader({super.key});
@@ -10,7 +11,7 @@ class WelcomeMobileHeader extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: const Color(0xFF5B6FAA),
+            color: AppColors.primaryLight,
             borderRadius: BorderRadius.circular(10),
           ),
           padding: const EdgeInsets.all(10.0),
@@ -26,7 +27,7 @@ class WelcomeMobileHeader extends StatelessWidget {
         const NormalText(
           text: "Report. Track. Improve Your City",
           size: 20,
-          color: Color(0xFFC6CCE0),
+          color: AppColors.accentSoft,
         ),
       ],
     );
@@ -42,11 +43,7 @@ class WelcomeWebHeader extends StatelessWidget {
       width: .infinity,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            const Color(0xFF22458B),
-            const Color(0xFF2c3479),
-            const Color(0xFF2d2d7b),
-          ],
+          colors: [AppColors.primaryDark, AppColors.primary],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -60,49 +57,44 @@ class WelcomeWebHeader extends StatelessWidget {
         ),
       ),
       padding: EdgeInsets.all(30.0),
-      child: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          final bool isSmall = constraints.maxWidth < 650;
-          return Column(
-            children: [
-              Center(
-                child: Column(
-                  children: [
-                    const BoldText(
-                      text: "Smart Municipal",
-                      size: 30.0,
-                      color: Colors.white,
-                    ),
-                    const BoldText(
-                      text: "Operations Platform",
-                      size: 30.0,
-                      color: Color(0xFF60a5fa),
-                    ),
-                    const SizedBox(height: 15),
-                    const NormalText(
-                      text:
-                          "Unified infrastructure oversight for the modern city. Streamline report workflows and resolution analytics in one secure hub.",
-                      size: 20.0,
-                      color: Color(0xFFC6CCE0),
-                      textAlign: .center,
-                    ),
-                    const SizedBox(height: 20.0),
-                    ActionButton(
-                      text: "Portal Login",
-                      textColor: Color(0xFF2d2d7b),
-                      textSize: 20.0,
-                      buttonColor: Colors.white,
-                      onPressed: () {},
-                      borderColor: Colors.transparent,
-                      buttonWidth: 200,
-                    ),
-                    const SizedBox(height: 30.0),
-                  ],
+      child: Column(
+        children: [
+          Center(
+            child: Column(
+              children: [
+                const BoldText(
+                  text: "Smart Municipal",
+                  size: 30.0,
+                  color: Colors.white,
                 ),
-              ),
-            ],
-          );
-        },
+                const BoldText(
+                  text: "Operations Platform",
+                  size: 30.0,
+                  color: AppColors.accent,
+                ),
+                const SizedBox(height: 15),
+                const NormalText(
+                  text:
+                      "Unified infrastructure oversight for the modern city. Streamline report workflows and resolution analytics in one secure hub.",
+                  size: 20.0,
+                  color: AppColors.accentSoft,
+                  textAlign: .center,
+                ),
+                const SizedBox(height: 20.0),
+                ActionButton(
+                  text: "Portal Login",
+                  textColor: AppColors.primary,
+                  textSize: 20.0,
+                  buttonColor: Colors.white,
+                  onPressed: () {},
+                  borderColor: Colors.transparent,
+                  buttonWidth: 200,
+                ),
+                const SizedBox(height: 30.0),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -123,7 +115,7 @@ class WelcomeWebBodyTop extends StatelessWidget {
             const NormalText(
               text: "PLATFORM CAPABILITIES",
               size: 20.0,
-              color: Color(0xFF2d2d7b),
+              color: AppColors.primary,
             ),
             const BoldText(
               text: "Reliable Infrastructure Management",
@@ -135,7 +127,7 @@ class WelcomeWebBodyTop extends StatelessWidget {
               text:
                   "Designed for municipal operators to track, resolve, and audit public service requests efficiently.",
               size: 20.0,
-              color: Colors.black54,
+              color: AppColors.textSecondary,
             ),
           ],
         ),
@@ -160,9 +152,9 @@ class FeatureContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xFFE0E3EC),
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(13),
-        border: Border.all(color: Color(0xFFE0E3EC), width: 2.0),
+        border: Border.all(color: AppColors.border, width: 2.0),
       ),
       padding: .all(20.0),
       child: Column(
@@ -170,15 +162,15 @@ class FeatureContainer extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: Color(0xFFe0e3ec),
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, size: 50, color: Color(0xFF2c3479)),
+            child: Icon(icon, size: 50, color: AppColors.primary),
           ),
           const SizedBox(height: 10.0),
-          BoldText(text: title, size: 20.0, color: Colors.black87),
+          BoldText(text: title, size: 20.0, color: AppColors.textPrimary),
           const SizedBox(height: 5.0),
-          NormalText(text: subTitle, size: 15, color: Colors.black54),
+          NormalText(text: subTitle, size: 15, color: AppColors.textSecondary),
         ],
       ),
     );
@@ -285,7 +277,7 @@ class WorksContainer extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: Color(0xFF2d2d7b),
+            color: AppColors.primary,
             borderRadius: BorderRadius.circular(100),
           ),
           padding: .all(8.0),
@@ -298,9 +290,13 @@ class WorksContainer extends StatelessWidget {
             child: Column(
               crossAxisAlignment: .start,
               children: [
-                BoldText(text: title, size: 25.0, color: Colors.black87),
+                BoldText(text: title, size: 25.0, color: AppColors.textPrimary),
                 const SizedBox(height: 10.0),
-                NormalText(text: subTitle, size: 15.0, color: Colors.black54),
+                NormalText(
+                  text: subTitle,
+                  size: 15.0,
+                  color: AppColors.textSecondary,
+                ),
               ],
             ),
           ),
@@ -317,7 +313,7 @@ class WelcomeWebBodyWorks extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: .infinity,
-      decoration: BoxDecoration(color: Color(0xFFE0E3EC)),
+      decoration: BoxDecoration(color: AppColors.surface),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
         child: Column(
@@ -404,7 +400,7 @@ class WelcomeWebFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: .infinity,
-      decoration: BoxDecoration(color: Color(0xFFE0E3EC)),
+      decoration: BoxDecoration(color: AppColors.surface),
       child: Padding(
         padding: .all(20.0),
         child: Column(
@@ -414,7 +410,7 @@ class WelcomeWebFooter extends StatelessWidget {
               children: [
                 Icon(
                   Icons.public_outlined,
-                  color: Color(0xFF2d2d7b),
+                  color: AppColors.primary,
                   size: 40.0,
                 ),
                 const SizedBox(width: 10),
@@ -426,7 +422,7 @@ class WelcomeWebFooter extends StatelessWidget {
               text:
                   "Connecting citizens and city services through reliable, transparent, and efficient management software.",
               size: 20.0,
-              color: Colors.black54,
+              color: AppColors.textSecondary,
             ),
             const SizedBox(height: 30),
             const Divider(),
@@ -435,7 +431,7 @@ class WelcomeWebFooter extends StatelessWidget {
                 text:
                     "© 2026 CivicPulse Municipal Systems. All rights reserved.",
                 size: 20.0,
-                color: Colors.black54,
+                color: AppColors.textSecondary,
               ),
             ),
           ],

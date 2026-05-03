@@ -3,10 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:frontend/gates.dart';
 
-void main() {
+import 'core/di/injection_container.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await initDependencies();
   runApp(
     BlocProvider(
-      create: (BuildContext context) => AuthCubit(),
+      create: (BuildContext context) => sl<AuthCubit>(),
       child: const MyApp(),
     ),
   );
@@ -17,6 +22,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false,home: SafeArea(child: AuthGate()));
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: SafeArea(child: AuthGate()),
+    );
   }
 }

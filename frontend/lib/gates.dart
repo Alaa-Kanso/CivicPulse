@@ -16,6 +16,9 @@ class _AuthGateState extends State<AuthGate> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (BuildContext context, AuthState state) {
+        if(state is AuthAuthenticated){
+
+        }
         return AuthNav();
       },
     );
