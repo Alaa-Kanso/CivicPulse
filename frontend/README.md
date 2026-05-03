@@ -20,7 +20,18 @@ backend/CivicPulse.Api/Properties/launchSettings.json
 
 Modify the applicationUrl:
 
-"applicationUrl": "http://0.0.0.0:5139
+    "profiles": {
+        "http": {
+        ...
+        "applicationUrl": "http://localhost:5024;http://0.0.0.0:5024",
+        ...
+        },
+        "https": {
+        ...
+        "applicationUrl": "https://localhost:7181;http://localhost:5024;http://0.0.0.0:5024",
+        ...
+    },
+
 - Why 0.0.0.0?
   - Allows the API to listen on all network interfaces
   - Makes the backend accessible from other devices on the same network
@@ -39,7 +50,7 @@ This is your local network IP address.
 
 3) Configure Flutter Base URL
 
-In your Flutter project (e.g., DioClient), set the base URL:
+In your Flutter project (e.g., lib/core/network/dio_client.dart), set the base URL:
 
       baseUrl = "http://<YOUR_IPV4>:5139/api";
 
