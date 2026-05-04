@@ -26,29 +26,34 @@ class ErrorHandler {
     // 🔵 Network / timeout errors
     switch (e.type) {
       case DioExceptionType.connectionTimeout:
-      case DioExceptionType.sendTimeout:
-      case DioExceptionType.receiveTimeout:
         return ApiException(
-          message: "Request timed out. Please try again.",
+          message: "Connection timeout",
           type: ApiErrorType.timeout,
         );
 
-      case DioExceptionType.connectionError:
+      case DioExceptionType.receiveTimeout:
+        return ApiException(
+          message: "Server timeout",
+          type: ApiErrorType.timeout,
+        );
+
+      case DioExceptionType.unknown:
         return ApiException(
           message: "No internet connection",
           type: ApiErrorType.network,
         );
 
-
       default:
         return ApiException(
-          message: e.toString(),
+          message: "Unexpected error",
           type: ApiErrorType.unknown,
         );
     }
   }
 
   static String _parseModelState(Map errors) {
-    return errors.values.expand((e) => e).join('\n');
+    return errors.values
+        .expand((e) => e)
+        .join('\n');
   }
 }
