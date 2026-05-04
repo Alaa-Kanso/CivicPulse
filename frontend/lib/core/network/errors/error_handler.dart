@@ -39,15 +39,10 @@ class ErrorHandler {
           type: ApiErrorType.network,
         );
 
-      case DioExceptionType.unknown:
-        return ApiException(
-          message: "No internet connection",
-          type: ApiErrorType.network,
-        );
 
       default:
         return ApiException(
-          message: "Unexpected error",
+          message: e.toString(),
           type: ApiErrorType.unknown,
         );
     }

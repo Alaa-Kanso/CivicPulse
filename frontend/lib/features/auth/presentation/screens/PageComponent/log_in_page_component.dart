@@ -83,6 +83,7 @@ class _LogInFormSectionState extends State<LogInFormSection> {
               hintText: "********",
               controller: widget.passwordController,
               enabled: (state is LogInLoading) ? false : true,
+              isPassword: true,
             ),
           ],
         );
