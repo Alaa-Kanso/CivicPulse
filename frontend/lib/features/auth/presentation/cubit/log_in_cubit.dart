@@ -16,10 +16,6 @@ class LogInCubit extends Cubit<LogInState> {
       emit(LogInError(error: "Invalid email address"));
       return;
     }
-    if (password.length < 8) {
-      emit(LogInError(error: "Password length should be at least 8"));
-      return;
-    }
     emit(LogInLoading());
     try {
       await logInUseCase.call(email, password);
