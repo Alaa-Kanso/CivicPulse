@@ -12,6 +12,16 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFlutterWeb", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:62290")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 // Add services to the container.
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -93,7 +103,7 @@ builder.Services
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
-
+app.UseCors("AllowFlutterWeb");
 await AdminSeeder.SeedAsync(app.Services);
 await ReportTypesSeeder.SeedAsync(app.Services);
 
@@ -105,7 +115,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
