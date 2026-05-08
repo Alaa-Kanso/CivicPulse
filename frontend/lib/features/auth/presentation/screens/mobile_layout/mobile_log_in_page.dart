@@ -18,64 +18,57 @@ class _MobileLogInPageState extends State<MobileLogInPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Stack(
-          children: [
-            Center(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
+    return Stack(
+      children: [
+        Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  const LogInMobileHeader(),
+                  const SizedBox(height: 30.0),
+                  LogInFormSection(
+                    emailController: emailController,
+                    passwordController: passwordController,
+                  ),
+                  const LogInForgetPasswordButton(),
+                  const SizedBox(height: 10.0),
+                  const LogInErrorSection(),
+                  const SizedBox(height: 5.0),
+                  LogInButton(
+                    onPressed: () {
+                      context.read<LogInCubit>().logIn(
+                        emailController.text.trim(),
+                        passwordController.text.trim(),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 10.0),
+                  Wrap(
+                    alignment: .center,
+                    crossAxisAlignment: .center,
                     children: [
-                      const LogInMobileHeader(),
-                      const SizedBox(height: 30.0),
-                      LogInFormSection(
-                        emailController: emailController,
-                        passwordController: passwordController,
+                      NormalText(
+                        text: "Don't have an account? ",
+                        size: 15.0,
+                        color: AppColors.textSecondary,
                       ),
-                      const LogInForgetPasswordButton(),
-                      const SizedBox(height: 10.0),
-                      const LogInErrorSection(),
-                      const SizedBox(height: 5.0),
-                      LogInButton(
+                      TextButton(
                         onPressed: () {
-                          context.read<LogInCubit>().logIn(
-                            emailController.text.trim(),
-                            passwordController.text.trim(),
-                          );
+                          Navigator.pushReplacementNamed(context, "/sign-up");
                         },
-                      ),
-                      const SizedBox(height: 10.0),
-                      Wrap(
-                        alignment: .center,
-                        crossAxisAlignment: .center,
-                        children: [
-                          NormalText(
-                            text: "Don't have an account? ",
-                            size: 15.0,
-                            color: AppColors.textSecondary,
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                context,
-                                "/sign-up",
-                              );
-                            },
-                            child: Text("Sign Up"),
-                          ),
-                        ],
+                        child: Text("Sign Up"),
                       ),
                     ],
                   ),
-                ),
+                ],
               ),
             ),
-            LogInCircularSection(),
-          ],
+          ),
         ),
-      ),
+        LogInCircularSection(),
+      ],
     );
   }
 }

@@ -11,13 +11,16 @@ class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
-class AuthAuthenticated extends AuthState {
+class AuthAuthenticatedGoHome extends AuthState {
   final User user;
 
-  AuthAuthenticated({required this.user});
+  AuthAuthenticatedGoHome({required this.user});
+
   @override
   // TODO: implement props
   List<Object?> get props => [user];
 }
+
+class AuthAuthenticatedGoBoarding extends AuthState {}
 
 class AuthUnAuthenticated extends AuthState {}

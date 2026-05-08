@@ -40,6 +40,8 @@ dependencies:
   jwt_decoder: ^2.0.1
   dio: ^5.9.2
   get_it: ^9.2.1
+  shared_preferences: ^2.5.5
+  smooth_page_indicator: ^2.0.1
 
 dev_dependencies:
   flutter_test:

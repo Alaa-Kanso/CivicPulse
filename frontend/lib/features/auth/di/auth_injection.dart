@@ -12,7 +12,7 @@ import 'package:frontend/features/auth/presentation/cubit/sign_up_cubit.dart';
 Future<void> authInit() async {
   //Data source
   sl.registerLazySingleton<AuthLocalDataSource>(
-    () => AuthLocalDataSource(sl()),
+    () => AuthLocalDataSource(storage: sl()),
   );
 
   sl.registerLazySingleton<AuthRemoteDatasource>(
@@ -29,7 +29,9 @@ Future<void> authInit() async {
   sl.registerLazySingleton(() => LogInUseCase(repository: sl()));
 
   //cubit
-  sl.registerFactory(() => AuthCubit(sessionManager: sl()));
+  sl.registerFactory(
+    () => AuthCubit(sessionManager: sl(), onboardingUseCase: sl()),
+  );
   sl.registerFactory(() => SignUpCubit(signUpUseCase: sl()));
   sl.registerFactory(() => LogInCubit(logInUseCase: sl()));
 }
