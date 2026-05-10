@@ -24,8 +24,7 @@ class _WebLogInPageState extends State<WebLogInPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
+    return Stack(
         children: [
           LayoutBuilder(
             builder: (context, constraints) {
@@ -36,8 +35,7 @@ class _WebLogInPageState extends State<WebLogInPage> {
           ),
           const LogInCircularSection(),
         ],
-      ),
-    );
+      );
   }
 
   Widget _buildMobileLayout() {

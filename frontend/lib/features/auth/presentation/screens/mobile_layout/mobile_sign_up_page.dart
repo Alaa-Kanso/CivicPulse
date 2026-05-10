@@ -24,7 +24,7 @@ class _MobileSignUpPageState extends State<MobileSignUpPage> {
     return BlocListener<SignUpCubit,SignUpState>(
       listener: (BuildContext context, SignUpState state) {
         if(state is SignUpSuccess){
-          context.read<AuthCubit>();
+          context.read<AuthCubit>().checkAuthenticated();
         }
       },
       child: SafeArea(

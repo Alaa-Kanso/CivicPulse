@@ -3,7 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class AuthLocalDataSource {
   final FlutterSecureStorage storage;
 
-  AuthLocalDataSource(this.storage);
+  AuthLocalDataSource({required this.storage});
 
   static const _refreshTokenKey = "refreshToken";
 
