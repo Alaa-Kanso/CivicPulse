@@ -3,6 +3,7 @@ using CivicPulse.Infrastructure.Data;
 using CivicPulse.Api.Services.Security;
 using CivicPulse.Api.Settings;
 using CivicPulse.Api.Startup;
+using CivicPulse.Api.Services.Reports;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -22,6 +23,7 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
+
 // Add services to the container.
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -72,6 +74,7 @@ builder.Services.AddDbContext<CivicPulseDbContext>(options =>
 builder.Services.AddSingleton<IPasswordHasher, BcryptPasswordHasher>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IReportsService, ReportsService>();
 
 builder.Services.Configure<AdminSeedOptions>(
     builder.Configuration.GetSection("AdminSeed"));
@@ -104,6 +107,7 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 app.UseCors("AllowFlutterWeb");
+
 await AdminSeeder.SeedAsync(app.Services);
 await ReportTypesSeeder.SeedAsync(app.Services);
 
