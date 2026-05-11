@@ -14,7 +14,7 @@ public sealed class CreateReportRequestDto
     public double Longitude { get; set; }
 
     [Required, MaxLength(1000)]
-    public string ImageUrl { get; set; } = string.Empty;
+    public string ImageKey { get; set; } = string.Empty;
 
     [Required, MaxLength(2000)]
     public string Description { get; set; } = string.Empty;
