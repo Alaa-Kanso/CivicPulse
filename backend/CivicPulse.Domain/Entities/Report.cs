@@ -21,7 +21,7 @@ public class Report
     public Point Location { get; set; } = default!;
 
     [Required, MaxLength(1000)]
-    public string ImageUrl { get; set; } = default!;
+    public string ImageKey { get; set; } = default!;
 
     [Required]
     public long MunicipalityId { get; set; }
