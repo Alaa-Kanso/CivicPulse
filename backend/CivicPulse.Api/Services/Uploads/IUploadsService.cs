@@ -7,4 +7,5 @@ public interface IUploadsService
     Task<InitReportImageUploadResponseDto> InitReportImageUploadAsync(
         Guid currentUserId,
         InitReportImageUploadRequestDto request);
+    Task<string> CreateSignedReadUrlAsync(string imageKey);
 }

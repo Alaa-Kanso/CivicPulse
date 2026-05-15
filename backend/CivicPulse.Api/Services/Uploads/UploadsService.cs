@@ -55,7 +55,9 @@ public sealed class UploadsService : IUploadsService
             throw new BadRequestException("Unsupported image type.");
 
         var extension = GetSafeExtension(request.FileName, request.ContentType);
-        var imageKey = $"reports/{currentUserId}/{Guid.NewGuid():N}{extension}";
+        var now = DateTime.UtcNow;
+        var imageKey =
+            $"reports/{currentUserId}/{now:yyyy}/{now:MM}/{Guid.NewGuid():N}{extension}";
 
         var uploadUrl = await CreateSignedUploadUrlAsync(imageKey);
 
@@ -64,6 +66,50 @@ public sealed class UploadsService : IUploadsService
             ImageKey = imageKey,
             UploadUrl = uploadUrl
         };
+    }
+
+    public async Task<string> CreateSignedReadUrlAsync(string imageKey)
+    {
+        var client = _httpClientFactory.CreateClient();
+
+        client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", _storageSettings.SupabaseSecretKey);
+
+        client.DefaultRequestHeaders.Add("apikey", _storageSettings.SupabaseSecretKey);
+
+        var expiresIn = _storageSettings.SignedReadUrlExpiresInSeconds;
+        var requestUrl =
+            $"{_storageSettings.SupabaseUrl.TrimEnd('/')}/storage/v1/object/sign/{_storageSettings.BucketName}/{imageKey}";
+
+        var payload = new
+        {
+            expiresIn
+        };
+
+        var json = JsonSerializer.Serialize(payload);
+        using var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        using var response = await client.PostAsync(requestUrl, content);
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+        {
+            if (responseBody.Contains("\"message\":\"Object not found\"", StringComparison.OrdinalIgnoreCase))
+                throw new StorageObjectNotFoundException("The report image was not found in storage.");
+
+            throw new InvalidOperationException(
+                $"Supabase signed read URL creation failed. Status: {(int)response.StatusCode}. Body: {responseBody}");
+        }
+
+        var result = JsonSerializer.Deserialize<CreateSignedReadUrlResult>(
+            responseBody,
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        if (result is null || string.IsNullOrWhiteSpace(result.SignedUrl))
+            throw new InvalidOperationException(
+                $"Supabase did not return a signed read URL. Raw body: {responseBody}");
+
+        return $"{_storageSettings.SupabaseUrl.TrimEnd('/')}/storage/v1{result.SignedUrl}";
     }
 
     private async Task<string> CreateSignedUploadUrlAsync(string imageKey)
@@ -127,5 +173,10 @@ public sealed class UploadsService : IUploadsService
     {
         public string Url { get; set; } = string.Empty;
         public string Token { get; set; } = string.Empty;
+    }
+    
+    private sealed class CreateSignedReadUrlResult
+    {
+        public string SignedUrl { get; set; } = string.Empty;
     }
 }
