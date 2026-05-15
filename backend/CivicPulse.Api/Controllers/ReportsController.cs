@@ -61,6 +61,31 @@ public class ReportsController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(ReportDetailsDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ReportDetailsDto>> GetById(Guid id)
+    {
+        try
+        {
+            if (!TryGetCurrentUserId(out var currentUserId))
+                return Unauthorized(new ErrorResponseDto { Message = "Invalid user token." });
+
+            var result = await _reportsService.GetByIdAsync(currentUserId, id);
+            return Ok(result);
+        }
+        catch (StorageObjectNotFoundException ex)
+        {
+            return NotFound(new ErrorResponseDto { Message = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new ErrorResponseDto { Message = "Failed to generate image access URL." });
+        }
+    }
+
     private bool TryGetCurrentUserId(out Guid currentUserId)
     {
         currentUserId = Guid.Empty;

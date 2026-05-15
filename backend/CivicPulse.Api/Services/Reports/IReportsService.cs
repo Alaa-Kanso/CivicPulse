@@ -7,4 +7,5 @@ public interface IReportsService
     Task<IReadOnlyList<ReportTypeDto>> GetReportTypesAsync();
     Task<MyReportItemDto> CreateAsync(Guid currentUserId, CreateReportRequestDto request);
     Task<IReadOnlyList<MyReportItemDto>> GetMyReportsAsync(Guid currentUserId);
+    Task<ReportDetailsDto> GetByIdAsync(Guid currentUserId, Guid reportId);
 }

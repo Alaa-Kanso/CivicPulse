@@ -3,6 +3,7 @@ using CivicPulse.Api.Exceptions;
 using CivicPulse.Domain.Entities;
 using CivicPulse.Domain.Enums;
 using CivicPulse.Infrastructure.Data;
+using CivicPulse.Api.Services.Uploads;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 
@@ -11,10 +12,14 @@ namespace CivicPulse.Api.Services.Reports;
 public sealed class ReportsService : IReportsService
 {
     private readonly CivicPulseDbContext _db;
+    private readonly IUploadsService _uploadsService;
 
-    public ReportsService(CivicPulseDbContext db)
+    public ReportsService(
+        CivicPulseDbContext db,
+        IUploadsService uploadsService)
     {
         _db = db;
+        _uploadsService = uploadsService;
     }
 
     public async Task<IReadOnlyList<ReportTypeDto>> GetReportTypesAsync()
@@ -126,5 +131,37 @@ public sealed class ReportsService : IReportsService
                 Longitude = r.Location.X
             })
             .ToListAsync();
+    }
+
+    public async Task<ReportDetailsDto> GetByIdAsync(Guid currentUserId, Guid reportId)
+    {
+        var report = await _db.Reports
+            .AsNoTracking()
+            .Where(r => r.Id == reportId && r.CreatedByUserId == currentUserId)
+            .Include(r => r.ReportType)
+            .Include(r => r.Municipality)
+            .SingleOrDefaultAsync();
+
+        if (report is null)
+            throw new NotFoundException("Report was not found.");
+
+        var imageUrl = await _uploadsService.CreateSignedReadUrlAsync(report.ImageKey);
+
+        return new ReportDetailsDto
+        {
+            Id = report.Id,
+            ReportTypeId = report.ReportTypeId,
+            ReportTypeName = report.ReportType.Name,
+            MunicipalityId = report.MunicipalityId,
+            MunicipalityName = report.Municipality.Adm3Name,
+            ImageKey = report.ImageKey,
+            ImageUrl = imageUrl,
+            Description = report.Description ?? string.Empty,
+            AddressDetails = report.AddressDetails,
+            Status = report.Status.ToString(),
+            CreatedAtUtc = report.CreatedAtUtc,
+            Latitude = report.Location.Y,
+            Longitude = report.Location.X
+        };
     }
 }
