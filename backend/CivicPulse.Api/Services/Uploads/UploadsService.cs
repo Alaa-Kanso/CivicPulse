@@ -51,6 +51,9 @@ public sealed class UploadsService : IUploadsService
         if (user.Status == UserStatus.Banned)
             throw new ForbiddenException("Your account has been blocked.");
 
+        if (user.Status == UserStatus.Restricted)
+            throw new ForbiddenException("Your account is temporarily restricted from creating reports while under review.");
+
         if (!AllowedContentTypes.Contains(request.ContentType))
             throw new BadRequestException("Unsupported image type.");
 
