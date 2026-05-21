@@ -79,7 +79,7 @@ public class ReportsController : ControllerBase
         {
             return NotFound(new ErrorResponseDto { Message = ex.Message });
         }
-        catch (InvalidOperationException ex)
+        catch (InvalidOperationException)
         {
             return StatusCode(StatusCodes.Status500InternalServerError,
                 new ErrorResponseDto { Message = "Failed to generate image access URL." });

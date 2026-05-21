@@ -15,6 +15,7 @@ public class CivicPulseDbContext : DbContext
     public DbSet<EmailBan> EmailBans => Set<EmailBan>();
     public DbSet<AbuseReport> AbuseReports => Set<AbuseReport>();
     public DbSet<RefreshTokenSession> RefreshTokenSessions => Set<RefreshTokenSession>();
+    public DbSet<AbuseReportEvidence> AbuseReportEvidences => Set<AbuseReportEvidence>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -131,6 +132,40 @@ public class CivicPulseDbContext : DbContext
             .WithMany(u => u.RefreshTokenSessions)
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<AbuseReport>(e =>
+        {
+            e.HasOne(x => x.Report)
+            .WithMany()
+            .HasForeignKey(x => x.ReportId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            e.HasOne(x => x.ReportedUser)
+            .WithMany()
+            .HasForeignKey(x => x.ReportedUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            e.HasOne(x => x.ReportedByOperator)
+            .WithMany()
+            .HasForeignKey(x => x.ReportedByOperatorId)
+            .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<AbuseReportEvidence>(e =>
+        {
+            e.HasOne(x => x.AbuseReport)
+            .WithMany(x => x.EvidenceReports)
+            .HasForeignKey(x => x.AbuseReportId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+            e.HasOne(x => x.Report)
+            .WithMany()
+            .HasForeignKey(x => x.ReportId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            e.HasIndex(x => new { x.AbuseReportId, x.ReportId })
+            .IsUnique();
         });
     }
 }

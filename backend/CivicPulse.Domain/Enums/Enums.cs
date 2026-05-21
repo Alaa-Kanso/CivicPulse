@@ -25,13 +25,25 @@ public enum ReportStatus
 
 public enum AbuseReportStatus
 {
-    Pending = 0,     // waiting admin review
-    ActionTaken = 1, // admin banned user
-    Dismissed = 2    // admin decided it wasn't abuse
+    Pending = 0, // waiting admin review
+    UserBlocked = 1, // admin banned user
+    Dismissed = 2 // admin decided it wasn't abuse
+}
+
+public enum AbuseReportType
+{
+    ManualEscalation = 0,
+    TooManySpammedReports = 1
 }
 
 public enum AuthClientType
 {
     App = 0,
     Web = 1
+}
+
+public enum AdminRoutingReason
+{
+    UnsupportedMunicipality = 1,
+    NoActiveOperatorAssigned = 2
 }
