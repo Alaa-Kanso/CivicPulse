@@ -56,7 +56,6 @@ class MyReportsCubit extends Cubit<MyReportsState> {
         ),
       );
     } catch (e) {
-      print(e);
       emit(MyReportsError(error: e.toString()));
     }
   }
