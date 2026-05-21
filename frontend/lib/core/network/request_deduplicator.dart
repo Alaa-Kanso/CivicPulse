@@ -1,16 +1,24 @@
 class RequestDeduplicator {
-  final Map<String, Future> _pendingRequests = {};
+  final Map<String, Future<dynamic>> _pendingRequests = {};
 
   Future<T> run<T>(String key, Future<T> Function() request) {
-    if (_pendingRequests.containsKey(key)) {
-      return _pendingRequests[key] as Future<T>;
-    }
+    final existing = _pendingRequests[key];
 
-    final future = request().whenComplete(() {
-      _pendingRequests.remove(key);
-    });
+    if (existing != null) {
+      return existing as Future<T>;
+    }
+    final future = _wrap(request, key);
 
     _pendingRequests[key] = future;
+
     return future;
+  }
+
+  Future<T> _wrap<T>(Future<T> Function() request, String key) async {
+    try {
+      return await request();
+    } finally {
+      _pendingRequests.remove(key);
+    }
   }
 }

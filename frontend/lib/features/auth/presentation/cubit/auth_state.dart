@@ -11,6 +11,16 @@ class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
+class AuthFailure extends AuthState {
+  final String error;
+
+  AuthFailure({required this.error});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [error];
+}
+
 class AuthAuthenticatedGoHome extends AuthState {
   final User user;
 

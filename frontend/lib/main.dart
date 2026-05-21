@@ -11,7 +11,7 @@ Future<void> main() async {
   await initDependencies();
   runApp(
     BlocProvider(
-      create: (BuildContext context) => sl<AuthCubit>(),
+      create: (BuildContext context) => sl<AuthCubit>()..checkAuthenticated(),
       child: const MyApp(),
     ),
   );

@@ -38,9 +38,7 @@ class AppColors {
   static const Color buttonTextSecondary = primary;
   static const Color buttonTextDisabled = Colors.grey;
 
-
   // Icon Colors
   static const Color iconPrimary = primary;
   static const Color iconLight = Colors.white;
-
 }

@@ -15,7 +15,7 @@ class AuthLocalDataSource {
     return await storage.read(key: _refreshTokenKey);
   }
 
-  Future<void> clearTokens() async {
+  Future<void> clearRefreshToken() async {
     await storage.delete(key: _refreshTokenKey);
   }
 }
