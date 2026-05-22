@@ -91,7 +91,7 @@ class ErrorInterceptor extends Interceptor {
   // ===============================
   // 🧾 MODELSTATE PARSER
   // ===============================
-  String _parseModelState(Map errors) {
-    return errors.values.expand((e) => e is List ? e : [e]).join('\n');
+  String _parseModelState(Map<String, String> errors) {
+    return errors.values.join('\n');
   }
 }

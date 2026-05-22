@@ -19,5 +19,10 @@ Future<void> coreInit() async {
   final prefs = await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => SessionManager());
   sl.registerLazySingleton<SharedPreferences>(() => prefs);
-  sl.registerLazySingleton(() => const FlutterSecureStorage());
+  sl.registerLazySingleton(() => const FlutterSecureStorage(
+    webOptions: WebOptions(
+      dbName: "civicpulse",
+      publicKey: "civicpulsekey"
+    )
+  ));
 }

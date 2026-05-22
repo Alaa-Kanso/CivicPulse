@@ -6,6 +6,7 @@ import 'package:frontend/core/network/interceptors/error_interceptor.dart';
 import 'package:frontend/core/network/interceptors/refresh_interceptor.dart';
 import 'package:frontend/core/network/interceptors/trace_interceptor.dart';
 import 'package:frontend/core/network/request_deduplicator.dart';
+import 'package:frontend/device_info.dart';
 import 'package:frontend/features/auth/data/dataSources/auth_local_datasource.dart';
 import 'package:frontend/features/auth/data/dataSources/auth_remote_datasource.dart';
 import 'package:frontend/features/auth/data/repositories_impl/auth_repository_impl.dart';
@@ -26,7 +27,9 @@ Future<void> authInit() async {
   );
 
   final baseOptions = BaseOptions(
-    baseUrl: "http://192.168.0.199:5139/api",
+    baseUrl: (DeviceInfo.getDevicePlatform() == "Web")
+        ? "http://localhost:5139/api"
+        : "http://192.168.0.199:5139/api",
     connectTimeout: const Duration(seconds: 15),
     receiveTimeout: const Duration(seconds: 15),
     headers: {'Content-Type': 'application/json'},
@@ -39,10 +42,7 @@ Future<void> authInit() async {
   );
 
   sl.registerLazySingleton<RefreshInterceptor>(
-        () => RefreshInterceptor(
-      authLocalDataSource: sl(),
-      sessionManager: sl(),
-    ),
+    () => RefreshInterceptor(authLocalDataSource: sl(), sessionManager: sl()),
   );
 
   sl.registerLazySingleton<ErrorInterceptor>(() => ErrorInterceptor());
