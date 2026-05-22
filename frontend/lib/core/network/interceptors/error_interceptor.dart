@@ -30,7 +30,7 @@ class ErrorInterceptor extends Interceptor {
       // 🔐 Unauthorized
       if (statusCode == 401) {
         return ApiException(
-          message: "Unauthorized",
+          message: data['message'] ?? "Unauthorized",
           type: ApiErrorType.unauthorized,
           statusCode: 401,
         );

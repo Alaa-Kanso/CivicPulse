@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:frontend/core/di/injection_container.dart';
 import 'package:frontend/core/session/session_manager.dart';
+import 'package:frontend/device_info.dart';
 import 'package:frontend/features/auth/data/dataSources/auth_local_datasource.dart';
 import 'package:frontend/features/auth/data/utils/token_decoder.dart';
 
@@ -27,6 +28,12 @@ class RefreshInterceptor extends Interceptor {
   ) async {
     final statusCode = err.response?.statusCode;
     final options = err.requestOptions;
+
+    // ✅ Skip refresh for unauthenticated endpoints (login, signup, refresh)
+    final noAuth = options.extra['noAuth'] == true;
+    if (noAuth) {
+      return handler.next(err);
+    }
 
     // ❌ refresh endpoint failed → logout
     if (options.path.contains('/auth/refresh')) {
@@ -118,7 +125,10 @@ class RefreshInterceptor extends Interceptor {
 
     final response = await _dio.post(
       '/auth/refresh',
-      data: {'refreshToken': refreshToken},
+      data: {
+        'refreshToken': refreshToken,
+        'clientType': DeviceInfo.getDevicePlatform(),
+      },
       options: Options(extra: {'noAuth': true}),
     );
 
