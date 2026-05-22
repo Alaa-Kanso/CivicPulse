@@ -25,7 +25,11 @@ class _MobileOnboardingPageState extends State<MobileOnboardingPage> {
     return BlocListener<OnboardingCubit,OnboardingState>(
       listener: (BuildContext context, OnboardingState state) {
         if(state is OnboardingSuccess){
-          context.read<AuthCubit>().checkAuthenticated();
+          //user already registered so no need for check authenticated
+          final user = context.read<AuthCubit>().sessionManager.user;
+          if (user != null) {
+            context.read<AuthCubit>().setAuthenticated(user);
+          }
         }
       },
       child: Scaffold(

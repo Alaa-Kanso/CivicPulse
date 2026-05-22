@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/features/operator/presentation/cubit/create_operator_cubit.dart';
+import 'package:frontend/features/reports/presentation/screens/Admin/components/admin_home_page_components.dart';
+import 'package:frontend/features/operator/presentation/screens/admin/pages/admin_create_operator_page.dart';
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({super.key});
@@ -10,53 +14,48 @@ class AdminHomePage extends StatefulWidget {
 class _AdminHomePageState extends State<AdminHomePage> {
   int selectedIndex = 0;
 
+  final List<Widget> pages = [
+    BlocProvider(
+      create: (BuildContext context) => CreateOperatorCubit(),
+      child: const AdminCreateOperatorPage(),
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
+    double size = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsetsGeometry.all(10.0),
-        child: Row(
-          children: [
-            Container(
-              width: 250,
-              color: Colors.grey.shade900,
-              child: Column(
-                children: [
-                  const SizedBox(height: 40),
-                  _navItem(
-                    title: "Operators",
-                    index: 0,
-                    icon: Icons.person_outline,
-                  ),
-                ],
+      appBar: (size < 700) ? AppBar() : null,
+      drawer: (size < 700)
+          ? Drawer(
+              child: AdminSideBar(
+                selectedIndex: selectedIndex,
+                onItemSelected: (int index) {
+                  setState(() {
+                    selectedIndex = index;
+                  });
+                  Navigator.pop(context);
+                },
               ),
-            ),
-            Expanded(child: Column()),
-          ],
-        ),
+            )
+          : null,
+      body: Row(
+        children: [
+          (size >= 700)
+              ? AdminSideBar(
+                  selectedIndex: selectedIndex,
+                  onItemSelected: (int index) {
+                    setState(() {
+                      selectedIndex = index;
+                    });
+                  },
+                )
+              : const SizedBox(),
+          Expanded(
+            child: IndexedStack(index: selectedIndex, children: pages),
+          ),
+        ],
       ),
-    );
-  }
-
-  Widget _navItem({
-    required String title,
-    required int index,
-    required IconData icon,
-  }) {
-    final isSelected = selectedIndex == index;
-
-    return ListTile(
-      leading: Icon(icon, color: isSelected ? Colors.blue : Colors.white),
-      title: Text(
-        title,
-        style: TextStyle(color: isSelected ? Colors.blue : Colors.white),
-      ),
-      selected: isSelected,
-      onTap: () {
-        setState(() {
-          selectedIndex = index;
-        });
-      },
     );
   }
 }
