@@ -21,6 +21,7 @@ class AuthRemoteDatasource {
         "clientType": DeviceInfo.getDevicePlatform(),
       },
       deduplicate: true,
+      options: Options(extra: {'noAuth': true}),
     );
     return AuthResponseModel.fromJson(response);
   }
@@ -37,6 +38,7 @@ class AuthRemoteDatasource {
         "clientType": DeviceInfo.getDevicePlatform(),
       },
       deduplicate: true,
+      options: Options(extra: {'noAuth': true}),
     );
 
     return AuthResponseModel.fromJson(response);
@@ -48,7 +50,7 @@ class AuthRemoteDatasource {
   }) async {
     final Map<String, dynamic> response = await api.post<Map<String, dynamic>>(
       "/auth/refresh",
-      data: {"refreshToken": refreshToken, "authClientType": deviceType},
+      data: {"refreshToken": refreshToken, "clientType": deviceType},
       deduplicate: true,
       options: Options(extra: {"noAuth": true}),
     );
