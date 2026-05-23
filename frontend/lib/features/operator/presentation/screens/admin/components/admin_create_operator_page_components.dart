@@ -4,17 +4,17 @@ import 'package:frontend/Component/components.dart';
 import 'package:frontend/config/settings/app_colors.dart';
 import 'package:frontend/features/operator/presentation/cubit/create_operator_cubit.dart';
 import 'package:frontend/features/operator/presentation/cubit/create_operator_state.dart';
+import 'package:frontend/features/operator/presentation/cubit/get_municipalities_cubit.dart';
+import 'package:frontend/features/operator/presentation/cubit/get_municipalities_state.dart';
 
 class MunicipalityAutocomplete extends StatefulWidget {
   const MunicipalityAutocomplete({
     super.key,
-    required this.municipalities,
     required this.onSelect,
     required this.enabled,
   });
 
   final Function(String municipality) onSelect;
-  final List<String> municipalities;
   final bool enabled;
 
   @override
@@ -23,82 +23,95 @@ class MunicipalityAutocomplete extends StatefulWidget {
 }
 
 class _MunicipalityAutocompleteState extends State<MunicipalityAutocomplete> {
-  final TextEditingController controller = TextEditingController();
-  String selectedMunicipality = "";
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return IgnorePointer(
-      ignoring: !widget.enabled,
-      child: Autocomplete<String>(
-        optionsBuilder: (TextEditingValue textEditingValue) {
-          // Show all when empty
-          if (textEditingValue.text.isEmpty) {
-            return widget.municipalities;
-          }
+    return BlocBuilder<GetMunicipalitiesCubit, GetMunicipalitiesState>(
+      builder: (BuildContext context, GetMunicipalitiesState state) {
+        List<String> municipalities = [];
+        if (state is GetMunicipalitiesSuccess) {}
+        return IgnorePointer(
+          ignoring: !widget.enabled,
+          child: Autocomplete<String>(
+            optionsBuilder: (TextEditingValue textEditingValue) {
+              // Show all when empty
+              if (textEditingValue.text.isEmpty) {
+                return municipalities;
+              }
 
-          return widget.municipalities.where(
-            (municipality) => municipality.toLowerCase().contains(
-              textEditingValue.text.toLowerCase(),
-            ),
-          );
-        },
-
-        onSelected: widget.onSelect,
-
-        fieldViewBuilder:
-            (context, textEditingController, focusNode, onFieldSubmitted) {
-              return TextFormField(
-                controller: textEditingController,
-                focusNode: focusNode,
-
-                decoration: InputDecoration(
-                  hintText: "Choose municipality",
-
-                  prefixIcon: const Icon(Icons.location_city),
-
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+              return municipalities.where(
+                (municipality) => municipality.toLowerCase().contains(
+                  textEditingValue.text.toLowerCase(),
                 ),
               );
             },
 
-        optionsViewBuilder: (context, onSelected, options) {
-          return Align(
-            alignment: Alignment.topLeft,
-            child: Material(
-              elevation: 4,
-              borderRadius: BorderRadius.circular(12),
-              child: Container(
-                width: 300,
-                constraints: const BoxConstraints(maxHeight: 300),
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  itemCount: options.length,
-                  itemBuilder: (context, index) {
-                    final option = options.elementAt(index);
+            onSelected: widget.onSelect,
 
-                    return ListTile(
-                      title: Text(option),
-                      onTap: () {
-                        onSelected(option);
+            fieldViewBuilder:
+                (context, textEditingController, focusNode, onFieldSubmitted) {
+                  return TextFormField(
+                    controller: textEditingController,
+                    focusNode: focusNode,
+
+                    decoration: InputDecoration(
+                      hintText: "Choose municipality",
+
+                      prefixIcon: const Icon(Icons.location_city),
+                      suffixIcon: state is GetMunicipalitiesLoading
+                          ? const Padding(
+                              padding: EdgeInsets.all(12),
+                              child: SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                            )
+                          : state is GetMunicipalitiesFailure
+                          ? Tooltip(
+                              message: state.error,
+                              child: const Icon(Icons.error_outline),
+                            )
+                          : null,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  );
+                },
+
+            optionsViewBuilder: (context, onSelected, options) {
+              return Align(
+                alignment: Alignment.topLeft,
+                child: Material(
+                  elevation: 4,
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    width: 300,
+                    constraints: const BoxConstraints(maxHeight: 300),
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      itemCount: options.length,
+                      itemBuilder: (context, index) {
+                        final option = options.elementAt(index);
+
+                        return ListTile(
+                          title: Text(option),
+                          onTap: () {
+                            onSelected(option);
+                          },
+                        );
                       },
-                    );
-                  },
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          );
-        },
-      ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
@@ -108,12 +121,10 @@ class CreateOperatorForm extends StatefulWidget {
     super.key,
     required this.emailController,
     required this.passwordController,
-    required this.municipalities,
   });
 
   final TextEditingController emailController;
   final TextEditingController passwordController;
-  final List<String> municipalities;
 
   @override
   State<CreateOperatorForm> createState() => _CreateOperatorFormState();
@@ -158,7 +169,6 @@ class _CreateOperatorFormState extends State<CreateOperatorForm> {
               ),
               const SizedBox(height: 5.0),
               MunicipalityAutocomplete(
-                municipalities: widget.municipalities,
                 onSelect: (String municipality) {
                   selectedMunicipality = municipality;
                 },

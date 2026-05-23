@@ -18,7 +18,6 @@ class _AdminCreateOperatorPageState extends State<AdminCreateOperatorPage> {
   final TextEditingController emailController = TextEditingController();
 
   final TextEditingController passwordController = TextEditingController();
-  final List<String> municipalities = ["mun1", "mun2", "mun3", "mun4"];
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +67,6 @@ class _AdminCreateOperatorPageState extends State<AdminCreateOperatorPage> {
                         CreateOperatorForm(
                           emailController: emailController,
                           passwordController: passwordController,
-                          municipalities: municipalities,
                         ),
                       ],
                     ),

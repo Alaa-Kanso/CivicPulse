@@ -5,6 +5,22 @@ class OperatorRepositoryImpl extends OperatorRepository {
   final OperatorRemoteDataSource operatorRemoteDataSource;
 
   OperatorRepositoryImpl({required this.operatorRemoteDataSource});
+
   @override
-  Future<void> createOperator() async {}
+  Future<void> createOperator({
+    required String email,
+    required String password,
+    required int municipalityId,
+  }) async {
+    await operatorRemoteDataSource.createOperator(
+      email: email,
+      password: password,
+      municipalityId: municipalityId,
+    );
+  }
+
+  @override
+  Future<void> getMunicipalities() async {
+    await operatorRemoteDataSource.getMunicipalities();
+  }
 }

@@ -34,7 +34,13 @@ Future<void> reportInit() async {
   sl.registerLazySingleton(() => CreateReportUseCase(repository: sl()));
 
   //cubit
-  sl.registerFactory(() => MyReportsCubit(getMyReportsUseCase: sl(), geocodingLocationUseCase: sl(), getCategoryTypesUseCase: sl()));
+  sl.registerFactory(
+    () => MyReportsCubit(
+      getMyReportsUseCase: sl(),
+      geocodingLocationUseCase: sl(),
+      getCategoryTypesUseCase: sl(),
+    ),
+  );
   sl.registerFactory(
     () => CreateReportCubit(
       getCategoryTypesUseCase: sl(),

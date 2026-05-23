@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/Component/components.dart';
 import 'package:frontend/config/settings/app_colors.dart';
+import 'package:frontend/features/auth/presentation/cubit/auth_cubit.dart';
 
 class AdminSideBar extends StatelessWidget {
   const AdminSideBar({
@@ -67,6 +69,20 @@ class AdminSideBar extends StatelessWidget {
             title: "Create Operator",
             index: 0,
             icon: Icons.person_outline,
+          ),
+          const SizedBox(height: 10.0),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: ActionButton(
+              text: "Logout",
+              textColor: Colors.white,
+              textSize: 18.0,
+              buttonColor: Colors.red,
+              onPressed: () {
+                context.read<AuthCubit>().logout();
+              },
+              borderColor: Colors.transparent,
+            ),
           ),
         ],
       ),

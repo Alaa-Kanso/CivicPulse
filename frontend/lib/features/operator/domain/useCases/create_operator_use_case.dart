@@ -4,7 +4,16 @@ class CreateOperatorUseCase {
   final OperatorRepository operatorRepository;
 
   CreateOperatorUseCase({required this.operatorRepository});
-  Future<void> call()async{
-    await operatorRepository.createOperator();
+
+  Future<void> call({
+    required String email,
+    required String password,
+    required int municipalityId,
+  }) async {
+    await operatorRepository.createOperator(
+      email: email,
+      password: password,
+      municipalityId: municipalityId,
+    );
   }
 }
