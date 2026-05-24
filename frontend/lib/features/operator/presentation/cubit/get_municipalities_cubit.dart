@@ -10,10 +10,10 @@ class GetMunicipalitiesCubit extends Cubit<GetMunicipalitiesState> {
   Future<void> getMunicipalities() async {
     emit(GetMunicipalitiesLoading());
     try {
-      await getMunicipalitiesUseCase();
-      emit(GetMunicipalitiesSuccess());
+      final municipalities = await getMunicipalitiesUseCase();
+      emit(GetMunicipalitiesSuccess(municipalities: municipalities));
     } catch (e) {
-      emit(GetMunicipalitiesFailure(error:e.toString()));
+      emit(GetMunicipalitiesFailure(error: e.toString()));
     }
   }
 }

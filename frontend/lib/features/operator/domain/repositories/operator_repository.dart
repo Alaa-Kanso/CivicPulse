@@ -1,3 +1,5 @@
+import 'package:frontend/features/operator/domain/entities/municipality.dart';
+
 abstract class OperatorRepository {
   Future<void> createOperator({
     required String email,
@@ -5,5 +7,5 @@ abstract class OperatorRepository {
     required int municipalityId,
   });
 
-  Future<void> getMunicipalities();
+  Future<List<Municipality>> getMunicipalities();
 }

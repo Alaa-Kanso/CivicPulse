@@ -1,3 +1,4 @@
+import 'package:frontend/features/operator/domain/entities/municipality.dart';
 import 'package:frontend/features/operator/domain/repositories/operator_repository.dart';
 
 class GetMunicipalitiesUseCase {
@@ -5,7 +6,7 @@ class GetMunicipalitiesUseCase {
 
   GetMunicipalitiesUseCase({required this.operatorRepository});
 
-  Future<void> call()async{
-    operatorRepository.getMunicipalities();
+  Future<List<Municipality>> call() async {
+    return await operatorRepository.getMunicipalities();
   }
 }

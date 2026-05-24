@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/Component/components.dart';
 import 'package:frontend/config/settings/app_colors.dart';
+import 'package:frontend/features/operator/domain/entities/municipality.dart';
 import 'package:frontend/features/operator/presentation/cubit/create_operator_cubit.dart';
 import 'package:frontend/features/operator/presentation/cubit/create_operator_state.dart';
 import 'package:frontend/features/operator/presentation/cubit/get_municipalities_cubit.dart';
@@ -14,7 +15,7 @@ class MunicipalityAutocomplete extends StatefulWidget {
     required this.enabled,
   });
 
-  final Function(String municipality) onSelect;
+  final Function(Municipality municipality) onSelect;
   final bool enabled;
 
   @override
@@ -27,11 +28,13 @@ class _MunicipalityAutocompleteState extends State<MunicipalityAutocomplete> {
   Widget build(BuildContext context) {
     return BlocBuilder<GetMunicipalitiesCubit, GetMunicipalitiesState>(
       builder: (BuildContext context, GetMunicipalitiesState state) {
-        List<String> municipalities = [];
-        if (state is GetMunicipalitiesSuccess) {}
+        List<Municipality> municipalities = [];
+        if (state is GetMunicipalitiesSuccess) {
+          municipalities = state.municipalities;
+        }
         return IgnorePointer(
           ignoring: !widget.enabled,
-          child: Autocomplete<String>(
+          child: Autocomplete<Municipality>(
             optionsBuilder: (TextEditingValue textEditingValue) {
               // Show all when empty
               if (textEditingValue.text.isEmpty) {
@@ -39,7 +42,7 @@ class _MunicipalityAutocompleteState extends State<MunicipalityAutocomplete> {
               }
 
               return municipalities.where(
-                (municipality) => municipality.toLowerCase().contains(
+                (municipality) => municipality.name.toLowerCase().contains(
                   textEditingValue.text.toLowerCase(),
                 ),
               );
@@ -98,7 +101,7 @@ class _MunicipalityAutocompleteState extends State<MunicipalityAutocomplete> {
                         final option = options.elementAt(index);
 
                         return ListTile(
-                          title: Text(option),
+                          title: Text(option.name),
                           onTap: () {
                             onSelected(option);
                           },
@@ -131,7 +134,7 @@ class CreateOperatorForm extends StatefulWidget {
 }
 
 class _CreateOperatorFormState extends State<CreateOperatorForm> {
-  String selectedMunicipality = "";
+  Municipality? selectedMunicipality;
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +172,7 @@ class _CreateOperatorFormState extends State<CreateOperatorForm> {
               ),
               const SizedBox(height: 5.0),
               MunicipalityAutocomplete(
-                onSelect: (String municipality) {
+                onSelect: (Municipality municipality) {
                   selectedMunicipality = municipality;
                 },
                 enabled: (state is CreateOperatorLoading) ? false : true,
@@ -190,7 +193,7 @@ class _CreateOperatorFormState extends State<CreateOperatorForm> {
                     context.read<CreateOperatorCubit>().createOperator(
                       email: widget.emailController.text.trim(),
                       password: widget.passwordController.text.trim(),
-                      municipality: selectedMunicipality,
+                      municipalityId: selectedMunicipality!.id,
                     );
                   },
                   borderColor: Colors.transparent,

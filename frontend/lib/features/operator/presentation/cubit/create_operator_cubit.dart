@@ -11,10 +11,10 @@ class CreateOperatorCubit extends Cubit<CreateOperatorState> {
   Future<void> createOperator({
     required String email,
     required String password,
-    required String municipality,
+    required int? municipalityId,
   }) async {
     emit(CreateOperatorLoading());
-    if (email.isEmpty || password.isEmpty || municipality.isEmpty) {
+    if (email.isEmpty || password.isEmpty || municipalityId == null) {
       emit(CreateOperatorFailure(error: "All fields are required"));
       return;
     }
@@ -34,7 +34,7 @@ class CreateOperatorCubit extends Cubit<CreateOperatorState> {
       await createOperatorUseCase(
         email: email,
         password: password,
-        municipalityId: 10,
+        municipalityId: municipalityId,
       );
       emit(CreateOperatorSuccess());
     } catch (e) {
