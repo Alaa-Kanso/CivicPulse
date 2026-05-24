@@ -3,6 +3,7 @@ using CivicPulse.Api.Exceptions;
 using CivicPulse.Domain.Entities;
 using CivicPulse.Domain.Enums;
 using CivicPulse.Infrastructure.Data;
+using CivicPulse.Api.Services.ReportGrouping;
 using Microsoft.EntityFrameworkCore;
 
 namespace CivicPulse.Api.Services.AdminRouting;
@@ -10,10 +11,14 @@ namespace CivicPulse.Api.Services.AdminRouting;
 public sealed class AdminRoutingService : IAdminRoutingService
 {
     private readonly CivicPulseDbContext _db;
+    private readonly IReportGroupingService _reportGroupingService;
 
-    public AdminRoutingService(CivicPulseDbContext db)
+    public AdminRoutingService(
+        CivicPulseDbContext db,
+        IReportGroupingService reportGroupingService)
     {
         _db = db;
+        _reportGroupingService = reportGroupingService;
     }
 
     public async Task<IReadOnlyList<AdminRoutedReportListItemDto>> GetRoutedReportsAsync(Guid currentUserId)
@@ -73,6 +78,8 @@ public sealed class AdminRoutingService : IAdminRoutingService
         report.AdminRoutingReason = null;
         report.OriginalMunicipalityName = municipality.Adm3Name;
         report.UpdatedAtUtc = DateTime.UtcNow;
+
+        await _reportGroupingService.AssignGroupAsync(report);
 
         await _db.SaveChangesAsync();
     }

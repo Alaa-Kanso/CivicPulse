@@ -31,4 +31,7 @@ public sealed class OperatorReportDetailsDto
     public bool ReportedUserIsRestricted { get; set; }
     public bool HasPendingManualEscalation { get; set; }
     public bool HasPendingTooManySpamCase { get; set; }
+
+    public Guid? ReportGroupId { get; set; }
+    public int GroupedReportsCount { get; set; }
 }

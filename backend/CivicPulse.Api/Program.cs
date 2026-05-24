@@ -7,6 +7,7 @@ using CivicPulse.Api.Services.OperatorReports;
 using CivicPulse.Api.Services.AdminModeration;
 using CivicPulse.Api.Services.AdminOperators;
 using CivicPulse.Api.Services.AdminRouting;
+using CivicPulse.Api.Services.ReportGrouping;
 using CivicPulse.Api.Settings;
 using CivicPulse.Api.Startup;
 using System.Text;
@@ -85,6 +86,7 @@ builder.Services.AddScoped<IOperatorReportsService, OperatorReportsService>();
 builder.Services.AddScoped<IAdminModerationService, AdminModerationService>();
 builder.Services.AddScoped<IAdminOperatorsService, AdminOperatorsService>();
 builder.Services.AddScoped<IAdminRoutingService, AdminRoutingService>();
+builder.Services.AddScoped<IReportGroupingService, ReportGroupingService>();
 builder.Services.AddHttpClient();
 
 builder.Services.Configure<AdminSeedOptions>(

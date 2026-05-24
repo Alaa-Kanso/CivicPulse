@@ -36,4 +36,5 @@ public class Municipality
     // Navigation
     public ICollection<User> Operators { get; set; } = new List<User>();
     public ICollection<Report> Reports { get; set; } = new List<Report>();
+    public ICollection<ReportGroup> ReportGroups { get; set; } = new List<ReportGroup>();
 }

@@ -50,18 +50,19 @@ public class CivicPulseDbContext : DbContext
         // REPORT GROUPS
         modelBuilder.Entity<ReportGroup>(e =>
         {
-            e.Property(x => x.Center).HasColumnType("geometry(Point,4326)");
-            e.HasIndex(x => x.Center).HasMethod("GIST");
+            e.Property(x => x.CenterLocation).HasColumnType("geometry(Point,4326)");
+            e.HasIndex(x => x.CenterLocation).HasMethod("GIST");
+            e.HasIndex(x => new { x.MunicipalityId, x.ReportTypeId });
 
             e.HasOne(x => x.Municipality)
-             .WithMany()
-             .HasForeignKey(x => x.MunicipalityId)
-             .OnDelete(DeleteBehavior.Restrict);
+                .WithMany(m => m.ReportGroups)
+                .HasForeignKey(x => x.MunicipalityId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             e.HasOne(x => x.ReportType)
-             .WithMany()
-             .HasForeignKey(x => x.ReportTypeId)
-             .OnDelete(DeleteBehavior.Restrict);
+                .WithMany(rt => rt.ReportGroups)
+                .HasForeignKey(x => x.ReportTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         // REPORTS
@@ -107,51 +108,22 @@ public class CivicPulseDbContext : DbContext
         modelBuilder.Entity<AbuseReport>(e =>
         {
             e.HasOne(x => x.Report)
-             .WithMany()
-             .HasForeignKey(x => x.ReportId)
-             .OnDelete(DeleteBehavior.Cascade);
+                .WithMany()
+                .HasForeignKey(x => x.ReportId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             e.HasOne(x => x.ReportedUser)
-             .WithMany()
-             .HasForeignKey(x => x.ReportedUserId)
-             .OnDelete(DeleteBehavior.Restrict);
+                .WithMany()
+                .HasForeignKey(x => x.ReportedUserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             e.HasOne(x => x.ReportedByOperator)
-             .WithMany()
-             .HasForeignKey(x => x.ReportedByOperatorId)
-             .OnDelete(DeleteBehavior.Restrict);
+                .WithMany()
+                .HasForeignKey(x => x.ReportedByOperatorId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
-        // REFRESH TOKENS
-        modelBuilder.Entity<RefreshTokenSession>(e =>
-        {
-            e.HasIndex(x => x.RefreshTokenHash).IsUnique();
-            e.HasIndex(x => new { x.UserId, x.ClientType });
-
-            e.HasOne(x => x.User)
-            .WithMany(u => u.RefreshTokenSessions)
-            .HasForeignKey(x => x.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
-        });
-
-        modelBuilder.Entity<AbuseReport>(e =>
-        {
-            e.HasOne(x => x.Report)
-            .WithMany()
-            .HasForeignKey(x => x.ReportId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-            e.HasOne(x => x.ReportedUser)
-            .WithMany()
-            .HasForeignKey(x => x.ReportedUserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-            e.HasOne(x => x.ReportedByOperator)
-            .WithMany()
-            .HasForeignKey(x => x.ReportedByOperatorId)
-            .OnDelete(DeleteBehavior.Restrict);
-        });
-
+         // ABUSE REPORT EVIDENCE
         modelBuilder.Entity<AbuseReportEvidence>(e =>
         {
             e.HasOne(x => x.AbuseReport)
@@ -166,6 +138,18 @@ public class CivicPulseDbContext : DbContext
 
             e.HasIndex(x => new { x.AbuseReportId, x.ReportId })
             .IsUnique();
+        });
+
+        // REFRESH TOKENS
+        modelBuilder.Entity<RefreshTokenSession>(e =>
+        {
+            e.HasIndex(x => x.RefreshTokenHash).IsUnique();
+            e.HasIndex(x => new { x.UserId, x.ClientType });
+
+            e.HasOne(x => x.User)
+            .WithMany(u => u.RefreshTokenSessions)
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

@@ -11,4 +11,5 @@ public interface IOperatorReportsService
     Task UpdateStatusAsync(Guid currentUserId, Guid reportId, UpdateReportStatusRequestDto request);
     Task MarkReportAsSpamAsync(Guid currentUserId, Guid reportId, MarkReportAsSpamRequestDto request);
     Task EscalateReportAsync(Guid currentUserId, Guid reportId, CreateEscalationRequestDto request);
+    Task<IReadOnlyList<GroupedReportItemDto>> GetGroupedReportsAsync(Guid currentUserId, Guid reportGroupId);
 }
