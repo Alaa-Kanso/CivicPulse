@@ -57,6 +57,9 @@ namespace CivicPulse.Infrastructure.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ReportId");
@@ -66,6 +69,31 @@ namespace CivicPulse.Infrastructure.Migrations
                     b.HasIndex("ReportedUserId");
 
                     b.ToTable("AbuseReports");
+                });
+
+            modelBuilder.Entity("CivicPulse.Domain.Entities.AbuseReportEvidence", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AbuseReportId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("AddedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ReportId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReportId");
+
+                    b.HasIndex("AbuseReportId", "ReportId")
+                        .IsUnique();
+
+                    b.ToTable("AbuseReportEvidences");
                 });
 
             modelBuilder.Entity("CivicPulse.Domain.Entities.EmailBan", b =>
@@ -207,6 +235,9 @@ namespace CivicPulse.Infrastructure.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("character varying(300)");
 
+                    b.Property<int?>("AdminRoutingReason")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("timestamp with time zone");
 
@@ -222,18 +253,38 @@ namespace CivicPulse.Infrastructure.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
+                    b.Property<bool>("IsSpam")
+                        .HasColumnType("boolean");
+
                     b.Property<Point>("Location")
                         .IsRequired()
                         .HasColumnType("geometry(Point,4326)");
 
-                    b.Property<long>("MunicipalityId")
+                    b.Property<long?>("MunicipalityId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("OriginalMunicipalityName")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.Property<Guid?>("ReportGroupId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("ReportTypeId")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("RequiresAdminRouting")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("SpamMarkedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("SpamMarkedByOperatorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("SpamReason")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -381,7 +432,7 @@ namespace CivicPulse.Infrastructure.Migrations
                     b.HasOne("CivicPulse.Domain.Entities.Report", "Report")
                         .WithMany()
                         .HasForeignKey("ReportId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("CivicPulse.Domain.Entities.User", "ReportedByOperator")
@@ -401,6 +452,25 @@ namespace CivicPulse.Infrastructure.Migrations
                     b.Navigation("ReportedByOperator");
 
                     b.Navigation("ReportedUser");
+                });
+
+            modelBuilder.Entity("CivicPulse.Domain.Entities.AbuseReportEvidence", b =>
+                {
+                    b.HasOne("CivicPulse.Domain.Entities.AbuseReport", "AbuseReport")
+                        .WithMany("EvidenceReports")
+                        .HasForeignKey("AbuseReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CivicPulse.Domain.Entities.Report", "Report")
+                        .WithMany()
+                        .HasForeignKey("ReportId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AbuseReport");
+
+                    b.Navigation("Report");
                 });
 
             modelBuilder.Entity("CivicPulse.Domain.Entities.EmailBan", b =>
@@ -436,8 +506,7 @@ namespace CivicPulse.Infrastructure.Migrations
                     b.HasOne("CivicPulse.Domain.Entities.Municipality", "Municipality")
                         .WithMany("Reports")
                         .HasForeignKey("MunicipalityId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("CivicPulse.Domain.Entities.ReportGroup", "ReportGroup")
                         .WithMany("Reports")
@@ -486,6 +555,11 @@ namespace CivicPulse.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("AssignedMunicipality");
+                });
+
+            modelBuilder.Entity("CivicPulse.Domain.Entities.AbuseReport", b =>
+                {
+                    b.Navigation("EvidenceReports");
                 });
 
             modelBuilder.Entity("CivicPulse.Domain.Entities.Municipality", b =>

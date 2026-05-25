@@ -3,6 +3,10 @@ using CivicPulse.Infrastructure.Data;
 using CivicPulse.Api.Services.Security;
 using CivicPulse.Api.Services.Reports;
 using CivicPulse.Api.Services.Uploads;
+using CivicPulse.Api.Services.OperatorReports;
+using CivicPulse.Api.Services.AdminModeration;
+using CivicPulse.Api.Services.AdminOperators;
+using CivicPulse.Api.Services.AdminRouting;
 using CivicPulse.Api.Settings;
 using CivicPulse.Api.Startup;
 using System.Text;
@@ -77,6 +81,10 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IReportsService, ReportsService>();
 builder.Services.AddScoped<IUploadsService, UploadsService>();
+builder.Services.AddScoped<IOperatorReportsService, OperatorReportsService>();
+builder.Services.AddScoped<IAdminModerationService, AdminModerationService>();
+builder.Services.AddScoped<IAdminOperatorsService, AdminOperatorsService>();
+builder.Services.AddScoped<IAdminRoutingService, AdminRoutingService>();
 builder.Services.AddHttpClient();
 
 builder.Services.Configure<AdminSeedOptions>(
@@ -109,6 +117,9 @@ builder.Services
 builder.Services.Configure<StorageSettings>(
     builder.Configuration.GetSection("Storage"));
 
+builder.Services.Configure<DevOperatorSeedSettings>(
+    builder.Configuration.GetSection("DevOperatorSeed"));
+
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
@@ -120,6 +131,7 @@ await ReportTypesSeeder.SeedAsync(app.Services);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    await DevOperatorsSeeder.SeedAsync(app.Services);
     app.UseSwagger();
     app.UseSwaggerUI();
 }

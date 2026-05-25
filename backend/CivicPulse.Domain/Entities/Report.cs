@@ -16,16 +16,15 @@ public class Report
     public int ReportTypeId { get; set; }
     public ReportType ReportType { get; set; } = default!;
 
-    // Location pin
     [Required]
     public Point Location { get; set; } = default!;
 
     [Required, MaxLength(1000)]
     public string ImageKey { get; set; } = default!;
 
-    [Required]
-    public long MunicipalityId { get; set; }
-    public Municipality Municipality { get; set; } = default!;
+    // Nullable because admin-routed reports may not yet have a supported municipality assigned
+    public long? MunicipalityId { get; set; }
+    public Municipality? Municipality { get; set; }
 
     [MaxLength(300)]
     public string? AddressDetails { get; set; }
@@ -35,7 +34,20 @@ public class Report
 
     public ReportStatus Status { get; set; } = ReportStatus.Submitted;
 
-    // Aggregation (50m)
+    public bool IsSpam { get; set; } = false;
+
+    [MaxLength(500)]
+    public string? SpamReason { get; set; }
+    public DateTime? SpamMarkedAtUtc { get; set; }
+    public Guid? SpamMarkedByOperatorId { get; set; }
+
+    // Admin routing queue
+    public bool RequiresAdminRouting { get; set; } = false;
+    public AdminRoutingReason? AdminRoutingReason { get; set; }
+
+    [MaxLength(200)]
+    public string? OriginalMunicipalityName { get; set; }
+
     public Guid? ReportGroupId { get; set; }
     public ReportGroup? ReportGroup { get; set; }
 
