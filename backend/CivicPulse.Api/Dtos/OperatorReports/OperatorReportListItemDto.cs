@@ -10,6 +10,9 @@ public sealed class OperatorReportListItemDto
     public long MunicipalityId { get; set; }
     public string MunicipalityName { get; set; } = string.Empty;
 
+    public string ImageKey { get; set; } = string.Empty;
+    public string? ImageUrl { get; set; }
+
     public string Status { get; set; } = string.Empty;
     public DateTime CreatedAtUtc { get; set; }
 
@@ -22,4 +25,7 @@ public sealed class OperatorReportListItemDto
     public bool ReportedUserIsRestricted { get; set; }
     public bool HasPendingManualEscalation { get; set; }
     public bool HasPendingTooManySpamCase { get; set; }
+
+    public Guid? ReportGroupId { get; set; }
+    public int GroupedReportsCount { get; set; }
 }

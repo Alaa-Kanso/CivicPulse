@@ -185,6 +185,35 @@ public class OperatorReportsController : ControllerBase
         }
     }
 
+    [HttpGet("groups/{groupId:guid}")]
+    [ProducesResponseType(typeof(IReadOnlyList<GroupedReportItemDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<IReadOnlyList<GroupedReportItemDto>>> GetGroupedReports(Guid groupId)
+    {
+        try
+        {
+            if (!TryGetCurrentUserId(out var currentUserId))
+                return Unauthorized(new ErrorResponseDto { Message = "Invalid user token." });
+
+            var result = await _operatorReportsService.GetGroupedReportsAsync(currentUserId, groupId);
+            return Ok(result);
+        }
+        catch (UnauthorizedException ex)
+        {
+            return Unauthorized(new ErrorResponseDto { Message = ex.Message });
+        }
+        catch (ForbiddenException ex)
+        {
+            return StatusCode(StatusCodes.Status403Forbidden, new ErrorResponseDto { Message = ex.Message });
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(new ErrorResponseDto { Message = ex.Message });
+        }
+    }
+
     private bool TryGetCurrentUserId(out Guid currentUserId)
     {
         currentUserId = Guid.Empty;
