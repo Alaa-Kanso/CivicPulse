@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 
 abstract class SignUpState extends Equatable {
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }
 
@@ -12,12 +11,13 @@ class SignUpLoading extends SignUpState {}
 
 class SignUpError extends SignUpState {
   final String error;
+  final DateTime timestamp;
 
-  SignUpError({required this.error});
+  SignUpError({required this.error}) : timestamp = DateTime.now();
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [error];
+  List<Object?> get props => [error, timestamp];
 }
 
 class SignUpSuccess extends SignUpState {}
+

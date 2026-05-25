@@ -1,28 +1,62 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/core/session/session_manager.dart';
 import 'package:frontend/device_info.dart';
 import 'package:frontend/features/auth/domain/entities/user.dart';
-import 'package:frontend/features/onboarding/domain/useCases/seen_onboarding_use_case.dart';
+import 'package:frontend/features/auth/domain/useCases/check_authenticated_use_case.dart';
+import 'package:frontend/features/auth/domain/useCases/logout_use_case.dart';
 import 'package:frontend/features/auth/presentation/cubit/auth_state.dart';
+import 'package:frontend/features/onboarding/domain/useCases/seen_onboarding_use_case.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit({required this.sessionManager, required this.onboardingUseCase})
-    : super(AuthInitial());
-
-  final SessionManager sessionManager;
+  AuthCubit({
+    required this.onboardingUseCase,
+    required this.checkAuthenticatedUseCase,
+    required this.logoutUseCase,
+    required this.sessionManager,
+  }) : super(AuthInitial()) {
+    _listenToSession();
+  }
 
   final SeenOnboardingUseCase onboardingUseCase;
+  final CheckAuthenticatedUseCase checkAuthenticatedUseCase;
+  final LogoutUseCase logoutUseCase;
+  final SessionManager sessionManager;
+  late final StreamSubscription _authSub;
 
-  void checkAuthenticated() {
-    if (sessionManager.isAuthenticated) {
-      if (sessionManager.user == null) {
+  void _listenToSession() {
+    _authSub = sessionManager.authStream.listen((isLoggedIn) {
+      if (isLoggedIn) {
+        setAuthenticated(sessionManager.user!);
+      } else {
+        setUnAuthenticated();
+      }
+    });
+  }
+
+
+  Future<void> checkAuthenticated() async {
+    emit(AuthLoading());
+    final connectivity = await Connectivity().checkConnectivity();
+
+    final isOffline =
+        connectivity.isEmpty || connectivity.contains(ConnectivityResult.none);
+    if (isOffline) {
+      emit(AuthFailure(error: "No internet connection"));
+      return;
+    }
+    try {
+      final user = await checkAuthenticatedUseCase.call();
+      if (user == null) {
         setUnAuthenticated();
         return;
       }
-      setAuthenticated(sessionManager.user!);
-      return;
+      setAuthenticated(user);
+    } catch (e) {
+      emit(AuthFailure(error: e.toString()));
     }
-    setUnAuthenticated();
   }
 
   void setAuthenticated(User user) {
@@ -35,5 +69,15 @@ class AuthCubit extends Cubit<AuthState> {
 
   void setUnAuthenticated() {
     emit(AuthUnAuthenticated());
+  }
+
+  Future<void> logout() async {
+    await logoutUseCase.call();
+  }
+
+  @override
+  Future<void> close() {
+    _authSub.cancel();
+    return super.close();
   }
 }
