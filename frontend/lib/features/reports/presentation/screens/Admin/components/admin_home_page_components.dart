@@ -70,6 +70,8 @@ class AdminSideBar extends StatelessWidget {
             index: 0,
             icon: Icons.person_outline,
           ),
+          const SizedBox(height: 5.0),
+          _navItem(title: "Rerouting Reports", index: 1, icon: Icons.route),
           const SizedBox(height: 10.0),
           Padding(
             padding: const EdgeInsets.all(10.0),
@@ -97,10 +99,15 @@ class AdminSideBar extends StatelessWidget {
     final isSelected = selectedIndex == index;
 
     return ListTile(
-      leading: Icon(icon, color: isSelected ? Colors.blue : Colors.white),
+      leading: Icon(
+        icon,
+        color: isSelected ? Colors.blue : AppColors.textPrimary,
+      ),
       title: Text(
         title,
-        style: TextStyle(color: isSelected ? Colors.blue : Colors.white),
+        style: TextStyle(
+          color: isSelected ? Colors.blue : AppColors.textPrimary,
+        ),
       ),
       selected: isSelected,
       onTap: () {
