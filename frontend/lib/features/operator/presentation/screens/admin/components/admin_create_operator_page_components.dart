@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/Component/components.dart';
 import 'package:frontend/config/settings/app_colors.dart';
 import 'package:frontend/features/operator/domain/entities/municipality.dart';
+import 'package:frontend/features/operator/presentation/cubit/all_municipalities_cubit.dart';
+import 'package:frontend/features/operator/presentation/cubit/all_municipalities_state.dart';
 import 'package:frontend/features/operator/presentation/cubit/create_operator_cubit.dart';
 import 'package:frontend/features/operator/presentation/cubit/create_operator_state.dart';
-import 'package:frontend/features/operator/presentation/cubit/get_municipalities_cubit.dart';
-import 'package:frontend/features/operator/presentation/cubit/get_municipalities_state.dart';
 
 class MunicipalityAutocomplete extends StatefulWidget {
   const MunicipalityAutocomplete({
@@ -26,17 +26,17 @@ class MunicipalityAutocomplete extends StatefulWidget {
 class _MunicipalityAutocompleteState extends State<MunicipalityAutocomplete> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GetMunicipalitiesCubit, GetMunicipalitiesState>(
-      builder: (BuildContext context, GetMunicipalitiesState state) {
+    return BlocBuilder<AllMunicipalitiesCubit, AllMunicipalitiesState>(
+      builder: (BuildContext context, AllMunicipalitiesState state) {
         List<Municipality> municipalities = [];
-        if (state is GetMunicipalitiesSuccess) {
+        if (state is AllMunicipalitiesSuccess) {
           municipalities = state.municipalities;
         }
         return IgnorePointer(
           ignoring: !widget.enabled,
           child: Autocomplete<Municipality>(
+            displayStringForOption: (option) => option.name,
             optionsBuilder: (TextEditingValue textEditingValue) {
-              // Show all when empty
               if (textEditingValue.text.isEmpty) {
                 return municipalities;
               }
@@ -60,7 +60,7 @@ class _MunicipalityAutocompleteState extends State<MunicipalityAutocomplete> {
                       hintText: "Choose municipality",
 
                       prefixIcon: const Icon(Icons.location_city),
-                      suffixIcon: state is GetMunicipalitiesLoading
+                      suffixIcon: state is AllMunicipalitiesLoading
                           ? const Padding(
                               padding: EdgeInsets.all(12),
                               child: SizedBox(
@@ -71,7 +71,7 @@ class _MunicipalityAutocompleteState extends State<MunicipalityAutocomplete> {
                                 ),
                               ),
                             )
-                          : state is GetMunicipalitiesFailure
+                          : state is AllMunicipalitiesFailure
                           ? Tooltip(
                               message: state.error,
                               child: const Icon(Icons.error_outline),

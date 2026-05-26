@@ -1,5 +1,4 @@
 import 'package:frontend/features/operator/data/dataSources/operator_remote_data_source.dart';
-import 'package:frontend/features/operator/domain/entities/municipality.dart';
 import 'package:frontend/features/operator/domain/repositories/operator_repository.dart';
 
 class OperatorRepositoryImpl extends OperatorRepository {
@@ -18,10 +17,5 @@ class OperatorRepositoryImpl extends OperatorRepository {
       password: password,
       municipalityId: municipalityId,
     );
-  }
-
-  @override
-  Future<List<Municipality>> getMunicipalities() async {
-    return await operatorRemoteDataSource.getMunicipalities();
   }
 }

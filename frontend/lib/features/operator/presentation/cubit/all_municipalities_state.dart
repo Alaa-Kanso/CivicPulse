@@ -1,30 +1,30 @@
 import 'package:equatable/equatable.dart';
 import 'package:frontend/features/operator/domain/entities/municipality.dart';
 
-abstract class GetMunicipalitiesState extends Equatable {
+abstract class AllMunicipalitiesState extends Equatable {
   @override
   // TODO: implement props
   List<Object?> get props => [];
 }
 
-class GetMunicipalitiesInitial extends GetMunicipalitiesState {}
+class AllMunicipalitiesInitial extends AllMunicipalitiesState {}
 
-class GetMunicipalitiesLoading extends GetMunicipalitiesState {}
+class AllMunicipalitiesLoading extends AllMunicipalitiesState {}
 
-class GetMunicipalitiesFailure extends GetMunicipalitiesState {
+class AllMunicipalitiesFailure extends AllMunicipalitiesState {
   final String error;
 
-  GetMunicipalitiesFailure({required this.error});
+  AllMunicipalitiesFailure({required this.error});
 
   @override
   // TODO: implement props
   List<Object?> get props => [error];
 }
 
-class GetMunicipalitiesSuccess extends GetMunicipalitiesState {
+class AllMunicipalitiesSuccess extends AllMunicipalitiesState {
   final List<Municipality> municipalities;
 
-  GetMunicipalitiesSuccess({required this.municipalities});
+  AllMunicipalitiesSuccess({required this.municipalities});
 
   @override
   // TODO: implement props
