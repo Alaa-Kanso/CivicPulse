@@ -123,12 +123,8 @@ class ReroutingReportCard extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return BlocProvider(
-                              create: (BuildContext context) =>
-                                  sl<GetAssignedMunicipalitiesCubit>()..getAssignedMunicipalities(),
-                              child: AdminViewReroutingReportPage(
-                                report: report,
-                              ),
+                            return AdminViewReroutingReportPage(
+                              report: report,
                             );
                           },
                         ),

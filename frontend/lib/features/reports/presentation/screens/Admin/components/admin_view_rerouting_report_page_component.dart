@@ -548,106 +548,106 @@ class _DecisionPanelState extends State<DecisionPanel> {
             ),
           ),
           const SizedBox(height: 8),
-          BlocBuilder<
-            GetAssignedMunicipalitiesCubit,
-            GetAssignedMunicipalitiesState
-          >(
-            builder:
-                (BuildContext context, GetAssignedMunicipalitiesState state) {
-                  List<Municipality> municipalities = [];
-                  if (state is GetAssignedMunicipalitiesSuccess) {
-                    municipalities = state.municipalities;
-                  }
-                  return IgnorePointer(
-                    ignoring: false,
-                    child: Autocomplete<Municipality>(
-                      optionsBuilder: (TextEditingValue textEditingValue) {
-                        // Show all when empty
-                        if (textEditingValue.text.isEmpty) {
-                          return municipalities;
-                        }
-
-                        return municipalities.where(
-                          (municipality) => municipality.name
-                              .toLowerCase()
-                              .contains(textEditingValue.text.toLowerCase()),
-                        );
-                      },
-
-                      onSelected: (option) {},
-
-                      fieldViewBuilder:
-                          (
-                            context,
-                            textEditingController,
-                            focusNode,
-                            onFieldSubmitted,
-                          ) {
-                            return TextFormField(
-                              controller: textEditingController,
-                              focusNode: focusNode,
-
-                              decoration: InputDecoration(
-                                hintText: "Choose municipality",
-
-                                prefixIcon: const Icon(Icons.location_city),
-                                suffixIcon:
-                                    state is GetAssignedMunicipalitiesLoading
-                                    ? const Padding(
-                                        padding: EdgeInsets.all(12),
-                                        child: SizedBox(
-                                          width: 20,
-                                          height: 20,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                          ),
-                                        ),
-                                      )
-                                    : state is GetAssignedMunicipalitiesFailure
-                                    ? Tooltip(
-                                        message: state.error,
-                                        child: const Icon(Icons.error_outline),
-                                      )
-                                    : null,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                            );
-                          },
-
-                      optionsViewBuilder: (context, onSelected, options) {
-                        return Align(
-                          alignment: Alignment.topLeft,
-                          child: Material(
-                            elevation: 4,
-                            borderRadius: BorderRadius.circular(12),
-                            child: Container(
-                              width: 300,
-                              constraints: const BoxConstraints(maxHeight: 300),
-                              child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                shrinkWrap: true,
-                                itemCount: options.length,
-                                itemBuilder: (context, index) {
-                                  final option = options.elementAt(index);
-
-                                  return ListTile(
-                                    title: Text(option.name),
-                                    onTap: () {
-                                      onSelected(option);
-                                    },
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
-          ),
+          // BlocBuilder<
+          //   GetAssignedMunicipalitiesCubit,
+          //   GetAssignedMunicipalitiesState
+          // >(
+          //   builder:
+          //       (BuildContext context, GetAssignedMunicipalitiesState state) {
+          //         List<Municipality> municipalities = [];
+          //         if (state is GetAssignedMunicipalitiesSuccess) {
+          //           municipalities = state.municipalities;
+          //         }
+          //         return IgnorePointer(
+          //           ignoring: false,
+          //           child: Autocomplete<Municipality>(
+          //             optionsBuilder: (TextEditingValue textEditingValue) {
+          //               // Show all when empty
+          //               if (textEditingValue.text.isEmpty) {
+          //                 return municipalities;
+          //               }
+          //
+          //               return municipalities.where(
+          //                 (municipality) => municipality.name
+          //                     .toLowerCase()
+          //                     .contains(textEditingValue.text.toLowerCase()),
+          //               );
+          //             },
+          //
+          //             onSelected: (option) {},
+          //
+          //             fieldViewBuilder:
+          //                 (
+          //                   context,
+          //                   textEditingController,
+          //                   focusNode,
+          //                   onFieldSubmitted,
+          //                 ) {
+          //                   return TextFormField(
+          //                     controller: textEditingController,
+          //                     focusNode: focusNode,
+          //
+          //                     decoration: InputDecoration(
+          //                       hintText: "Choose municipality",
+          //
+          //                       prefixIcon: const Icon(Icons.location_city),
+          //                       suffixIcon:
+          //                           state is GetAssignedMunicipalitiesLoading
+          //                           ? const Padding(
+          //                               padding: EdgeInsets.all(12),
+          //                               child: SizedBox(
+          //                                 width: 20,
+          //                                 height: 20,
+          //                                 child: CircularProgressIndicator(
+          //                                   strokeWidth: 2,
+          //                                 ),
+          //                               ),
+          //                             )
+          //                           : state is GetAssignedMunicipalitiesFailure
+          //                           ? Tooltip(
+          //                               message: state.error,
+          //                               child: const Icon(Icons.error_outline),
+          //                             )
+          //                           : null,
+          //                       border: OutlineInputBorder(
+          //                         borderRadius: BorderRadius.circular(12),
+          //                       ),
+          //                     ),
+          //                   );
+          //                 },
+          //
+          //             optionsViewBuilder: (context, onSelected, options) {
+          //               return Align(
+          //                 alignment: Alignment.topLeft,
+          //                 child: Material(
+          //                   elevation: 4,
+          //                   borderRadius: BorderRadius.circular(12),
+          //                   child: Container(
+          //                     width: 300,
+          //                     constraints: const BoxConstraints(maxHeight: 300),
+          //                     child: ListView.builder(
+          //                       padding: EdgeInsets.zero,
+          //                       shrinkWrap: true,
+          //                       itemCount: options.length,
+          //                       itemBuilder: (context, index) {
+          //                         final option = options.elementAt(index);
+          //
+          //                         return ListTile(
+          //                           title: Text(option.name),
+          //                           onTap: () {
+          //                             onSelected(option);
+          //                           },
+          //                         );
+          //                       },
+          //                     ),
+          //                   ),
+          //                 ),
+          //               );
+          //             },
+          //           ),
+          //         );
+          //       },
+          // ),
 
           const SizedBox(height: 18),
 

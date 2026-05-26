@@ -5,7 +5,7 @@ import 'package:frontend/Component/components.dart';
 import 'package:frontend/config/settings/app_colors.dart';
 import 'package:frontend/core/di/injection_container.dart';
 import 'package:frontend/features/auth/domain/entities/user.dart';
-import 'package:frontend/features/operator/presentation/cubit/get_assigned_municipalities_cubit.dart';
+import 'package:frontend/features/operator/presentation/cubit/all_municipalities_cubit.dart';
 import 'package:frontend/features/reports/presentation/screens/Admin/pages/admin_home_page.dart';
 import 'package:frontend/features/reports/presentation/screens/Citizen/nav/citizen_nav.dart';
 
@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
     if (kIsWeb && user.role == "Admin") {
       return BlocProvider(
         create: (BuildContext context) =>
-            sl<GetAssignedMunicipalitiesCubit>()..getAssignedMunicipalities(),
+            sl<AllMunicipalitiesCubit>()..getAllMunicipalities(),
         child: const AdminHomePage(),
       );
     }
