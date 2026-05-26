@@ -5,31 +5,32 @@ import 'package:frontend/features/operator/domain/repositories/operator_reposito
 import 'package:frontend/features/operator/domain/useCases/create_operator_use_case.dart';
 import 'package:frontend/features/operator/domain/useCases/get_municipalities_use_case.dart';
 import 'package:frontend/features/operator/presentation/cubit/create_operator_cubit.dart';
-import 'package:frontend/features/operator/presentation/cubit/get_municipalities_cubit.dart';
+import 'package:frontend/features/operator/presentation/cubit/get_assigned_municipalities_cubit.dart';
 
 Future<void> operatorInit() async {
   //Data source
 
   sl.registerLazySingleton<OperatorRemoteDataSource>(
-        () => OperatorRemoteDataSource(apiClient: sl()),
+    () => OperatorRemoteDataSource(apiClient: sl()),
   );
 
   //Repository
   sl.registerLazySingleton<OperatorRepository>(
-        () => OperatorRepositoryImpl(operatorRemoteDataSource: sl()),
+    () => OperatorRepositoryImpl(operatorRemoteDataSource: sl()),
   );
 
   //useCase
   sl.registerLazySingleton(
-        () => CreateOperatorUseCase(operatorRepository: sl()),
+    () => CreateOperatorUseCase(operatorRepository: sl()),
   );
   sl.registerLazySingleton(
-        () => GetMunicipalitiesUseCase(operatorRepository: sl()),
+    () => GetAssignedMunicipalitiesUseCase(operatorRepository: sl()),
   );
 
   //cubit
   sl.registerFactory(() => CreateOperatorCubit(createOperatorUseCase: sl()));
   sl.registerFactory(
-        () => GetMunicipalitiesCubit(getMunicipalitiesUseCase: sl()),
+    () =>
+        GetAssignedMunicipalitiesCubit(getAssignedMunicipalitiesUseCase: sl()),
   );
 }

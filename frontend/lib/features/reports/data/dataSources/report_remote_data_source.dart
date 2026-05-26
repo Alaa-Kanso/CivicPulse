@@ -4,9 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:frontend/core/di/injection_container.dart';
 import 'package:frontend/core/network/api_client.dart';
 import 'package:frontend/core/session/session_manager.dart';
+import 'package:frontend/features/reports/data/models/admin_reroute_report_model.dart';
 import 'package:frontend/features/reports/data/models/report_model.dart';
 import 'package:frontend/features/reports/data/models/report_type_model.dart';
 import 'package:frontend/features/reports/data/models/upload_image_init_model.dart';
+import 'package:frontend/features/reports/domain/entities/admin_reroute_report.dart';
 
 class ReportRemoteDataSource {
   final ApiClient apiClient;
@@ -93,5 +95,17 @@ class ReportRemoteDataSource {
     } catch (e) {
       throw Exception(e.toString());
     }
+  }
+
+  Future<List<AdminRerouteReport>> getAdminReroutingReports() async {
+    final response = await apiClient.get<List<dynamic>>(
+      "/admin/unmapped-reports",
+      deduplicate: true,
+      options: Options(extra: {"noAuth": false}),
+    );
+    List<AdminRerouteReport> adminReports = response
+        .map((e) => AdminRerouteReportModel.fromJson(e as Map<String,dynamic>))
+        .toList();
+    return adminReports;
   }
 }

@@ -25,7 +25,7 @@ class OperatorRemoteDataSource {
     );
   }
 
-  Future<List<Municipality>> getMunicipalities() async {
+  Future<List<Municipality>> getAssignedMunicipalities() async {
     final response = await apiClient.get(
       "/admin/reroute-target-municipalities",
       deduplicate: true,

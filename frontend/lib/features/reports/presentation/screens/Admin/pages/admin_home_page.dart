@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/core/di/injection_container.dart';
 import 'package:frontend/features/operator/presentation/cubit/create_operator_cubit.dart';
 import 'package:frontend/features/operator/presentation/screens/admin/pages/admin_create_operator_page.dart';
+import 'package:frontend/features/reports/presentation/cubit/rerouting_report_cubit.dart';
 import 'package:frontend/features/reports/presentation/screens/Admin/components/admin_home_page_components.dart';
-import 'package:frontend/features/reports/presentation/screens/Admin/pages/admin_rerouting_reports.dart';
+import 'package:frontend/features/reports/presentation/screens/Admin/pages/admin_rerouting_reports_page.dart';
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({super.key});
@@ -21,7 +22,10 @@ class _AdminHomePageState extends State<AdminHomePage> {
       create: (BuildContext context) => sl<CreateOperatorCubit>(),
       child: const AdminCreateOperatorPage(),
     ),
-    AdminReroutingReports(),
+    BlocProvider(
+      create: (BuildContext context) => sl<ReroutingReportCubit>(),
+      child: AdminReroutingReportsPage(),
+    ),
   ];
 
   @override

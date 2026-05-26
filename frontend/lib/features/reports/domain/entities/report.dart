@@ -2,8 +2,8 @@ class Report {
   final String id;
   final int reportTypeId;
   final String reportTypeName;
-  final int municipalityId;
-  final String municipalityName;
+  final int? municipalityId;
+  final String? municipalityName;
 
   final String imageKey;
   final String? imageUrl;

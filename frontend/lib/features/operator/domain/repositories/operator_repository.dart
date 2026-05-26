@@ -7,5 +7,5 @@ abstract class OperatorRepository {
     required int municipalityId,
   });
 
-  Future<List<Municipality>> getMunicipalities();
+  Future<List<Municipality>> getAssignedMunicipalities();
 }

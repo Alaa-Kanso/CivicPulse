@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:frontend/features/reports/domain/entities/admin_reroute_report.dart';
 
 abstract class ReroutingReportState extends Equatable {
   @override
@@ -20,4 +21,11 @@ class ReroutingReportFailure extends ReroutingReportState {
   List<Object?> get props => [error];
 }
 
-class ReroutingReportSuccess extends ReroutingReportState {}
+class ReroutingReportSuccess extends ReroutingReportState {
+  final List<AdminRerouteReport> rerouteReports;
+
+  ReroutingReportSuccess({required this.rerouteReports});
+
+  @override
+  List<Object?> get props => [rerouteReports];
+}

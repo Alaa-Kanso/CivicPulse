@@ -21,7 +21,7 @@ class OperatorRepositoryImpl extends OperatorRepository {
   }
 
   @override
-  Future<List<Municipality>> getMunicipalities() async {
-    return await operatorRemoteDataSource.getMunicipalities();
+  Future<List<Municipality>> getAssignedMunicipalities() async {
+    return await operatorRemoteDataSource.getAssignedMunicipalities();
   }
 }
