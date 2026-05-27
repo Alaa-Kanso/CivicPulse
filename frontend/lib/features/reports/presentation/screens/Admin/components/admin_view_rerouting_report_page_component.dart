@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/config/settings/app_colors.dart';
 import 'package:frontend/features/operator/domain/entities/municipality.dart';
-import 'package:frontend/features/operator/presentation/cubit/get_assigned_municipalities_cubit.dart';
-import 'package:frontend/features/operator/presentation/cubit/get_assigned_municipalities_state.dart';
+import 'package:frontend/features/operator/presentation/cubit/assigned_municipalities_cubit.dart';
+import 'package:frontend/features/operator/presentation/cubit/assigned_municipalities_state.dart';
 import 'package:frontend/features/reports/domain/entities/admin_reroute_report.dart';
 import 'package:frontend/features/reports/presentation/cubit/rerouting_report_cubit.dart';
 
@@ -104,10 +104,6 @@ class ReportPageHeader extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────────────────────
-// Report Details Card — all report info in a clean layout
-// ─────────────────────────────────────────────────────────────
-
 class ReportDetailsCard extends StatelessWidget {
   const ReportDetailsCard({super.key, required this.report});
 
@@ -131,31 +127,30 @@ class ReportDetailsCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ── Image ──
-          _buildImage(),
+          AdminViewReroutingImageSection(imageUrl: report.imageKey),
 
+          //TODO: change to image URL
           Padding(
             padding: const EdgeInsets.all(22),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ── Section: Report Info ──
-                _buildSectionTitle('Report Information'),
+                AdminViewReroutingTitleSection(title: "Report Information"),
                 const SizedBox(height: 14),
 
-                _buildInfoRow(
+                AdminViewReroutingRowInfoSection(
                   icon: Icons.category_rounded,
                   label: 'Type',
                   value: report.reportTypeName,
                 ),
                 const SizedBox(height: 10),
-                _buildInfoRow(
+                AdminViewReroutingRowInfoSection(
                   icon: Icons.calendar_today_rounded,
                   label: 'Submitted',
                   value: _formatDate(report.createdAtUtc),
                 ),
                 const SizedBox(height: 10),
-                _buildInfoRow(
+                AdminViewReroutingRowInfoSection(
                   icon: Icons.fingerprint_rounded,
                   label: 'Report ID',
                   value: report.id,
@@ -166,11 +161,10 @@ class ReportDetailsCard extends StatelessWidget {
                   child: Divider(height: 1, color: AppColors.border),
                 ),
 
-                // ── Section: Location ──
-                _buildSectionTitle('Location'),
+                AdminViewReroutingTitleSection(title: "Location"),
                 const SizedBox(height: 14),
 
-                _buildInfoRow(
+                AdminViewReroutingRowInfoSection(
                   icon: Icons.location_on_outlined,
                   label: 'Municipality',
                   value: report.municipalityName ?? 'Outside Lebanon',
@@ -178,7 +172,7 @@ class ReportDetailsCard extends StatelessWidget {
                 ),
                 if (report.originalMunicipalityName != null) ...[
                   const SizedBox(height: 10),
-                  _buildInfoRow(
+                  AdminViewReroutingRowInfoSection(
                     icon: Icons.swap_horiz_rounded,
                     label: 'Originally Assigned',
                     value: report.originalMunicipalityName!,
@@ -188,14 +182,14 @@ class ReportDetailsCard extends StatelessWidget {
                 if (report.addressDetails != null &&
                     report.addressDetails!.isNotEmpty) ...[
                   const SizedBox(height: 10),
-                  _buildInfoRow(
+                  AdminViewReroutingRowInfoSection(
                     icon: Icons.place_outlined,
                     label: 'Address',
                     value: report.addressDetails!,
                   ),
                 ],
                 const SizedBox(height: 10),
-                _buildInfoRow(
+                AdminViewReroutingRowInfoSection(
                   icon: Icons.my_location_rounded,
                   label: 'Coordinates',
                   value:
@@ -207,8 +201,7 @@ class ReportDetailsCard extends StatelessWidget {
                   child: Divider(height: 1, color: AppColors.border),
                 ),
 
-                // ── Section: Description ──
-                _buildSectionTitle('Description'),
+                AdminViewReroutingTitleSection(title: "Description"),
                 const SizedBox(height: 12),
                 Container(
                   width: double.infinity,
@@ -237,8 +230,8 @@ class ReportDetailsCard extends StatelessWidget {
                   child: Divider(height: 1, color: AppColors.border),
                 ),
 
-                // ── Section: Routing Reason ──
-                _buildSectionTitle('Admin Routing Reason'),
+                AdminViewReroutingTitleSection(title: 'Admin Routing Reason'),
+
                 const SizedBox(height: 12),
                 Container(
                   width: double.infinity,
@@ -285,96 +278,6 @@ class ReportDetailsCard extends StatelessWidget {
     );
   }
 
-  Widget _buildImage() {
-    return ClipRRect(
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-      child: SizedBox(
-        height: 220,
-        width: double.infinity,
-        child: Image.network(
-          report.imageKey,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) {
-            return Container(
-              color: AppColors.surfaceLight,
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.image_not_supported_outlined,
-                      size: 42,
-                      color: AppColors.textSecondary.withValues(alpha: 0.4),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Image unavailable',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: AppColors.textSecondary.withValues(alpha: 0.5),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Text(
-      title,
-      style: const TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w700,
-        color: AppColors.textPrimary,
-        letterSpacing: -0.2,
-      ),
-    );
-  }
-
-  Widget _buildInfoRow({
-    required IconData icon,
-    required String label,
-    required String value,
-    Color? valueColor,
-  }) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, size: 17, color: AppColors.textSecondary),
-        const SizedBox(width: 10),
-        SizedBox(
-          width: 120,
-          child: Text(
-            label,
-            style: const TextStyle(
-              fontSize: 13.5,
-              color: AppColors.textSecondary,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        Expanded(
-          child: Text(
-            value,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 13.5,
-              color: valueColor ?? AppColors.textPrimary,
-              fontWeight: FontWeight.w600,
-              height: 1.4,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   String _formatDate(DateTime date) {
     const months = [
       'Jan',
@@ -396,42 +299,40 @@ class ReportDetailsCard extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────────────────────
-// Decision Panel — admin actions: reroute or delete
-// ─────────────────────────────────────────────────────────────
-
 class DecisionPanel extends StatefulWidget {
-  const DecisionPanel({super.key, required this.report});
+  const DecisionPanel({
+    super.key,
+    required this.report,
+    required this.isLoading,
+  });
 
   final AdminRerouteReport report;
+  final bool isLoading;
 
   @override
   State<DecisionPanel> createState() => _DecisionPanelState();
 }
 
 class _DecisionPanelState extends State<DecisionPanel> {
-  final TextEditingController _municipalityController = TextEditingController();
   bool _showDeleteConfirm = false;
-
-  @override
-  void dispose() {
-    _municipalityController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _buildRerouteSection(),
+        _buildRerouteSection(isLoading: widget.isLoading),
         const SizedBox(height: 20),
-        _buildDeleteSection(reportId: widget.report.id),
+        _buildDeleteSection(
+          reportId: widget.report.id,
+          isLoading: widget.isLoading,
+        ),
       ],
     );
   }
 
   // ── Reroute Section ──
-  Widget _buildRerouteSection() {
+  Widget _buildRerouteSection({required bool isLoading}) {
+    int? municipalityId;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(22),
@@ -538,7 +439,6 @@ class _DecisionPanelState extends State<DecisionPanel> {
               ),
             ),
 
-          // Municipality input
           const Text(
             'New Municipality',
             style: TextStyle(
@@ -548,106 +448,103 @@ class _DecisionPanelState extends State<DecisionPanel> {
             ),
           ),
           const SizedBox(height: 8),
-          // BlocBuilder<
-          //   GetAssignedMunicipalitiesCubit,
-          //   GetAssignedMunicipalitiesState
-          // >(
-          //   builder:
-          //       (BuildContext context, GetAssignedMunicipalitiesState state) {
-          //         List<Municipality> municipalities = [];
-          //         if (state is GetAssignedMunicipalitiesSuccess) {
-          //           municipalities = state.municipalities;
-          //         }
-          //         return IgnorePointer(
-          //           ignoring: false,
-          //           child: Autocomplete<Municipality>(
-          //             optionsBuilder: (TextEditingValue textEditingValue) {
-          //               // Show all when empty
-          //               if (textEditingValue.text.isEmpty) {
-          //                 return municipalities;
-          //               }
-          //
-          //               return municipalities.where(
-          //                 (municipality) => municipality.name
-          //                     .toLowerCase()
-          //                     .contains(textEditingValue.text.toLowerCase()),
-          //               );
-          //             },
-          //
-          //             onSelected: (option) {},
-          //
-          //             fieldViewBuilder:
-          //                 (
-          //                   context,
-          //                   textEditingController,
-          //                   focusNode,
-          //                   onFieldSubmitted,
-          //                 ) {
-          //                   return TextFormField(
-          //                     controller: textEditingController,
-          //                     focusNode: focusNode,
-          //
-          //                     decoration: InputDecoration(
-          //                       hintText: "Choose municipality",
-          //
-          //                       prefixIcon: const Icon(Icons.location_city),
-          //                       suffixIcon:
-          //                           state is GetAssignedMunicipalitiesLoading
-          //                           ? const Padding(
-          //                               padding: EdgeInsets.all(12),
-          //                               child: SizedBox(
-          //                                 width: 20,
-          //                                 height: 20,
-          //                                 child: CircularProgressIndicator(
-          //                                   strokeWidth: 2,
-          //                                 ),
-          //                               ),
-          //                             )
-          //                           : state is GetAssignedMunicipalitiesFailure
-          //                           ? Tooltip(
-          //                               message: state.error,
-          //                               child: const Icon(Icons.error_outline),
-          //                             )
-          //                           : null,
-          //                       border: OutlineInputBorder(
-          //                         borderRadius: BorderRadius.circular(12),
-          //                       ),
-          //                     ),
-          //                   );
-          //                 },
-          //
-          //             optionsViewBuilder: (context, onSelected, options) {
-          //               return Align(
-          //                 alignment: Alignment.topLeft,
-          //                 child: Material(
-          //                   elevation: 4,
-          //                   borderRadius: BorderRadius.circular(12),
-          //                   child: Container(
-          //                     width: 300,
-          //                     constraints: const BoxConstraints(maxHeight: 300),
-          //                     child: ListView.builder(
-          //                       padding: EdgeInsets.zero,
-          //                       shrinkWrap: true,
-          //                       itemCount: options.length,
-          //                       itemBuilder: (context, index) {
-          //                         final option = options.elementAt(index);
-          //
-          //                         return ListTile(
-          //                           title: Text(option.name),
-          //                           onTap: () {
-          //                             onSelected(option);
-          //                           },
-          //                         );
-          //                       },
-          //                     ),
-          //                   ),
-          //                 ),
-          //               );
-          //             },
-          //           ),
-          //         );
-          //       },
-          // ),
+          BlocBuilder<AssignedMunicipalitiesCubit, AssignedMunicipalitiesState>(
+            builder: (BuildContext context, AssignedMunicipalitiesState state) {
+              List<Municipality> municipalities = [];
+              if (state is AssignedMunicipalitiesSuccess) {
+                municipalities = state.municipalities;
+              }
+              return IgnorePointer(
+                ignoring: isLoading,
+                child: Autocomplete<Municipality>(
+                  displayStringForOption: (option) => option.name,
+                  optionsBuilder: (TextEditingValue textEditingValue) {
+                    // Show all when empty
+                    if (textEditingValue.text.isEmpty) {
+                      return municipalities;
+                    }
+
+                    return municipalities.where(
+                      (municipality) => municipality.name
+                          .toLowerCase()
+                          .contains(textEditingValue.text.toLowerCase()),
+                    );
+                  },
+
+                  onSelected: (option) {
+                    municipalityId = option.id;
+                  },
+
+                  fieldViewBuilder:
+                      (
+                        context,
+                        textEditingController,
+                        focusNode,
+                        onFieldSubmitted,
+                      ) {
+                        return TextFormField(
+                          controller: textEditingController,
+                          focusNode: focusNode,
+
+                          decoration: InputDecoration(
+                            hintText: "Choose municipality",
+
+                            prefixIcon: const Icon(Icons.location_city),
+                            suffixIcon: state is AssignedMunicipalitiesLoading
+                                ? const Padding(
+                                    padding: EdgeInsets.all(12),
+                                    child: SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    ),
+                                  )
+                                : state is AssignedMunicipalitiesFailure
+                                ? Tooltip(
+                                    message: state.error,
+                                    child: const Icon(Icons.error_outline),
+                                  )
+                                : null,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        );
+                      },
+                  optionsViewBuilder: (context, onSelected, options) {
+                    return Align(
+                      alignment: Alignment.topLeft,
+                      child: Material(
+                        elevation: 4,
+                        borderRadius: BorderRadius.circular(12),
+                        child: Container(
+                          width: 300,
+                          constraints: const BoxConstraints(maxHeight: 300),
+                          child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            itemCount: options.length,
+                            itemBuilder: (context, index) {
+                              final option = options.elementAt(index);
+
+                              return ListTile(
+                                title: Text(option.name),
+                                onTap: () {
+                                  onSelected(option);
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
 
           const SizedBox(height: 18),
 
@@ -656,16 +553,24 @@ class _DecisionPanelState extends State<DecisionPanel> {
             width: double.infinity,
             height: 44,
             child: ElevatedButton.icon(
-              onPressed: () {
-                // TODO: implement reroute action
-              },
+              onPressed: (isLoading)
+                  ? null
+                  : () {
+                      // TODO: implement reroute action
+                      context.read<ReroutingReportCubit>().rerouteReport(
+                        reportId: widget.report.id,
+                        municipalityId: municipalityId,
+                      );
+                    },
               icon: const Icon(Icons.send_rounded, size: 18),
               label: const Text(
                 'Re-route Report',
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
+                backgroundColor: (isLoading)
+                    ? AppColors.buttonTextDisabled
+                    : AppColors.primary,
                 foregroundColor: Colors.white,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
@@ -679,7 +584,10 @@ class _DecisionPanelState extends State<DecisionPanel> {
     );
   }
 
-  Widget _buildDeleteSection({required String reportId}) {
+  Widget _buildDeleteSection({
+    required String reportId,
+    required bool isLoading,
+  }) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(22),
@@ -702,7 +610,6 @@ class _DecisionPanelState extends State<DecisionPanel> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Section header
           Row(
             children: [
               Container(
@@ -752,16 +659,20 @@ class _DecisionPanelState extends State<DecisionPanel> {
               width: double.infinity,
               height: 44,
               child: OutlinedButton.icon(
-                onPressed: () {
-                  setState(() => _showDeleteConfirm = true);
-                },
+                onPressed: (isLoading)
+                    ? null
+                    : () {
+                        setState(() => _showDeleteConfirm = true);
+                      },
                 icon: const Icon(Icons.delete_outline_rounded, size: 18),
                 label: const Text(
                   'Delete Report',
                   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
                 ),
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.error,
+                  foregroundColor: (isLoading)
+                      ? AppColors.buttonTextDisabled
+                      : AppColors.error,
                   side: BorderSide(
                     color: AppColors.error.withValues(alpha: 0.4),
                   ),
@@ -839,12 +750,14 @@ class _DecisionPanelState extends State<DecisionPanel> {
                         child: SizedBox(
                           height: 40,
                           child: ElevatedButton.icon(
-                            onPressed: () {
-                              // TODO: implement delete action
-                              context.read<ReroutingReportCubit>().deleteReport(
-                                reportId: reportId,
-                              );
-                            },
+                            onPressed: (isLoading)
+                                ? null
+                                : () {
+                                    // TODO: implement delete action
+                                    context
+                                        .read<ReroutingReportCubit>()
+                                        .deleteReport(reportId: reportId);
+                                  },
                             icon: const Icon(
                               Icons.delete_forever_rounded,
                               size: 18,
@@ -875,6 +788,121 @@ class _DecisionPanelState extends State<DecisionPanel> {
           ],
         ],
       ),
+    );
+  }
+}
+
+class AdminViewReroutingImageSection extends StatelessWidget {
+  const AdminViewReroutingImageSection({super.key, required this.imageUrl});
+
+  final String imageUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+      child: SizedBox(
+        height: 220,
+        width: double.infinity,
+        child: Image.network(
+          imageUrl,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              color: AppColors.surfaceLight,
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.image_not_supported_outlined,
+                      size: 42,
+                      color: AppColors.textSecondary.withValues(alpha: 0.4),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Image unavailable',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: AppColors.textSecondary.withValues(alpha: 0.5),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class AdminViewReroutingTitleSection extends StatelessWidget {
+  const AdminViewReroutingTitleSection({super.key, required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w700,
+        color: AppColors.textPrimary,
+        letterSpacing: -0.2,
+      ),
+    );
+  }
+}
+
+class AdminViewReroutingRowInfoSection extends StatelessWidget {
+  const AdminViewReroutingRowInfoSection({
+    super.key,
+    required this.icon,
+    required this.label,
+    required this.value,
+    this.valueColor,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+  final Color? valueColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 17, color: AppColors.textSecondary),
+        const SizedBox(width: 10),
+        SizedBox(
+          width: 120,
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontSize: 13.5,
+              color: AppColors.textSecondary,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 13.5,
+              color: valueColor ?? AppColors.textPrimary,
+              fontWeight: FontWeight.w600,
+              height: 1.4,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

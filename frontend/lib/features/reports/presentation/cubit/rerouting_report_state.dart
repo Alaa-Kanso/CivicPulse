@@ -11,10 +11,22 @@ class ReroutingReportInitial extends ReroutingReportState {}
 
 class ReroutingReportLoading extends ReroutingReportState {}
 
+class ActionReroutingReportLoading extends ReroutingReportState {}
+
 class ReroutingReportFailure extends ReroutingReportState {
   final String error;
 
   ReroutingReportFailure({required this.error});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [error];
+}
+
+class ActionReroutingReportFailure extends ReroutingReportState {
+  final String error;
+
+  ActionReroutingReportFailure({required this.error});
 
   @override
   // TODO: implement props
@@ -29,3 +41,5 @@ class ReroutingReportSuccess extends ReroutingReportState {
   @override
   List<Object?> get props => [rerouteReports];
 }
+
+class ActionReroutingReportSuccess extends ReroutingReportState {}

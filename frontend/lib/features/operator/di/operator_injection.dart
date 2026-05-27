@@ -7,7 +7,9 @@ import 'package:frontend/features/operator/domain/repositories/municipality_repo
 import 'package:frontend/features/operator/domain/repositories/operator_repository.dart';
 import 'package:frontend/features/operator/domain/useCases/create_operator_use_case.dart';
 import 'package:frontend/features/operator/domain/useCases/get_all_municipalities_use_case.dart';
+import 'package:frontend/features/operator/domain/useCases/get_assigned_municipalities_use_case.dart';
 import 'package:frontend/features/operator/presentation/cubit/all_municipalities_cubit.dart';
+import 'package:frontend/features/operator/presentation/cubit/assigned_municipalities_cubit.dart';
 import 'package:frontend/features/operator/presentation/cubit/create_operator_cubit.dart';
 
 Future<void> operatorInit() async {
@@ -35,10 +37,15 @@ Future<void> operatorInit() async {
   sl.registerLazySingleton(
     () => GetAllMunicipalitiesUseCase(municipalityRepository: sl()),
   );
+ sl.registerLazySingleton(
+    () => GetAssignedMunicipalitiesUseCase(municipalityRepository: sl()),
+  );
 
   //cubit
   sl.registerFactory(() => CreateOperatorCubit(createOperatorUseCase: sl()));
   sl.registerFactory(
     () => AllMunicipalitiesCubit(getMunicipalitiesUseCase: sl()),
+  ); sl.registerFactory(
+    () => AssignedMunicipalitiesCubit(getAssignedMunicipalitiesUseCase: sl()),
   );
 }

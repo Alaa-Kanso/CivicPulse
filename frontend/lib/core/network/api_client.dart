@@ -70,12 +70,29 @@ class ApiClient {
     bool deduplicate = false,
     Options? options,
   }) {
-     return _request<T>(
+    return _request<T>(
       method: 'DELETE',
       path: path,
       deduplicate: deduplicate,
       request: () async {
         final response = await dio.delete(path, options: options);
+        return response.data as T;
+      },
+    );
+  }
+
+  Future<T> patch<T>(
+    String path, {
+    bool deduplicate = false,
+    Options? options,
+    dynamic data,
+  }) {
+    return _request<T>(
+      method: 'PATCH',
+      path: path,
+      deduplicate: deduplicate,
+      request: () async {
+        final response = await dio.patch(path, options: options, data: data);
         return response.data as T;
       },
     );

@@ -34,4 +34,11 @@ abstract class ReportRepository {
   Future<List<Report>> getMyReports();
 
   Future<List<AdminRerouteReport>> getAdminReroutingReports();
+
+  Future<void> deleteReport({required String reportId});
+
+  Future<void> rerouteReport({
+    required String reportId,
+    required int municipalityId,
+  });
 }

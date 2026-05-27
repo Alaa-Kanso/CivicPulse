@@ -104,8 +104,28 @@ class ReportRemoteDataSource {
       options: Options(extra: {"noAuth": false}),
     );
     List<AdminRerouteReport> adminReports = response
-        .map((e) => AdminRerouteReportModel.fromJson(e as Map<String,dynamic>))
+        .map((e) => AdminRerouteReportModel.fromJson(e as Map<String, dynamic>))
         .toList();
     return adminReports;
+  }
+
+  Future<void> deleteReport({required String reportId}) async {
+    await apiClient.delete(
+      "/admin/unmapped-reports/$reportId",
+      deduplicate: true,
+      options: Options(extra: {"noAuth": false}),
+    );
+  }
+
+  Future<void> rerouteReport({
+    required String reportId,
+    required int municipalityId,
+  }) async {
+    await apiClient.patch(
+      "/admin/unmapped-reports/$reportId/reroute",
+      deduplicate: true,
+      options: Options(extra: {"noAuth": false}),
+      data: {"municipalityId": municipalityId},
+    );
   }
 }

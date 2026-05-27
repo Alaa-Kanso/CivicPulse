@@ -16,4 +16,13 @@ class MunicipalityRemoteDataSource {
     );
     return MunicipalityModel.fromJsonList(response);
   }
+
+  Future<List<Municipality>> getAssignedMunicipalities() async {
+    final response = await apiClient.get(
+      "/admin/reroute-target-municipalities",
+      deduplicate: true,
+      options: Options(extra: {"noAuth": false}),
+    );
+    return MunicipalityModel.fromJsonList(response);
+  }
 }

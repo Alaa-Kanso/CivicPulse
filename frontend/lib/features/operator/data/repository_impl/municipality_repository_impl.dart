@@ -11,4 +11,9 @@ class MunicipalityRepositoryImpl extends MunicipalityRepository {
   Future<List<Municipality>> getAllMunicipalities() async {
     return await municipalityRemoteDataSource.getAllMunicipalities();
   }
+
+  @override
+  Future<List<Municipality>> getAssignedMunicipalities() async{
+    return await municipalityRemoteDataSource.getAssignedMunicipalities();
+  }
 }

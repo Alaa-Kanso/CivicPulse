@@ -94,4 +94,20 @@ class ReportRepositoryImpl extends ReportRepository {
   Future<List<AdminRerouteReport>> getAdminReroutingReports() async {
     return await reportRemoteDataSource.getAdminReroutingReports();
   }
+
+  @override
+  Future<void> deleteReport({required String reportId}) async {
+    await reportRemoteDataSource.deleteReport(reportId: reportId);
+  }
+
+  @override
+  Future<void> rerouteReport({
+    required String reportId,
+    required int municipalityId,
+  }) async {
+    await reportRemoteDataSource.rerouteReport(
+      reportId: reportId,
+      municipalityId: municipalityId,
+    );
+  }
 }

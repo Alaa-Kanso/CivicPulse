@@ -3,11 +3,13 @@ import 'package:frontend/features/reports/data/dataSources/report_remote_data_so
 import 'package:frontend/features/reports/data/repositories_impl/report_repository_impl.dart';
 import 'package:frontend/features/reports/domain/repositories/report_repository.dart';
 import 'package:frontend/features/reports/domain/useCases/create_report_use_case.dart';
+import 'package:frontend/features/reports/domain/useCases/delete_report_use_case.dart';
 import 'package:frontend/features/reports/domain/useCases/geocoding_location_use_case.dart';
 import 'package:frontend/features/reports/domain/useCases/get_admin_rerouting_reports_use_case.dart';
 import 'package:frontend/features/reports/domain/useCases/get_category_types_use_case.dart';
 import 'package:frontend/features/reports/domain/useCases/get_my_reports_use_case.dart';
 import 'package:frontend/features/reports/domain/useCases/request_upload_image_init_use_case.dart';
+import 'package:frontend/features/reports/domain/useCases/reroute_municipality_use_case.dart';
 import 'package:frontend/features/reports/domain/useCases/upload_image_use_case.dart';
 import 'package:frontend/features/reports/presentation/cubit/create_report_cubit.dart';
 import 'package:frontend/features/reports/presentation/cubit/my_reports_cubit.dart';
@@ -37,6 +39,10 @@ Future<void> reportInit() async {
   sl.registerLazySingleton(
     () => GetAdminReroutingReportsUseCase(repository: sl()),
   );
+  sl.registerLazySingleton(() => DeleteReportUseCase(reportRepository: sl()));
+  sl.registerLazySingleton(
+    () => RerouteMunicipalityUseCase(reportRepository: sl()),
+  );
 
   //cubit
   sl.registerFactory(
@@ -58,7 +64,8 @@ Future<void> reportInit() async {
   sl.registerFactory(
     () => ReroutingReportCubit(
       getAdminReroutingReportsUseCase: sl(),
-      geocodingLocationUseCase: sl(),
+      deleteReportUseCase: sl(),
+      rerouteMunicipalityUseCase: sl(),
     ),
   );
 }

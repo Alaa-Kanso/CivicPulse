@@ -148,9 +148,7 @@ class _AdminReroutingReportsPageState extends State<AdminReroutingReportsPage> {
             child: InkWell(
               borderRadius: BorderRadius.circular(12),
               onTap: () {
-                context
-                    .read<ReroutingReportCubit>()
-                    .getAdminReroutingReports();
+                context.read<ReroutingReportCubit>().getAdminReroutingReports();
               },
               child: Container(
                 padding: const EdgeInsets.all(10),
@@ -183,8 +181,11 @@ class _AdminReroutingReportsPageState extends State<AdminReroutingReportsPage> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.pending_actions_rounded,
-              size: 18, color: AppColors.warning),
+          const Icon(
+            Icons.pending_actions_rounded,
+            size: 18,
+            color: AppColors.warning,
+          ),
           const SizedBox(width: 8),
           Text(
             '$count report${count == 1 ? '' : 's'} pending review',
@@ -218,10 +219,7 @@ class _AdminReroutingReportsPageState extends State<AdminReroutingReportsPage> {
             SizedBox(height: 16),
             Text(
               'Loading reports…',
-              style: TextStyle(
-                fontSize: 15,
-                color: AppColors.textSecondary,
-              ),
+              style: TextStyle(fontSize: 15, color: AppColors.textSecondary),
             ),
           ],
         ),
@@ -244,8 +242,11 @@ class _AdminReroutingReportsPageState extends State<AdminReroutingReportsPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error_outline_rounded,
-                size: 44, color: AppColors.error),
+            const Icon(
+              Icons.error_outline_rounded,
+              size: 44,
+              color: AppColors.error,
+            ),
             const SizedBox(height: 14),
             const Text(
               'Failed to load reports',

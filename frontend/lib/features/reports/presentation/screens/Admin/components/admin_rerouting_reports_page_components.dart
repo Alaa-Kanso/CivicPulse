@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/config/settings/app_colors.dart';
 import 'package:frontend/core/di/injection_container.dart';
-import 'package:frontend/features/operator/presentation/cubit/get_assigned_municipalities_cubit.dart';
+import 'package:frontend/features/operator/presentation/cubit/assigned_municipalities_cubit.dart';
 import 'package:frontend/features/reports/domain/entities/admin_reroute_report.dart';
+import 'package:frontend/features/reports/presentation/cubit/rerouting_report_cubit.dart';
 import 'package:frontend/features/reports/presentation/screens/Admin/pages/admin_view_rerouting_report_page.dart';
 
 class ReroutingReportCard extends StatelessWidget {
@@ -118,17 +119,30 @@ class ReroutingReportCard extends StatelessWidget {
                   width: double.infinity,
                   height: 42,
                   child: ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.push(
+                    onPressed: ()async {
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return AdminViewReroutingReportPage(
-                              report: report,
+                            return MultiBlocProvider(
+                              providers: [
+                                BlocProvider(
+                                  create: (context) =>
+                                      sl<AssignedMunicipalitiesCubit>()
+                                        ..getAssignedMunicipalities(),
+                                ),
+                                BlocProvider(
+                                  create: (context) => sl<ReroutingReportCubit>(),
+                                ),
+                              ],
+                              child: AdminViewReroutingReportPage(
+                                report: report,
+                              ),
                             );
                           },
                         ),
                       );
+                      context.read<ReroutingReportCubit>().getAdminReroutingReports();
                     },
                     icon: const Icon(Icons.open_in_new_rounded, size: 18),
                     label: const Text(
