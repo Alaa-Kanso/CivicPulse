@@ -8,6 +8,7 @@ using CivicPulse.Api.Services.AdminModeration;
 using CivicPulse.Api.Services.AdminOperators;
 using CivicPulse.Api.Services.AdminRouting;
 using CivicPulse.Api.Services.ReportGrouping;
+using CivicPulse.Api.Services.Email;
 using CivicPulse.Api.Settings;
 using CivicPulse.Api.Startup;
 using System.Text;
@@ -87,6 +88,8 @@ builder.Services.AddScoped<IAdminModerationService, AdminModerationService>();
 builder.Services.AddScoped<IAdminOperatorsService, AdminOperatorsService>();
 builder.Services.AddScoped<IAdminRoutingService, AdminRoutingService>();
 builder.Services.AddScoped<IReportGroupingService, ReportGroupingService>();
+builder.Services.Configure<EmailSettings>(
+    builder.Configuration.GetSection("Email"));
 builder.Services.AddHttpClient();
 
 builder.Services.Configure<AdminSeedOptions>(
@@ -94,6 +97,23 @@ builder.Services.Configure<AdminSeedOptions>(
 
 builder.Services.Configure<JwtSettings>(
     builder.Configuration.GetSection("Jwt"));
+
+builder.Services.AddSingleton<EmailQueue>();
+builder.Services.AddSingleton<IEmailQueue>(sp => sp.GetRequiredService<EmailQueue>());
+
+var emailProvider = builder.Configuration["Email:Provider"];
+
+if (string.Equals(emailProvider, "Smtp", StringComparison.OrdinalIgnoreCase))
+{
+    builder.Services.AddSingleton<IEmailSender, SmtpEmailSender>();
+}
+else
+{
+    builder.Services.AddSingleton<IEmailSender, LoggingEmailSender>();
+}
+
+builder.Services.AddScoped<IEmailNotificationService, EmailNotificationService>();
+builder.Services.AddHostedService<EmailBackgroundService>();
 
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>()
                  ?? throw new InvalidOperationException("Jwt settings are missing.");

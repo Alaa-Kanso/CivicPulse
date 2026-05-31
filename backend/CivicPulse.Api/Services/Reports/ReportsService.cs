@@ -5,6 +5,7 @@ using CivicPulse.Domain.Enums;
 using CivicPulse.Infrastructure.Data;
 using CivicPulse.Api.Services.Uploads;
 using CivicPulse.Api.Services.ReportGrouping;
+using CivicPulse.Api.Services.Email;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 
@@ -15,17 +16,20 @@ public sealed class ReportsService : IReportsService
     private readonly CivicPulseDbContext _db;
     private readonly IUploadsService _uploadsService;
     private readonly IReportGroupingService _reportGroupingService;
+    private readonly IEmailNotificationService _emailNotificationService;
 
     private const double ReportGroupingRadiusMeters = 50;
 
     public ReportsService(
         CivicPulseDbContext db,
         IUploadsService uploadsService,
-        IReportGroupingService reportGroupingService)
+        IReportGroupingService reportGroupingService,
+        IEmailNotificationService emailNotificationService)
     {
         _db = db;
         _uploadsService = uploadsService;
         _reportGroupingService = reportGroupingService;
+        _emailNotificationService = emailNotificationService;
     }
 
     public async Task<IReadOnlyList<ReportTypeDto>> GetReportTypesAsync()
@@ -128,6 +132,11 @@ public sealed class ReportsService : IReportsService
 
         _db.Reports.Add(report);
         await _db.SaveChangesAsync();
+
+        if (!report.RequiresAdminRouting)
+        {
+            await _emailNotificationService.QueueNewReportNotificationAsync(report);
+        }
 
         return new MyReportItemDto
         {

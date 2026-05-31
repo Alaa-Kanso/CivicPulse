@@ -20,6 +20,30 @@ public class AdminOperatorsController : ControllerBase
         _adminOperatorsService = adminOperatorsService;
     }
 
+    [HttpGet("available-municipalities")]
+    [ProducesResponseType(typeof(IReadOnlyList<AvailableOperatorMunicipalityDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status403Forbidden)]
+    public async Task<ActionResult<IReadOnlyList<AvailableOperatorMunicipalityDto>>> GetAvailableMunicipalities()
+    {
+        try
+        {
+            if (!TryGetCurrentUserId(out var currentUserId))
+                return Unauthorized(new ErrorResponseDto { Message = "Invalid user token." });
+
+            var result = await _adminOperatorsService.GetAvailableMunicipalitiesAsync(currentUserId);
+            return Ok(result);
+        }
+        catch (UnauthorizedException ex)
+        {
+            return Unauthorized(new ErrorResponseDto { Message = ex.Message });
+        }
+        catch (ForbiddenException ex)
+        {
+            return StatusCode(StatusCodes.Status403Forbidden, new ErrorResponseDto { Message = ex.Message });
+        }
+    }
+
     [HttpPost]
     [ProducesResponseType(typeof(AdminOperatorDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status400BadRequest)]

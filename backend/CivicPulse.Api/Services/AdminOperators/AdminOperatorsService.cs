@@ -83,6 +83,26 @@ public sealed class AdminOperatorsService : IAdminOperatorsService
         };
     }
 
+    public async Task<IReadOnlyList<AvailableOperatorMunicipalityDto>> GetAvailableMunicipalitiesAsync(Guid currentUserId)
+    {
+        await GetValidatedAdminAsync(currentUserId);
+
+        return await _db.Municipalities
+            .AsNoTracking()
+            .Where(m => !_db.Users.Any(u =>
+                u.Role == UserRole.Operator &&
+                u.AssignedMunicipalityId == m.Id &&
+                u.Status == UserStatus.Active))
+            .OrderBy(m => m.Adm3Name)
+            .Select(m => new AvailableOperatorMunicipalityDto
+            {
+                Id = m.Id,
+                Adm3Name = m.Adm3Name,
+                Adm3Pcode = m.Adm3Pcode
+            })
+            .ToListAsync();
+    }
+
     private async Task<User> GetValidatedAdminAsync(Guid currentUserId)
     {
         var adminUser = await _db.Users

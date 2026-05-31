@@ -1,6 +1,7 @@
 using CivicPulse.Api.Dtos.OperatorReports;
 using CivicPulse.Api.Exceptions;
 using CivicPulse.Api.Services.Uploads;
+using CivicPulse.Api.Services.Email;
 using CivicPulse.Domain.Entities;
 using CivicPulse.Domain.Enums;
 using CivicPulse.Infrastructure.Data;
@@ -12,14 +13,17 @@ public sealed class OperatorReportsService : IOperatorReportsService
 {
     private readonly CivicPulseDbContext _db;
     private readonly IUploadsService _uploadsService;
+    private readonly IEmailNotificationService _emailNotificationService;
     private const int SpamStrikeRestrictionThreshold = 3;
 
     public OperatorReportsService(
         CivicPulseDbContext db,
-        IUploadsService uploadsService)
+        IUploadsService uploadsService,
+        IEmailNotificationService emailNotificationService)
     {
         _db = db;
         _uploadsService = uploadsService;
+        _emailNotificationService = emailNotificationService;
     }
 
     public async Task<IReadOnlyList<OperatorReportListItemDto>> GetAssignedReportsAsync(
@@ -222,6 +226,8 @@ public sealed class OperatorReportsService : IOperatorReportsService
         report.UpdatedAtUtc = DateTime.UtcNow;
 
         await _db.SaveChangesAsync();
+
+        await _emailNotificationService.QueueReportStatusUpdatedNotificationAsync(report);
     }
 
     public async Task MarkReportAsSpamAsync(Guid currentUserId, Guid reportId, MarkReportAsSpamRequestDto request)
