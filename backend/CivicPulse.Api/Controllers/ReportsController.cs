@@ -52,18 +52,31 @@ public class ReportsController : ControllerBase
     [HttpGet("my")]
     [ProducesResponseType(typeof(IReadOnlyList<MyReportItemDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status403Forbidden)]
     public async Task<ActionResult<IReadOnlyList<MyReportItemDto>>> GetMyReports()
     {
-        if (!TryGetCurrentUserId(out var currentUserId))
-            return Unauthorized(new ErrorResponseDto { Message = "Invalid user token." });
+        try
+        {
+            if (!TryGetCurrentUserId(out var currentUserId))
+                return Unauthorized(new ErrorResponseDto { Message = "Invalid user token." });
 
-        var result = await _reportsService.GetMyReportsAsync(currentUserId);
-        return Ok(result);
+            var result = await _reportsService.GetMyReportsAsync(currentUserId);
+            return Ok(result);
+        }
+        catch (UnauthorizedException ex)
+        {
+            return Unauthorized(new ErrorResponseDto { Message = ex.Message });
+        }
+        catch (ForbiddenException ex)
+        {
+            return StatusCode(StatusCodes.Status403Forbidden, new ErrorResponseDto { Message = ex.Message });
+        }
     }
 
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(ReportDetailsDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ReportDetailsDto>> GetById(Guid id)
     {
@@ -74,6 +87,18 @@ public class ReportsController : ControllerBase
 
             var result = await _reportsService.GetByIdAsync(currentUserId, id);
             return Ok(result);
+        }
+        catch (UnauthorizedException ex)
+        {
+            return Unauthorized(new ErrorResponseDto { Message = ex.Message });
+        }
+        catch (ForbiddenException ex)
+        {
+            return StatusCode(StatusCodes.Status403Forbidden, new ErrorResponseDto { Message = ex.Message });
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(new ErrorResponseDto { Message = ex.Message });
         }
         catch (StorageObjectNotFoundException ex)
         {
