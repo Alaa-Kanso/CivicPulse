@@ -6,7 +6,6 @@ class ErrorInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     final apiException = _mapError(err);
 
-    // attach transformed error
     handler.reject(
       DioException(
         requestOptions: err.requestOptions,
@@ -21,13 +20,9 @@ class ErrorInterceptor extends Interceptor {
     final response = e.response;
     final data = response?.data;
 
-    // ===============================
-    // 🌐 SERVER RESPONSE ERRORS
-    // ===============================
     if (response != null && data is Map) {
       final statusCode = response.statusCode;
 
-      // 🔐 Unauthorized
       if (statusCode == 401) {
         return ApiException(
           message: data['message'] ?? "Unauthorized",
@@ -36,7 +31,6 @@ class ErrorInterceptor extends Interceptor {
         );
       }
 
-      // 🧾 Validation errors (ModelState style)
       if (data['errors'] != null) {
         return ApiException(
           message: _parseModelState(data['errors']),
@@ -54,9 +48,6 @@ class ErrorInterceptor extends Interceptor {
       );
     }
 
-    // ===============================
-    // 🌐 NETWORK ERRORS
-    // ===============================
     switch (e.type) {
       case DioExceptionType.connectionTimeout:
         return ApiException(
@@ -88,10 +79,7 @@ class ErrorInterceptor extends Interceptor {
     }
   }
 
-  // ===============================
-  // 🧾 MODELSTATE PARSER
-  // ===============================
-  String _parseModelState(Map<String, String> errors) {
-    return errors.values.join('\n');
+  String _parseModelState(Map<String, dynamic> errors) {
+    return errors.values.expand((e) => e is List ? e : [e]).join('\n');
   }
 }

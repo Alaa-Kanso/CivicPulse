@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:frontend/core/network/exceptions/api_exception.dart';
 import 'package:frontend/core/network/request_deduplicator.dart';
 
 class ApiClient {
@@ -105,14 +106,22 @@ class ApiClient {
     bool deduplicate = false,
     Map<String, dynamic>? query,
     dynamic data,
-  }) {
+  })async {
     final key = _generateKey(method, path, query, data);
+    try{
+      if (!deduplicate) {
+        return await request();
+      }
 
-    if (!deduplicate) {
-      return request();
+      return await deduplicator.run<T>(key, request);
+    }on DioException catch(e){
+      if (e.error is ApiException) {
+        throw e.error as ApiException;
+      }
+
+      rethrow;
     }
 
-    return deduplicator.run<T>(key, request);
   }
 
   String _generateKey(
