@@ -17,4 +17,5 @@ public class ReportType
     public int SortOrder { get; set; } = 0;
 
     public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
+    public ICollection<ReportGroup> ReportGroups { get; set; } = new List<ReportGroup>();
 }

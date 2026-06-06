@@ -23,4 +23,6 @@ public sealed class MyReportItemDto
 
     public bool RequiresAdminRouting { get; set; }
     public string? AdminRoutingReason { get; set; }
+
+    public Guid? ReportGroupId { get; set; }
 }

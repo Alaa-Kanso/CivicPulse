@@ -14,6 +14,8 @@ public sealed class AdminRoutedReportListItemDto
     public string AdminRoutingReason { get; set; } = string.Empty;
 
     public string ImageKey { get; set; } = string.Empty;
+    public string? ImageUrl { get; set; }
+    
     public string Description { get; set; } = string.Empty;
     public string? AddressDetails { get; set; }
 

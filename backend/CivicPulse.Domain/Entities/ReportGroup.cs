@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using NetTopologySuite.Geometries;
-using CivicPulse.Domain.Enums;
 
 namespace CivicPulse.Domain.Entities;
 
@@ -16,13 +15,8 @@ public class ReportGroup
     public long MunicipalityId { get; set; }
     public Municipality Municipality { get; set; } = default!;
 
-    // Center point of the cluster
     [Required]
-    public Point Center { get; set; } = default!;
-
-    public double RadiusMeters { get; set; } = 50;
-
-    public ReportStatus Status { get; set; } = ReportStatus.Submitted;
+    public Point CenterLocation { get; set; } = default!;
 
     public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAtUtc { get; set; }

@@ -315,7 +315,7 @@ namespace CivicPulse.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Point>("Center")
+                    b.Property<Point>("CenterLocation")
                         .IsRequired()
                         .HasColumnType("geometry(Point,4326)");
 
@@ -325,13 +325,7 @@ namespace CivicPulse.Infrastructure.Migrations
                     b.Property<long>("MunicipalityId")
                         .HasColumnType("bigint");
 
-                    b.Property<double>("RadiusMeters")
-                        .HasColumnType("double precision");
-
                     b.Property<int>("ReportTypeId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Status")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedAtUtc")
@@ -339,13 +333,13 @@ namespace CivicPulse.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Center");
+                    b.HasIndex("CenterLocation");
 
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Center"), "GIST");
-
-                    b.HasIndex("MunicipalityId");
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("CenterLocation"), "GIST");
 
                     b.HasIndex("ReportTypeId");
+
+                    b.HasIndex("MunicipalityId", "ReportTypeId");
 
                     b.ToTable("ReportGroups");
                 });
@@ -531,13 +525,13 @@ namespace CivicPulse.Infrastructure.Migrations
             modelBuilder.Entity("CivicPulse.Domain.Entities.ReportGroup", b =>
                 {
                     b.HasOne("CivicPulse.Domain.Entities.Municipality", "Municipality")
-                        .WithMany()
+                        .WithMany("ReportGroups")
                         .HasForeignKey("MunicipalityId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("CivicPulse.Domain.Entities.ReportType", "ReportType")
-                        .WithMany()
+                        .WithMany("ReportGroups")
                         .HasForeignKey("ReportTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -566,12 +560,19 @@ namespace CivicPulse.Infrastructure.Migrations
                 {
                     b.Navigation("Operators");
 
+                    b.Navigation("ReportGroups");
+
                     b.Navigation("Reports");
                 });
 
             modelBuilder.Entity("CivicPulse.Domain.Entities.ReportGroup", b =>
                 {
                     b.Navigation("Reports");
+                });
+
+            modelBuilder.Entity("CivicPulse.Domain.Entities.ReportType", b =>
+                {
+                    b.Navigation("ReportGroups");
                 });
 
             modelBuilder.Entity("CivicPulse.Domain.Entities.User", b =>

@@ -1,6 +1,7 @@
 using CivicPulse.Api.Dtos.OperatorReports;
 using CivicPulse.Api.Exceptions;
 using CivicPulse.Api.Services.Uploads;
+using CivicPulse.Api.Services.Email;
 using CivicPulse.Domain.Entities;
 using CivicPulse.Domain.Enums;
 using CivicPulse.Infrastructure.Data;
@@ -12,14 +13,17 @@ public sealed class OperatorReportsService : IOperatorReportsService
 {
     private readonly CivicPulseDbContext _db;
     private readonly IUploadsService _uploadsService;
+    private readonly IEmailNotificationService _emailNotificationService;
     private const int SpamStrikeRestrictionThreshold = 3;
 
     public OperatorReportsService(
         CivicPulseDbContext db,
-        IUploadsService uploadsService)
+        IUploadsService uploadsService,
+        IEmailNotificationService emailNotificationService)
     {
         _db = db;
         _uploadsService = uploadsService;
+        _emailNotificationService = emailNotificationService;
     }
 
     public async Task<IReadOnlyList<OperatorReportListItemDto>> GetAssignedReportsAsync(
@@ -47,7 +51,8 @@ public sealed class OperatorReportsService : IOperatorReportsService
                 ReportTypeName = r.ReportType.Name,
                 MunicipalityId = r.MunicipalityId!.Value,
                 MunicipalityName = r.Municipality!.Adm3Name,
-                Status = r.Status,
+                r.ImageKey,
+                Status = r.Status.ToString(),
                 r.CreatedAtUtc,
                 r.AddressDetails,
                 Description = r.Description ?? string.Empty,
@@ -67,19 +72,42 @@ public sealed class OperatorReportsService : IOperatorReportsService
                 HasPendingTooManySpamCase = _db.AbuseReports.Any(a =>
                     a.ReportedUserId == r.CreatedByUserId &&
                     a.Status == AbuseReportStatus.Pending &&
-                    a.Type == AbuseReportType.TooManySpammedReports)
+                    a.Type == AbuseReportType.TooManySpammedReports),
+
+                r.ReportGroupId,
+                GroupedReportsCount = r.ReportGroupId != null
+                    ? _db.Reports.Count(x => x.ReportGroupId == r.ReportGroupId)
+                    : 0
             })
             .ToListAsync();
 
-        return reports
-            .Select(r => new OperatorReportListItemDto
+        var result = await Task.WhenAll(reports.Select(async r =>
+        {
+            string? imageUrl = null;
+
+            try
+            {
+                imageUrl = await _uploadsService.CreateSignedReadUrlAsync(r.ImageKey);
+            }
+            catch (StorageObjectNotFoundException)
+            {
+                imageUrl = null;
+            }
+            catch (InvalidOperationException)
+            {
+                imageUrl = null;
+            }
+
+            return new OperatorReportListItemDto
             {
                 Id = r.Id,
                 ReportTypeId = r.ReportTypeId,
                 ReportTypeName = r.ReportTypeName,
                 MunicipalityId = r.MunicipalityId,
                 MunicipalityName = r.MunicipalityName,
-                Status = r.Status.ToString(),
+                ImageKey = r.ImageKey,
+                ImageUrl = imageUrl,
+                Status = r.Status,
                 CreatedAtUtc = r.CreatedAtUtc,
                 AddressDetails = r.AddressDetails,
                 Description = r.Description,
@@ -87,9 +115,13 @@ public sealed class OperatorReportsService : IOperatorReportsService
                 ReportedUserUnderReview = r.ReportedUserUnderReview,
                 ReportedUserIsRestricted = r.ReportedUserIsRestricted,
                 HasPendingManualEscalation = r.HasPendingManualEscalation,
-                HasPendingTooManySpamCase = r.HasPendingTooManySpamCase
-            })
-            .ToList();
+                HasPendingTooManySpamCase = r.HasPendingTooManySpamCase,
+                ReportGroupId = r.ReportGroupId,
+                GroupedReportsCount = r.GroupedReportsCount
+            };
+        }));
+
+        return result;
     }
 
     public async Task<OperatorReportDetailsDto> GetAssignedReportByIdAsync(Guid currentUserId, Guid reportId)
@@ -152,7 +184,12 @@ public sealed class OperatorReportsService : IOperatorReportsService
             ReportedUserUnderReview = reportedUserUnderReview,
             ReportedUserIsRestricted = report.CreatedByUser.Status == UserStatus.Restricted,
             HasPendingManualEscalation = hasPendingManualEscalation,
-            HasPendingTooManySpamCase = hasPendingTooManySpamCase
+            HasPendingTooManySpamCase = hasPendingTooManySpamCase,
+
+            ReportGroupId = report.ReportGroupId,
+            GroupedReportsCount = report.ReportGroupId != null
+                ? await _db.Reports.CountAsync(x => x.ReportGroupId == report.ReportGroupId)
+                : 0,
         };
     }
 
@@ -189,6 +226,8 @@ public sealed class OperatorReportsService : IOperatorReportsService
         report.UpdatedAtUtc = DateTime.UtcNow;
 
         await _db.SaveChangesAsync();
+
+        await _emailNotificationService.QueueReportStatusUpdatedNotificationAsync(report);
     }
 
     public async Task MarkReportAsSpamAsync(Guid currentUserId, Guid reportId, MarkReportAsSpamRequestDto request)
@@ -330,6 +369,35 @@ public sealed class OperatorReportsService : IOperatorReportsService
         await AddMissingEvidenceReportsAsync(abuseReport.Id, new[] { report.Id });
 
         await _db.SaveChangesAsync();
+    }
+
+    public async Task<IReadOnlyList<GroupedReportItemDto>> GetGroupedReportsAsync(Guid currentUserId, Guid reportGroupId)
+    {
+        var operatorUser = await GetValidatedOperatorAsync(currentUserId);
+
+        var groupExistsInOperatorMunicipality = await _db.ReportGroups
+            .AnyAsync(g =>
+                g.Id == reportGroupId &&
+                g.MunicipalityId == operatorUser.AssignedMunicipalityId!.Value);
+
+        if (!groupExistsInOperatorMunicipality)
+            throw new NotFoundException("Report group was not found.");
+
+        return await _db.Reports
+            .AsNoTracking()
+            .Where(r => r.ReportGroupId == reportGroupId)
+            .OrderByDescending(r => r.CreatedAtUtc)
+            .Select(r => new GroupedReportItemDto
+            {
+                Id = r.Id,
+                Status = r.Status.ToString(),
+                IsSpam = r.IsSpam,
+                Description = r.Description ?? string.Empty,
+                CreatedAtUtc = r.CreatedAtUtc,
+                Latitude = r.Location.Y,
+                Longitude = r.Location.X
+            })
+            .ToListAsync();
     }
 
     private async Task<User> GetValidatedOperatorAsync(Guid currentUserId)

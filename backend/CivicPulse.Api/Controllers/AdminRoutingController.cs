@@ -131,6 +131,44 @@ public class AdminRoutingController : ControllerBase
         }
     }
 
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(AdminRoutedReportDetailsDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<AdminRoutedReportDetailsDto>> GetRoutedReportById(Guid id)
+    {
+        try
+        {
+            if (!TryGetCurrentUserId(out var currentUserId))
+                return Unauthorized(new ErrorResponseDto { Message = "Invalid user token." });
+
+            var result = await _adminRoutingService.GetRoutedReportByIdAsync(currentUserId, id);
+            return Ok(result);
+        }
+        catch (UnauthorizedException ex)
+        {
+            return Unauthorized(new ErrorResponseDto { Message = ex.Message });
+        }
+        catch (ForbiddenException ex)
+        {
+            return StatusCode(StatusCodes.Status403Forbidden, new ErrorResponseDto { Message = ex.Message });
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(new ErrorResponseDto { Message = ex.Message });
+        }
+        catch (StorageObjectNotFoundException ex)
+        {
+            return NotFound(new ErrorResponseDto { Message = ex.Message });
+        }
+        catch (InvalidOperationException)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new ErrorResponseDto { Message = "Failed to generate image access URL." });
+        }
+    }
+
     private bool TryGetCurrentUserId(out Guid currentUserId)
     {
         currentUserId = Guid.Empty;

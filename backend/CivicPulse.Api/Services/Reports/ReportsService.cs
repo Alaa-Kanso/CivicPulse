@@ -4,6 +4,8 @@ using CivicPulse.Domain.Entities;
 using CivicPulse.Domain.Enums;
 using CivicPulse.Infrastructure.Data;
 using CivicPulse.Api.Services.Uploads;
+using CivicPulse.Api.Services.ReportGrouping;
+using CivicPulse.Api.Services.Email;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 
@@ -13,13 +15,21 @@ public sealed class ReportsService : IReportsService
 {
     private readonly CivicPulseDbContext _db;
     private readonly IUploadsService _uploadsService;
+    private readonly IReportGroupingService _reportGroupingService;
+    private readonly IEmailNotificationService _emailNotificationService;
+
+    private const double ReportGroupingRadiusMeters = 50;
 
     public ReportsService(
         CivicPulseDbContext db,
-        IUploadsService uploadsService)
+        IUploadsService uploadsService,
+        IReportGroupingService reportGroupingService,
+        IEmailNotificationService emailNotificationService)
     {
         _db = db;
         _uploadsService = uploadsService;
+        _reportGroupingService = reportGroupingService;
+        _emailNotificationService = emailNotificationService;
     }
 
     public async Task<IReadOnlyList<ReportTypeDto>> GetReportTypesAsync()
@@ -118,8 +128,15 @@ public sealed class ReportsService : IReportsService
             CreatedAtUtc = DateTime.UtcNow
         };
 
+        await _reportGroupingService.AssignGroupAsync(report);
+
         _db.Reports.Add(report);
         await _db.SaveChangesAsync();
+
+        if (!report.RequiresAdminRouting)
+        {
+            await _emailNotificationService.QueueNewReportNotificationAsync(report);
+        }
 
         return new MyReportItemDto
         {
@@ -137,7 +154,8 @@ public sealed class ReportsService : IReportsService
             Latitude = request.Latitude,
             Longitude = request.Longitude,
             RequiresAdminRouting = report.RequiresAdminRouting,
-            AdminRoutingReason = report.AdminRoutingReason?.ToString()
+            AdminRoutingReason = report.AdminRoutingReason?.ToString(),
+            ReportGroupId = report.ReportGroupId
         };
     }
 
@@ -176,7 +194,8 @@ public sealed class ReportsService : IReportsService
                 r.RequiresAdminRouting,
                 AdminRoutingReason = r.AdminRoutingReason != null
                     ? r.AdminRoutingReason.ToString()
-                    : null
+                    : null,
+                r.ReportGroupId
             })
             .ToListAsync();
 
@@ -213,7 +232,8 @@ public sealed class ReportsService : IReportsService
                 Latitude = r.Latitude,
                 Longitude = r.Longitude,
                 RequiresAdminRouting = r.RequiresAdminRouting,
-                AdminRoutingReason = r.AdminRoutingReason
+                AdminRoutingReason = r.AdminRoutingReason,
+                ReportGroupId = r.ReportGroupId
             };
         }));
 
@@ -262,7 +282,66 @@ public sealed class ReportsService : IReportsService
             Latitude = report.Location.Y,
             Longitude = report.Location.X,
             RequiresAdminRouting = report.RequiresAdminRouting,
-            AdminRoutingReason = report.AdminRoutingReason?.ToString()
+            AdminRoutingReason = report.AdminRoutingReason?.ToString(),
+            ReportGroupId = report.ReportGroupId
         };
+    }
+
+    private async Task<ReportGroup?> FindNearbyReportGroupAsync(long municipalityId, int reportTypeId, Point point)
+    {
+        var candidateGroups = await _db.ReportGroups
+            .AsNoTracking()
+            .Where(g =>
+                g.MunicipalityId == municipalityId &&
+                g.ReportTypeId == reportTypeId)
+            .Select(g => new
+            {
+                Group = g,
+                Latitude = g.CenterLocation.Y,
+                Longitude = g.CenterLocation.X
+            })
+            .ToListAsync();
+
+        var targetLatitude = point.Y;
+        var targetLongitude = point.X;
+
+        var nearest = candidateGroups
+            .Select(x => new
+            {
+                x.Group,
+                DistanceMeters = CalculateDistanceMeters(
+                    targetLatitude,
+                    targetLongitude,
+                    x.Latitude,
+                    x.Longitude)
+            })
+            .Where(x => x.DistanceMeters <= ReportGroupingRadiusMeters)
+            .OrderBy(x => x.DistanceMeters)
+            .FirstOrDefault();
+
+        return nearest?.Group;
+    }
+
+    private static double CalculateDistanceMeters(
+        double lat1,
+        double lon1,
+        double lat2,
+        double lon2)
+    {
+        const double earthRadiusMeters = 6371000;
+
+        static double ToRadians(double degrees) => degrees * Math.PI / 180.0;
+
+        var dLat = ToRadians(lat2 - lat1);
+        var dLon = ToRadians(lon2 - lon1);
+
+        var a =
+            Math.Pow(Math.Sin(dLat / 2), 2) +
+            Math.Cos(ToRadians(lat1)) *
+            Math.Cos(ToRadians(lat2)) *
+            Math.Pow(Math.Sin(dLon / 2), 2);
+
+        var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+        return earthRadiusMeters * c;
     }
 }
