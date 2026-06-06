@@ -73,6 +73,8 @@ class AdminSideBar extends StatelessWidget {
           const SizedBox(height: 5.0),
           _navItem(title: "Rerouting Reports", index: 1, icon: Icons.route),
           const SizedBox(height: 10.0),
+          _navItem(title: "Abuse Reports", index: 2, icon: Icons.report_sharp),
+          const SizedBox(height: 10.0),
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: ActionButton(

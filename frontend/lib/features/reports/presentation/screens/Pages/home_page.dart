@@ -6,8 +6,10 @@ import 'package:frontend/config/settings/app_colors.dart';
 import 'package:frontend/core/di/injection_container.dart';
 import 'package:frontend/features/auth/domain/entities/user.dart';
 import 'package:frontend/features/operator/presentation/cubit/all_municipalities_cubit.dart';
+import 'package:frontend/features/reports/presentation/cubit/operator_reports_cubit.dart';
 import 'package:frontend/features/reports/presentation/screens/Admin/pages/admin_home_page.dart';
 import 'package:frontend/features/reports/presentation/screens/Citizen/nav/citizen_nav.dart';
+import 'package:frontend/features/reports/presentation/screens/operator/pages/operator_home_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key, required this.user});
@@ -24,6 +26,13 @@ class HomePage extends StatelessWidget {
         create: (BuildContext context) =>
             sl<AllMunicipalitiesCubit>()..getAllMunicipalities(),
         child: const AdminHomePage(),
+      );
+    }
+    if (kIsWeb && user.role == "Operator") {
+      return BlocProvider(
+        create: (BuildContext context) =>
+            sl<OperatorReportsCubit>()..getReportsAndCategoryTypes(),
+        child: const OperatorHomePage(),
       );
     }
     return Scaffold(

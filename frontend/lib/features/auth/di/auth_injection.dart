@@ -29,7 +29,7 @@ Future<void> authInit() async {
   final baseOptions = BaseOptions(
     baseUrl: (DeviceInfo.getDevicePlatform() == "Web")
         ? "http://localhost:5139/api"
-        : "http://192.168.0.199:5139/api",
+        : "http://192.168.0.198:5139/api",
     connectTimeout: const Duration(seconds: 15),
     receiveTimeout: const Duration(seconds: 15),
     headers: {'Content-Type': 'application/json'},

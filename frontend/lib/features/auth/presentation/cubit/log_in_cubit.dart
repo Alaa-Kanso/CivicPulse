@@ -21,7 +21,6 @@ class LogInCubit extends Cubit<LogInState> {
       await logInUseCase.call(email, password);
       emit(LogInSuccess());
     } catch (e) {
-      print(e.toString());
       emit(LogInError(error: e.toString()));
     }
   }

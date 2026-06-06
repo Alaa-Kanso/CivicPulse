@@ -5,10 +5,14 @@ import 'package:frontend/core/di/injection_container.dart';
 import 'package:frontend/core/network/api_client.dart';
 import 'package:frontend/core/session/session_manager.dart';
 import 'package:frontend/features/reports/data/models/admin_reroute_report_model.dart';
+import 'package:frontend/features/reports/data/models/operator_report_details_model.dart';
+import 'package:frontend/features/reports/data/models/operator_report_model.dart';
 import 'package:frontend/features/reports/data/models/report_model.dart';
 import 'package:frontend/features/reports/data/models/report_type_model.dart';
 import 'package:frontend/features/reports/data/models/upload_image_init_model.dart';
 import 'package:frontend/features/reports/domain/entities/admin_reroute_report.dart';
+import 'package:frontend/features/reports/domain/entities/operator_report.dart';
+import 'package:frontend/features/reports/domain/entities/operator_report_details.dart';
 
 class ReportRemoteDataSource {
   final ApiClient apiClient;
@@ -126,6 +130,64 @@ class ReportRemoteDataSource {
       deduplicate: true,
       options: Options(extra: {"noAuth": false}),
       data: {"municipalityId": municipalityId},
+    );
+  }
+
+  Future<List<OperatorReport>> getOperatorReports() async {
+    final response = await apiClient.get<List<dynamic>>(
+      "/operator/reports",
+      options: Options(extra: {"noAuth": false}),
+      deduplicate: true,
+      query: {"isSpam": false},
+    );
+    List<OperatorReport> operatorReports = response
+        .map((e) => OperatorReportModel.fromJson(e as Map<String, dynamic>))
+        .toList();
+    return operatorReports;
+  }
+
+  Future<OperatorReportDetails> getOperatorReportDetails({
+    required String id,
+  }) async {
+    final response = await apiClient.get<Map<String, dynamic>>(
+      "/operator/reports/$id",
+      options: Options(extra: {"noAuth": false}),
+      deduplicate: true,
+    );
+    return OperatorReportDetailsModel.fromJson(response);
+  }
+
+  Future<void> markAsSpam({
+    required String reportId,
+    required String reason,
+  }) async {
+    await apiClient.post(
+      "/operator/reports/$reportId/spam",
+      deduplicate: true,
+      options: Options(extra: {"noAuth": false}),
+      data: {"reason": reason},
+    );
+  }
+
+  Future<void> markAsEscalate({
+    required String reportId,
+    required String reason,
+  }) async {
+    await apiClient.post(
+      "/operator/reports/$reportId/escalate",
+      deduplicate: true,
+      options: Options(extra: {"noAuth": false}),
+      data: {"reason": reason},
+    );
+  }Future<void> changeStatus({
+    required String reportId,
+    required String status,
+  }) async {
+    await apiClient.patch(
+      "/operator/reports/$reportId/status",
+      deduplicate: true,
+      options: Options(extra: {"noAuth": false}),
+      data: {"status": status},
     );
   }
 }

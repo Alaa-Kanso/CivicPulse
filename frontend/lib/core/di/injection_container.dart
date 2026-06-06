@@ -1,5 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/core/session/session_manager.dart';
+import 'package:frontend/features/abuse_report/di/abuse_report_injection.dart';
 import 'package:frontend/features/auth/di/auth_injection.dart';
 import 'package:frontend/features/onboarding/di/onboarding_injection.dart';
 import 'package:frontend/features/operator/di/operator_injection.dart';
@@ -15,6 +16,7 @@ Future<void> initDependencies() async {
   await authInit();
   await reportInit();
   await operatorInit();
+  await abuseReportInit();
 }
 
 Future<void> coreInit() async {

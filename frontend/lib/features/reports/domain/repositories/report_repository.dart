@@ -3,6 +3,8 @@ import 'dart:typed_data';
 import 'package:frontend/features/reports/data/models/report_type_model.dart';
 import 'package:frontend/features/reports/data/models/upload_image_init_model.dart';
 import 'package:frontend/features/reports/domain/entities/admin_reroute_report.dart';
+import 'package:frontend/features/reports/domain/entities/operator_report.dart';
+import 'package:frontend/features/reports/domain/entities/operator_report_details.dart';
 import 'package:frontend/features/reports/domain/entities/report.dart';
 
 abstract class ReportRepository {
@@ -41,4 +43,17 @@ abstract class ReportRepository {
     required String reportId,
     required int municipalityId,
   });
+
+  Future<List<OperatorReport>> getOperatorReports();
+
+  Future<OperatorReportDetails> getOperatorReportDetails({required String id});
+
+  Future<void> markAsSpam({required String reportId, required String reason});
+
+  Future<void> markAsEscalate({
+    required String reportId,
+    required String reason,
+  });
+
+  Future<void> changeStatus({required String reportId, required String status});
 }

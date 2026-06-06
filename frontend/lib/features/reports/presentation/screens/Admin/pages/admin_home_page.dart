@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/core/di/injection_container.dart';
+import 'package:frontend/features/abuse_report/presentation/cubit/abuse_report_cubit.dart';
+import 'package:frontend/features/abuse_report/presentation/screens/admin/page/admin_abuse_reports_page.dart';
 import 'package:frontend/features/operator/presentation/cubit/create_operator_cubit.dart';
 import 'package:frontend/features/operator/presentation/screens/admin/pages/admin_create_operator_page.dart';
 import 'package:frontend/features/reports/presentation/cubit/rerouting_report_cubit.dart';
@@ -25,6 +27,10 @@ class _AdminHomePageState extends State<AdminHomePage> {
     BlocProvider(
       create: (BuildContext context) => sl<ReroutingReportCubit>(),
       child: AdminReroutingReportsPage(),
+    ),
+    BlocProvider(
+      create: (BuildContext context) => sl<AbuseReportCubit>()..getAbuseReportUseCase,
+      child: AdminAbuseReportsPage(),
     ),
   ];
 
