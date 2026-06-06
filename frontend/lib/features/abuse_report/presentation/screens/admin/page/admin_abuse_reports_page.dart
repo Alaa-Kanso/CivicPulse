@@ -19,8 +19,6 @@ class AdminAbuseReportsPage extends StatefulWidget {
 
 class _AdminAbuseReportsPageState extends State<AdminAbuseReportsPage> {
   String _searchQuery = '';
-  String _statusFilter = 'All';
-  bool _sortByStrikes = false;
 
   final TextEditingController _searchController = TextEditingController();
 
@@ -40,25 +38,13 @@ class _AdminAbuseReportsPageState extends State<AdminAbuseReportsPage> {
   List<AbuseReport> _getFilteredReports(List<AbuseReport> reports) {
     final filtered = reports.where((r) {
       final q = _searchQuery.toLowerCase();
-      final matchesSearch =
-          r.reportedUserEmail.toLowerCase().contains(q) ||
+      return r.reportedUserEmail.toLowerCase().contains(q) ||
           r.reportedUserEmail.toLowerCase().contains(q) ||
           r.reason.toLowerCase().contains(q) ||
           r.type.toLowerCase().contains(q);
-      final matchesStatus =
-          _statusFilter == 'All' ||
-          r.moderationStatus.toLowerCase() == _statusFilter.toLowerCase();
-      return matchesSearch && matchesStatus;
     }).toList();
 
-    if (_sortByStrikes) {
-      filtered.sort(
-        (a, b) =>
-            b.reportedUserSpamStrikes.compareTo(a.reportedUserSpamStrikes),
-      );
-    } else {
-      filtered.sort((a, b) => b.createdAtUtc.compareTo(a.createdAtUtc));
-    }
+    filtered.sort((a, b) => b.createdAtUtc.compareTo(a.createdAtUtc));
 
     return filtered;
   }
@@ -92,9 +78,7 @@ class _AdminAbuseReportsPageState extends State<AdminAbuseReportsPage> {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildFilterBar(),
-                          const SizedBox(height: 12),
-                          _buildMetaAndSortRow(filtered.length),
+                          _buildSearchBar(),
                           const SizedBox(height: 12),
                           Expanded(
                             child: filtered.isEmpty
@@ -236,128 +220,53 @@ class _AdminAbuseReportsPageState extends State<AdminAbuseReportsPage> {
     );
   }
 
-  Widget _buildFilterBar() {
-    return Column(
-      children: [
-        TextField(
-          controller: _searchController,
-          onChanged: (val) => setState(() => _searchQuery = val),
-          decoration: InputDecoration(
-            hintText: 'Search by email, reason, or type…',
-            prefixIcon: const Icon(
-              Icons.search,
-              size: 20,
-              color: AppColors.textSecondary,
-            ),
-            suffixIcon: _searchQuery.isNotEmpty
-                ? IconButton(
-                    icon: const Icon(Icons.clear, size: 18),
-                    onPressed: () {
-                      _searchController.clear();
-                      setState(() => _searchQuery = '');
-                    },
-                  )
-                : null,
-            isDense: true,
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 12,
-            ),
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: AppColors.border.withValues(alpha: 0.5),
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: AppColors.border.withValues(alpha: 0.5),
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(
-                color: AppColors.primary,
-                width: 1.5,
-              ),
-            ),
+  Widget _buildSearchBar() {
+    return TextField(
+      controller: _searchController,
+      onChanged: (val) => setState(() => _searchQuery = val),
+      decoration: InputDecoration(
+        hintText: 'Search by email, reason, or type…',
+        prefixIcon: const Icon(
+          Icons.search,
+          size: 20,
+          color: AppColors.textSecondary,
+        ),
+        suffixIcon: _searchQuery.isNotEmpty
+            ? IconButton(
+                icon: const Icon(Icons.clear, size: 18),
+                onPressed: () {
+                  _searchController.clear();
+                  setState(() => _searchQuery = '');
+                },
+              )
+            : null,
+        isDense: true,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: AppColors.border.withValues(alpha: 0.5),
           ),
         ),
-        const SizedBox(height: 10),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: ['All', 'Pending', 'Reviewed', 'Dismissed'].map((status) {
-              final isSelected = _statusFilter == status;
-              return Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: ChoiceChip(
-                  label: Text(
-                    status,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: isSelected
-                          ? FontWeight.bold
-                          : FontWeight.normal,
-                      color: isSelected ? Colors.white : AppColors.textPrimary,
-                    ),
-                  ),
-                  selected: isSelected,
-                  selectedColor: AppColors.primary,
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    side: BorderSide(
-                      color: isSelected ? AppColors.primary : AppColors.border,
-                    ),
-                  ),
-                  onSelected: (selected) {
-                    if (selected) setState(() => _statusFilter = status);
-                  },
-                ),
-              );
-            }).toList(),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: AppColors.border.withValues(alpha: 0.5),
           ),
         ),
-      ],
-    );
-  }
-
-  Widget _buildMetaAndSortRow(int count) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          '$count report${count == 1 ? '' : 's'} found',
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textSecondary,
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(
+            color: AppColors.primary,
+            width: 1.5,
           ),
         ),
-        Row(
-          children: [
-            const Text(
-              'Sort by strikes',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            const SizedBox(width: 4),
-            Checkbox(
-              value: _sortByStrikes,
-              activeColor: AppColors.primary,
-              visualDensity: VisualDensity.compact,
-              onChanged: (val) => setState(() => _sortByStrikes = val ?? false),
-            ),
-          ],
-        ),
-      ],
+      ),
     );
   }
 
@@ -498,7 +407,7 @@ class _AdminAbuseReportsPageState extends State<AdminAbuseReportsPage> {
             ),
             const SizedBox(height: 12),
             const Text(
-              'No reports match your filters',
+              'No reports match your search',
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
@@ -507,7 +416,7 @@ class _AdminAbuseReportsPageState extends State<AdminAbuseReportsPage> {
             ),
             const SizedBox(height: 6),
             const Text(
-              'Try adjusting your search query or status filters.',
+              'Try adjusting your search query.',
               style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
             ),
           ],

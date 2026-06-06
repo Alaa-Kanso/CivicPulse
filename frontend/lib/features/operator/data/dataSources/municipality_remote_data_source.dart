@@ -10,7 +10,7 @@ class MunicipalityRemoteDataSource {
 
   Future<List<Municipality>> getAllMunicipalities() async {
     final response = await apiClient.get(
-      "/admin/reroute-target-municipalities",
+      "/admin/operators/available-municipalities",
       deduplicate: true,
       options: Options(extra: {"noAuth": false}),
     );

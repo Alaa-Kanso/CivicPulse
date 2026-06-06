@@ -37,6 +37,7 @@ class AbuseReportRemoteDataSource {
       "$base/$id/block-user",
       deduplicate: true,
       options: Options(extra: {"noAuth": false}),
+      data: {},
     );
   }
 
@@ -45,6 +46,7 @@ class AbuseReportRemoteDataSource {
       "$base/$id/dismiss",
       deduplicate: true,
       options: Options(extra: {"noAuth": false}),
+      data: {},
     );
   }
 }
