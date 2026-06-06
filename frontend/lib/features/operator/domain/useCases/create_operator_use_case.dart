@@ -1,4 +1,4 @@
-import 'package:frontend/features/operator/domain/repositories/operator_repository.dart';
+import 'package:CivicPulse/features/operator/domain/repositories/operator_repository.dart';
 
 class CreateOperatorUseCase {
   final OperatorRepository operatorRepository;

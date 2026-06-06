@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/features/abuse_report/domain/useCases/block_reported_user_use_case.dart';
-import 'package:frontend/features/abuse_report/domain/useCases/dismiss_report_use_case.dart';
-import 'package:frontend/features/abuse_report/presentation/cubit/abuse_report_actions_state.dart';
+import 'package:CivicPulse/features/abuse_report/domain/useCases/block_reported_user_use_case.dart';
+import 'package:CivicPulse/features/abuse_report/domain/useCases/dismiss_report_use_case.dart';
+import 'package:CivicPulse/features/abuse_report/presentation/cubit/abuse_report_actions_state.dart';
 
 class AbuseReportActionsCubit extends Cubit<AbuseReportActionsState> {
   AbuseReportActionsCubit({

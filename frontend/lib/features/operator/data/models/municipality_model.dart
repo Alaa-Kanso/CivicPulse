@@ -1,4 +1,4 @@
-import 'package:frontend/features/operator/domain/entities/municipality.dart';
+import 'package:CivicPulse/features/operator/domain/entities/municipality.dart';
 
 class MunicipalityModel extends Municipality {
   const MunicipalityModel({

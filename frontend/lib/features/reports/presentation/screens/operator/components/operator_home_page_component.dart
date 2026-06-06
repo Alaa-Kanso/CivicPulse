@@ -1,16 +1,16 @@
+import 'package:CivicPulse/features/reports/domain/entities/report_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/Component/components.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/core/di/injection_container.dart';
-import 'package:frontend/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:frontend/features/reports/domain/entities/operator_report.dart';
-import 'package:frontend/features/reports/domain/entities/report_type.dart';
-import 'package:frontend/features/reports/presentation/cubit/operator_manager_cubit.dart';
-import 'package:frontend/features/reports/presentation/cubit/operator_report_details_cubit.dart';
-import 'package:frontend/features/reports/presentation/cubit/operator_reports_cubit.dart';
-import 'package:frontend/features/reports/presentation/cubit/operator_reports_state.dart';
-import 'package:frontend/features/reports/presentation/screens/operator/pages/operator_report_details_page.dart';
+import 'package:CivicPulse/Component/components.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/core/di/injection_container.dart';
+import 'package:CivicPulse/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:CivicPulse/features/reports/domain/entities/operator_report.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/operator_manager_cubit.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/operator_report_details_cubit.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/operator_reports_cubit.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/operator_reports_state.dart';
+import 'package:CivicPulse/features/reports/presentation/screens/operator/pages/operator_report_details_page.dart';
 
 class OperatorSideBar extends StatelessWidget {
   const OperatorSideBar({super.key});

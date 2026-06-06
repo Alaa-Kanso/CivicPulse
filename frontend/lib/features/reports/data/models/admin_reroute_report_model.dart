@@ -1,4 +1,4 @@
-import 'package:frontend/features/reports/domain/entities/admin_reroute_report.dart';
+import 'package:CivicPulse/features/reports/domain/entities/admin_reroute_report.dart';
 
 class AdminRerouteReportModel extends AdminRerouteReport {
   AdminRerouteReportModel({

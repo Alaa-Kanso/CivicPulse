@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/features/abuse_report/presentation/cubit/abuse_report_actions_cubit.dart';
-import 'package:frontend/features/abuse_report/presentation/cubit/abuse_report_actions_state.dart';
-import 'package:frontend/features/abuse_report/presentation/cubit/abuse_report_details_cubit.dart';
-import 'package:frontend/features/abuse_report/presentation/cubit/abuse_report_details_state.dart';
-import 'package:frontend/features/abuse_report/presentation/screens/admin/component/admin_abuse_report_details_page_components.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/features/abuse_report/presentation/cubit/abuse_report_actions_cubit.dart';
+import 'package:CivicPulse/features/abuse_report/presentation/cubit/abuse_report_actions_state.dart';
+import 'package:CivicPulse/features/abuse_report/presentation/cubit/abuse_report_details_cubit.dart';
+import 'package:CivicPulse/features/abuse_report/presentation/cubit/abuse_report_details_state.dart';
+import 'package:CivicPulse/features/abuse_report/presentation/screens/admin/component/admin_abuse_report_details_page_components.dart';
 
 class AdminAbuseReportDetailsPage extends StatefulWidget {
   const AdminAbuseReportDetailsPage({super.key, required this.id});

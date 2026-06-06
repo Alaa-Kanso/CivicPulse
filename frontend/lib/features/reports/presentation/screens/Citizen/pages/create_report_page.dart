@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/features/reports/presentation/cubit/create_report_cubit.dart';
-import 'package:frontend/features/reports/presentation/cubit/create_report_state.dart';
-import 'package:frontend/features/reports/presentation/screens/Citizen/components/create_report_page_component.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/create_report_cubit.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/create_report_state.dart';
+import 'package:CivicPulse/features/reports/presentation/screens/Citizen/components/create_report_page_component.dart';
 
 class CreateReportPage extends StatefulWidget {
   const CreateReportPage({super.key});

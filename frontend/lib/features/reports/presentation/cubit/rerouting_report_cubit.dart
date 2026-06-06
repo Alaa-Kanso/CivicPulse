@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/features/reports/domain/entities/admin_reroute_report.dart';
-import 'package:frontend/features/reports/domain/useCases/delete_report_use_case.dart';
-import 'package:frontend/features/reports/domain/useCases/get_admin_rerouting_reports_use_case.dart';
-import 'package:frontend/features/reports/domain/useCases/reroute_municipality_use_case.dart';
-import 'package:frontend/features/reports/presentation/cubit/rerouting_report_state.dart';
+import 'package:CivicPulse/features/reports/domain/entities/admin_reroute_report.dart';
+import 'package:CivicPulse/features/reports/domain/useCases/delete_report_use_case.dart';
+import 'package:CivicPulse/features/reports/domain/useCases/get_admin_rerouting_reports_use_case.dart';
+import 'package:CivicPulse/features/reports/domain/useCases/reroute_municipality_use_case.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/rerouting_report_state.dart';
 
 class ReroutingReportCubit extends Cubit<ReroutingReportState> {
   ReroutingReportCubit({

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/core/di/injection_container.dart';
-import 'package:frontend/features/operator/presentation/cubit/assigned_municipalities_cubit.dart';
-import 'package:frontend/features/reports/domain/entities/admin_reroute_report.dart';
-import 'package:frontend/features/reports/presentation/cubit/rerouting_report_cubit.dart';
-import 'package:frontend/features/reports/presentation/screens/Admin/pages/admin_view_rerouting_report_page.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/core/di/injection_container.dart';
+import 'package:CivicPulse/features/operator/presentation/cubit/assigned_municipalities_cubit.dart';
+import 'package:CivicPulse/features/reports/domain/entities/admin_reroute_report.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/rerouting_report_cubit.dart';
+import 'package:CivicPulse/features/reports/presentation/screens/Admin/pages/admin_view_rerouting_report_page.dart';
 
 class ReroutingReportCard extends StatelessWidget {
   const ReroutingReportCard({super.key, required this.report});

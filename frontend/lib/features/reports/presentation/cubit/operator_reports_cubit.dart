@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/features/reports/domain/entities/operator_report.dart';
-import 'package:frontend/features/reports/domain/entities/report_type.dart';
-import 'package:frontend/features/reports/domain/useCases/get_category_types_use_case.dart';
-import 'package:frontend/features/reports/domain/useCases/operator_reports_use_case.dart';
-import 'package:frontend/features/reports/presentation/cubit/operator_reports_state.dart';
+import 'package:CivicPulse/features/reports/domain/entities/operator_report.dart';
+import 'package:CivicPulse/features/reports/domain/entities/report_type.dart';
+import 'package:CivicPulse/features/reports/domain/useCases/get_category_types_use_case.dart';
+import 'package:CivicPulse/features/reports/domain/useCases/operator_reports_use_case.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/operator_reports_state.dart';
 
 class OperatorReportsCubit extends Cubit<OperatorReportsState> {
   OperatorReportsCubit({

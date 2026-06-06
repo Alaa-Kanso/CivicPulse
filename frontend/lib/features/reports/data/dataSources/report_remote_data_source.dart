@@ -1,18 +1,18 @@
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
-import 'package:frontend/core/di/injection_container.dart';
-import 'package:frontend/core/network/api_client.dart';
-import 'package:frontend/core/session/session_manager.dart';
-import 'package:frontend/features/reports/data/models/admin_reroute_report_model.dart';
-import 'package:frontend/features/reports/data/models/operator_report_details_model.dart';
-import 'package:frontend/features/reports/data/models/operator_report_model.dart';
-import 'package:frontend/features/reports/data/models/report_model.dart';
-import 'package:frontend/features/reports/data/models/report_type_model.dart';
-import 'package:frontend/features/reports/data/models/upload_image_init_model.dart';
-import 'package:frontend/features/reports/domain/entities/admin_reroute_report.dart';
-import 'package:frontend/features/reports/domain/entities/operator_report.dart';
-import 'package:frontend/features/reports/domain/entities/operator_report_details.dart';
+import 'package:CivicPulse/core/di/injection_container.dart';
+import 'package:CivicPulse/core/network/api_client.dart';
+import 'package:CivicPulse/core/session/session_manager.dart';
+import 'package:CivicPulse/features/reports/data/models/admin_reroute_report_model.dart';
+import 'package:CivicPulse/features/reports/data/models/operator_report_details_model.dart';
+import 'package:CivicPulse/features/reports/data/models/operator_report_model.dart';
+import 'package:CivicPulse/features/reports/data/models/report_model.dart';
+import 'package:CivicPulse/features/reports/data/models/report_type_model.dart';
+import 'package:CivicPulse/features/reports/data/models/upload_image_init_model.dart';
+import 'package:CivicPulse/features/reports/domain/entities/admin_reroute_report.dart';
+import 'package:CivicPulse/features/reports/domain/entities/operator_report.dart';
+import 'package:CivicPulse/features/reports/domain/entities/operator_report_details.dart';
 
 class ReportRemoteDataSource {
   final ApiClient apiClient;

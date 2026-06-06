@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:frontend/features/reports/domain/entities/admin_reroute_report.dart';
+import 'package:CivicPulse/features/reports/domain/entities/admin_reroute_report.dart';
 
 abstract class ReroutingReportState extends Equatable {
   @override

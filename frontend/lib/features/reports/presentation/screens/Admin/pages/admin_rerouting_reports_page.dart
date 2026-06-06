@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/features/reports/presentation/cubit/rerouting_report_cubit.dart';
-import 'package:frontend/features/reports/presentation/cubit/rerouting_report_state.dart';
-import 'package:frontend/features/reports/presentation/screens/Admin/components/admin_rerouting_reports_page_components.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/rerouting_report_cubit.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/rerouting_report_state.dart';
+import 'package:CivicPulse/features/reports/presentation/screens/Admin/components/admin_rerouting_reports_page_components.dart';
 
 class AdminReroutingReportsPage extends StatefulWidget {
   const AdminReroutingReportsPage({super.key});

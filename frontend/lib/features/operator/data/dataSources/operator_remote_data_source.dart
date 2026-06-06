@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:frontend/core/network/api_client.dart';
+import 'package:CivicPulse/core/network/api_client.dart';
 
 class OperatorRemoteDataSource {
   final ApiClient apiClient;

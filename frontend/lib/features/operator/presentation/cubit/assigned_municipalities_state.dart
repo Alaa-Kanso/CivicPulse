@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:frontend/features/operator/domain/entities/municipality.dart';
+import 'package:CivicPulse/features/operator/domain/entities/municipality.dart';
 
 abstract class AssignedMunicipalitiesState extends Equatable {
   @override

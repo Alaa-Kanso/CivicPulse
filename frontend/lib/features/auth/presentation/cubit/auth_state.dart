@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:frontend/features/auth/domain/entities/user.dart';
+import 'package:CivicPulse/features/auth/domain/entities/user.dart';
 
 abstract class AuthState extends Equatable {
   @override

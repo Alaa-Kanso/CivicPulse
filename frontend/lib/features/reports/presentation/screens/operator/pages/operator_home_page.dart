@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/Component/components.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/features/reports/presentation/cubit/operator_reports_cubit.dart';
-import 'package:frontend/features/reports/presentation/cubit/operator_reports_state.dart';
-import 'package:frontend/features/reports/presentation/screens/operator/components/operator_home_page_component.dart';
+import 'package:CivicPulse/Component/components.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/operator_reports_cubit.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/operator_reports_state.dart';
+import 'package:CivicPulse/features/reports/presentation/screens/operator/components/operator_home_page_component.dart';
 
 class OperatorHomePage extends StatelessWidget {
   const OperatorHomePage({super.key});

@@ -1,4 +1,4 @@
-import 'package:frontend/features/auth/domain/entities/user.dart';
+import 'package:CivicPulse/features/auth/domain/entities/user.dart';
 
 class UserModel extends User {
   UserModel({required super.id, required super.email, required super.role});

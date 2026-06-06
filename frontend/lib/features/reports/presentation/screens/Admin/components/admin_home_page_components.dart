@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/Component/components.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:CivicPulse/Component/components.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/features/auth/presentation/cubit/auth_cubit.dart';
 
 class AdminSideBar extends StatelessWidget {
   const AdminSideBar({

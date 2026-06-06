@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/features/reports/domain/useCases/geocoding_location_use_case.dart';
-import 'package:frontend/features/reports/domain/useCases/operator_report_details_use_case.dart';
-import 'package:frontend/features/reports/presentation/cubit/operator_report_details_state.dart';
+import 'package:CivicPulse/features/reports/domain/useCases/geocoding_location_use_case.dart';
+import 'package:CivicPulse/features/reports/domain/useCases/operator_report_details_use_case.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/operator_report_details_state.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class OperatorReportDetailsCubit extends Cubit<OperatorReportDetailsState> {

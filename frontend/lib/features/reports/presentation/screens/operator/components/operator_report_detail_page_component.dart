@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/features/reports/domain/entities/operator_report_details.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/features/reports/domain/entities/operator_report_details.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 BoxDecoration _cardDecoration() {

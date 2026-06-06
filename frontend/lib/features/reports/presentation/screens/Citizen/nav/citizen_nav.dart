@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/core/di/injection_container.dart';
-import 'package:frontend/features/reports/presentation/cubit/create_report_cubit.dart';
-import 'package:frontend/features/reports/presentation/cubit/my_reports_cubit.dart';
-import 'package:frontend/features/reports/presentation/screens/Citizen/pages/citizen_home_page.dart';
-import 'package:frontend/features/reports/presentation/screens/Citizen/pages/create_report_page.dart';
+import 'package:CivicPulse/core/di/injection_container.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/create_report_cubit.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/my_reports_cubit.dart';
+import 'package:CivicPulse/features/reports/presentation/screens/Citizen/pages/citizen_home_page.dart';
+import 'package:CivicPulse/features/reports/presentation/screens/Citizen/pages/create_report_page.dart';
 
 class CitizenNav extends StatelessWidget {
   const CitizenNav({super.key});

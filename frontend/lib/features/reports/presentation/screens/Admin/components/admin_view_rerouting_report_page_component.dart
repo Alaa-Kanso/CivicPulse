@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/features/operator/domain/entities/municipality.dart';
-import 'package:frontend/features/operator/presentation/cubit/assigned_municipalities_cubit.dart';
-import 'package:frontend/features/operator/presentation/cubit/assigned_municipalities_state.dart';
-import 'package:frontend/features/reports/domain/entities/admin_reroute_report.dart';
-import 'package:frontend/features/reports/presentation/cubit/rerouting_report_cubit.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/features/operator/domain/entities/municipality.dart';
+import 'package:CivicPulse/features/operator/presentation/cubit/assigned_municipalities_cubit.dart';
+import 'package:CivicPulse/features/operator/presentation/cubit/assigned_municipalities_state.dart';
+import 'package:CivicPulse/features/reports/domain/entities/admin_reroute_report.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/rerouting_report_cubit.dart';
 
 class ReportPageHeader extends StatelessWidget {
   const ReportPageHeader({super.key, required this.report});

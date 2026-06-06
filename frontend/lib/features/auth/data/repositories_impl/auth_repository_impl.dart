@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:frontend/core/session/session_manager.dart';
-import 'package:frontend/device_info.dart';
-import 'package:frontend/features/auth/data/dataSources/auth_local_datasource.dart';
-import 'package:frontend/features/auth/data/dataSources/auth_remote_datasource.dart';
-import 'package:frontend/features/auth/data/utils/token_decoder.dart';
-import 'package:frontend/features/auth/domain/entities/user.dart';
-import 'package:frontend/features/auth/domain/repositories/auth_repository.dart';
+import 'package:CivicPulse/core/session/session_manager.dart';
+import 'package:CivicPulse/device_info.dart';
+import 'package:CivicPulse/features/auth/data/dataSources/auth_local_datasource.dart';
+import 'package:CivicPulse/features/auth/data/dataSources/auth_remote_datasource.dart';
+import 'package:CivicPulse/features/auth/data/utils/token_decoder.dart';
+import 'package:CivicPulse/features/auth/domain/entities/user.dart';
+import 'package:CivicPulse/features/auth/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final AuthRemoteDatasource remote;

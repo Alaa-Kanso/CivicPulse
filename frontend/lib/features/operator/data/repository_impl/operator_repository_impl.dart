@@ -1,5 +1,5 @@
-import 'package:frontend/features/operator/data/dataSources/operator_remote_data_source.dart';
-import 'package:frontend/features/operator/domain/repositories/operator_repository.dart';
+import 'package:CivicPulse/features/operator/data/dataSources/operator_remote_data_source.dart';
+import 'package:CivicPulse/features/operator/domain/repositories/operator_repository.dart';
 
 class OperatorRepositoryImpl extends OperatorRepository {
   final OperatorRemoteDataSource operatorRemoteDataSource;

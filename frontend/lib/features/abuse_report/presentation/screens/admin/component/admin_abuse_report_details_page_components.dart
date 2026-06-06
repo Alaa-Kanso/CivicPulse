@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/features/abuse_report/domain/entities/abuse_evidence_report.dart';
-import 'package:frontend/features/abuse_report/domain/entities/abuse_report_details.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/features/abuse_report/domain/entities/abuse_evidence_report.dart';
+import 'package:CivicPulse/features/abuse_report/domain/entities/abuse_report_details.dart';
 
 // ── Status Badge Helper ──
 class StatusBadge extends StatelessWidget {

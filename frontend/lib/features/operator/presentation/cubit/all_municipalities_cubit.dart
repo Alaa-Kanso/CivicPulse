@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/features/operator/domain/useCases/get_all_municipalities_use_case.dart';
-import 'package:frontend/features/operator/presentation/cubit/all_municipalities_state.dart';
+import 'package:CivicPulse/features/operator/domain/useCases/get_all_municipalities_use_case.dart';
+import 'package:CivicPulse/features/operator/presentation/cubit/all_municipalities_state.dart';
 
 class AllMunicipalitiesCubit extends Cubit<AllMunicipalitiesState> {
   AllMunicipalitiesCubit({required this.getMunicipalitiesUseCase})

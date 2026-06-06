@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/core/di/injection_container.dart';
-import 'package:frontend/core/session/session_manager.dart';
-import 'package:frontend/features/reports/presentation/cubit/my_reports_cubit.dart';
-import 'package:frontend/features/reports/presentation/cubit/my_reports_state.dart';
-import 'package:frontend/features/reports/presentation/screens/Citizen/components/citizen_page_component.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/core/di/injection_container.dart';
+import 'package:CivicPulse/core/session/session_manager.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/my_reports_cubit.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/my_reports_state.dart';
+import 'package:CivicPulse/features/reports/presentation/screens/Citizen/components/citizen_page_component.dart';
 
 class CitizenHomePage extends StatefulWidget {
   const CitizenHomePage({super.key});

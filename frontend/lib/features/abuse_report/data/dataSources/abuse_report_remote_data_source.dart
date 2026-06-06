@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:frontend/core/network/api_client.dart';
-import 'package:frontend/features/abuse_report/data/models/abuse_report_details_model.dart';
-import 'package:frontend/features/abuse_report/data/models/abuse_report_model.dart';
-import 'package:frontend/features/abuse_report/domain/entities/abuse_report.dart';
-import 'package:frontend/features/abuse_report/domain/entities/abuse_report_details.dart';
+import 'package:CivicPulse/core/network/api_client.dart';
+import 'package:CivicPulse/features/abuse_report/data/models/abuse_report_details_model.dart';
+import 'package:CivicPulse/features/abuse_report/data/models/abuse_report_model.dart';
+import 'package:CivicPulse/features/abuse_report/domain/entities/abuse_report.dart';
+import 'package:CivicPulse/features/abuse_report/domain/entities/abuse_report_details.dart';
 
 class AbuseReportRemoteDataSource {
   final ApiClient apiClient;

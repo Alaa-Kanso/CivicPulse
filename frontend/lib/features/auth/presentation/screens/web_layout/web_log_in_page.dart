@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/features/auth/presentation/screens/PageComponent/log_in_page_component.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/features/auth/presentation/screens/PageComponent/log_in_page_component.dart';
 
 class WebLogInPage extends StatefulWidget {
   const WebLogInPage({super.key});

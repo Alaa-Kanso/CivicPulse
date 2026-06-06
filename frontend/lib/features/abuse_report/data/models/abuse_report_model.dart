@@ -1,4 +1,4 @@
-import 'package:frontend/features/abuse_report/domain/entities/abuse_report.dart';
+import 'package:CivicPulse/features/abuse_report/domain/entities/abuse_report.dart';
 
 class AbuseReportModel extends AbuseReport {
   AbuseReportModel({

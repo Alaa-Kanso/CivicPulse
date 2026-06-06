@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:frontend/core/session/session_manager.dart';
+import 'package:CivicPulse/core/session/session_manager.dart';
 
 class AuthInterceptor extends Interceptor {
   final SessionManager sessionManager;

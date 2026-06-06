@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/Component/components.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/features/operator/domain/entities/municipality.dart';
-import 'package:frontend/features/operator/presentation/cubit/all_municipalities_cubit.dart';
-import 'package:frontend/features/operator/presentation/cubit/all_municipalities_state.dart';
-import 'package:frontend/features/operator/presentation/cubit/create_operator_cubit.dart';
-import 'package:frontend/features/operator/presentation/cubit/create_operator_state.dart';
+import 'package:CivicPulse/Component/components.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/features/operator/domain/entities/municipality.dart';
+import 'package:CivicPulse/features/operator/presentation/cubit/all_municipalities_cubit.dart';
+import 'package:CivicPulse/features/operator/presentation/cubit/all_municipalities_state.dart';
+import 'package:CivicPulse/features/operator/presentation/cubit/create_operator_cubit.dart';
+import 'package:CivicPulse/features/operator/presentation/cubit/create_operator_state.dart';
 
 class MunicipalityAutocomplete extends StatefulWidget {
   const MunicipalityAutocomplete({

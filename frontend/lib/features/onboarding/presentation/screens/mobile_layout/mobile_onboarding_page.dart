@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/Component/components.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:frontend/features/onboarding/presentation/cubit/onboarding_cubit.dart';
-import 'package:frontend/features/onboarding/presentation/cubit/onboarding_state.dart';
-import 'package:frontend/features/onboarding/presentation/screens/pages/onboarding_first_page.dart';
-import 'package:frontend/features/onboarding/presentation/screens/pages/onboarding_second_page.dart';
-import 'package:frontend/features/onboarding/presentation/screens/pages/onboarding_third_page.dart';
+import 'package:CivicPulse/Component/components.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:CivicPulse/features/onboarding/presentation/cubit/onboarding_cubit.dart';
+import 'package:CivicPulse/features/onboarding/presentation/cubit/onboarding_state.dart';
+import 'package:CivicPulse/features/onboarding/presentation/screens/pages/onboarding_first_page.dart';
+import 'package:CivicPulse/features/onboarding/presentation/screens/pages/onboarding_second_page.dart';
+import 'package:CivicPulse/features/onboarding/presentation/screens/pages/onboarding_third_page.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class MobileOnboardingPage extends StatefulWidget {

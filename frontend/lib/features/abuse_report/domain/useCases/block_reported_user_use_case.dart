@@ -1,4 +1,4 @@
-import 'package:frontend/features/abuse_report/domain/repositories/abuse_report_repository.dart';
+import 'package:CivicPulse/features/abuse_report/domain/repositories/abuse_report_repository.dart';
 
 class BlockReportedUserUseCase {
   final AbuseReportRepository abuseReportRepository;

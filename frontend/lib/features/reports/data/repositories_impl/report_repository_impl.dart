@@ -1,13 +1,13 @@
 import 'dart:typed_data';
 
-import 'package:frontend/features/reports/data/dataSources/report_remote_data_source.dart';
-import 'package:frontend/features/reports/data/models/report_type_model.dart';
-import 'package:frontend/features/reports/data/models/upload_image_init_model.dart';
-import 'package:frontend/features/reports/domain/entities/admin_reroute_report.dart';
-import 'package:frontend/features/reports/domain/entities/operator_report.dart';
-import 'package:frontend/features/reports/domain/entities/operator_report_details.dart';
-import 'package:frontend/features/reports/domain/entities/report.dart';
-import 'package:frontend/features/reports/domain/repositories/report_repository.dart';
+import 'package:CivicPulse/features/reports/data/dataSources/report_remote_data_source.dart';
+import 'package:CivicPulse/features/reports/data/models/report_type_model.dart';
+import 'package:CivicPulse/features/reports/data/models/upload_image_init_model.dart';
+import 'package:CivicPulse/features/reports/domain/entities/admin_reroute_report.dart';
+import 'package:CivicPulse/features/reports/domain/entities/operator_report.dart';
+import 'package:CivicPulse/features/reports/domain/entities/operator_report_details.dart';
+import 'package:CivicPulse/features/reports/domain/entities/report.dart';
+import 'package:CivicPulse/features/reports/domain/repositories/report_repository.dart';
 import 'package:geocoding/geocoding.dart';
 
 class ReportRepositoryImpl extends ReportRepository {

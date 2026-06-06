@@ -1,5 +1,5 @@
-import 'package:frontend/features/reports/domain/entities/admin_reroute_report.dart';
-import 'package:frontend/features/reports/domain/repositories/report_repository.dart';
+import 'package:CivicPulse/features/reports/domain/entities/admin_reroute_report.dart';
+import 'package:CivicPulse/features/reports/domain/repositories/report_repository.dart';
 
 class GetAdminReroutingReportsUseCase {
   final ReportRepository repository;

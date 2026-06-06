@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/features/reports/domain/entities/admin_reroute_report.dart';
-import 'package:frontend/features/reports/presentation/cubit/rerouting_report_cubit.dart';
-import 'package:frontend/features/reports/presentation/cubit/rerouting_report_state.dart';
-import 'package:frontend/features/reports/presentation/screens/Admin/components/admin_view_rerouting_report_page_component.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/features/reports/domain/entities/admin_reroute_report.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/rerouting_report_cubit.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/rerouting_report_state.dart';
+import 'package:CivicPulse/features/reports/presentation/screens/Admin/components/admin_view_rerouting_report_page_component.dart';
 
 class AdminViewReroutingReportPage extends StatelessWidget {
   const AdminViewReroutingReportPage({super.key, required this.report});

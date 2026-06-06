@@ -1,5 +1,5 @@
-import 'package:frontend/features/abuse_report/data/models/abuse_evidence_report_model.dart';
-import 'package:frontend/features/abuse_report/domain/entities/abuse_report_details.dart';
+import 'package:CivicPulse/features/abuse_report/data/models/abuse_evidence_report_model.dart';
+import 'package:CivicPulse/features/abuse_report/domain/entities/abuse_report_details.dart';
 
 class AbuseReportDetailsModel extends AbuseReportDetails {
   AbuseReportDetailsModel({

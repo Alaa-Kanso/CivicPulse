@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/core/di/injection_container.dart';
-import 'package:frontend/features/abuse_report/domain/entities/abuse_report.dart';
-import 'package:frontend/features/abuse_report/presentation/cubit/abuse_report_actions_cubit.dart';
-import 'package:frontend/features/abuse_report/presentation/cubit/abuse_report_cubit.dart';
-import 'package:frontend/features/abuse_report/presentation/cubit/abuse_report_details_cubit.dart';
-import 'package:frontend/features/abuse_report/presentation/cubit/abuse_report_state.dart';
-import 'package:frontend/features/abuse_report/presentation/screens/admin/component/admin_abuse_report_page_components.dart';
-import 'package:frontend/features/abuse_report/presentation/screens/admin/page/admin_abuse_report_details_page.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/core/di/injection_container.dart';
+import 'package:CivicPulse/features/abuse_report/domain/entities/abuse_report.dart';
+import 'package:CivicPulse/features/abuse_report/presentation/cubit/abuse_report_actions_cubit.dart';
+import 'package:CivicPulse/features/abuse_report/presentation/cubit/abuse_report_cubit.dart';
+import 'package:CivicPulse/features/abuse_report/presentation/cubit/abuse_report_details_cubit.dart';
+import 'package:CivicPulse/features/abuse_report/presentation/cubit/abuse_report_state.dart';
+import 'package:CivicPulse/features/abuse_report/presentation/screens/admin/component/admin_abuse_report_page_components.dart';
+import 'package:CivicPulse/features/abuse_report/presentation/screens/admin/page/admin_abuse_report_details_page.dart';
 
 class AdminAbuseReportsPage extends StatefulWidget {
   const AdminAbuseReportsPage({super.key});

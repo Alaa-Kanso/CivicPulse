@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/core/di/injection_container.dart';
-import 'package:frontend/features/abuse_report/presentation/cubit/abuse_report_cubit.dart';
-import 'package:frontend/features/abuse_report/presentation/screens/admin/page/admin_abuse_reports_page.dart';
-import 'package:frontend/features/operator/presentation/cubit/create_operator_cubit.dart';
-import 'package:frontend/features/operator/presentation/screens/admin/pages/admin_create_operator_page.dart';
-import 'package:frontend/features/reports/presentation/cubit/rerouting_report_cubit.dart';
-import 'package:frontend/features/reports/presentation/screens/Admin/components/admin_home_page_components.dart';
-import 'package:frontend/features/reports/presentation/screens/Admin/pages/admin_rerouting_reports_page.dart';
+import 'package:CivicPulse/core/di/injection_container.dart';
+import 'package:CivicPulse/features/abuse_report/presentation/cubit/abuse_report_cubit.dart';
+import 'package:CivicPulse/features/abuse_report/presentation/screens/admin/page/admin_abuse_reports_page.dart';
+import 'package:CivicPulse/features/operator/presentation/cubit/create_operator_cubit.dart';
+import 'package:CivicPulse/features/operator/presentation/screens/admin/pages/admin_create_operator_page.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/rerouting_report_cubit.dart';
+import 'package:CivicPulse/features/reports/presentation/screens/Admin/components/admin_home_page_components.dart';
+import 'package:CivicPulse/features/reports/presentation/screens/Admin/pages/admin_rerouting_reports_page.dart';
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({super.key});

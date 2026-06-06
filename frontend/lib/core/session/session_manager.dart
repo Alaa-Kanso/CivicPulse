@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:frontend/features/auth/domain/entities/user.dart';
+import 'package:CivicPulse/features/auth/domain/entities/user.dart';
 
 class SessionManager {
   String? _accessToken;

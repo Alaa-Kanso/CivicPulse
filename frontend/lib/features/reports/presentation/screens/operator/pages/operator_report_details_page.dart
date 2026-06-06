@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/features/reports/presentation/cubit/operator_manager_cubit.dart';
-import 'package:frontend/features/reports/presentation/cubit/operator_manager_state.dart';
-import 'package:frontend/features/reports/presentation/cubit/operator_report_details_cubit.dart';
-import 'package:frontend/features/reports/presentation/cubit/operator_report_details_state.dart';
-import 'package:frontend/features/reports/presentation/screens/operator/components/operator_report_detail_page_component.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/operator_manager_cubit.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/operator_manager_state.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/operator_report_details_cubit.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/operator_report_details_state.dart';
+import 'package:CivicPulse/features/reports/presentation/screens/operator/components/operator_report_detail_page_component.dart';
 
 class OperatorReportDetailsPage extends StatelessWidget {
   const OperatorReportDetailsPage({super.key, required this.id});

@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/features/reports/domain/useCases/change_status_use_case.dart';
-import 'package:frontend/features/reports/domain/useCases/mark_as_escalate_use_case.dart';
-import 'package:frontend/features/reports/domain/useCases/mark_as_spam_use_case.dart';
-import 'package:frontend/features/reports/presentation/cubit/operator_manager_state.dart';
+import 'package:CivicPulse/features/reports/domain/useCases/change_status_use_case.dart';
+import 'package:CivicPulse/features/reports/domain/useCases/mark_as_escalate_use_case.dart';
+import 'package:CivicPulse/features/reports/domain/useCases/mark_as_spam_use_case.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/operator_manager_state.dart';
 
 class OperatorManagerCubit extends Cubit<OperatorManagerState> {
   OperatorManagerCubit({

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:frontend/core/network/exceptions/api_exception.dart';
-import 'package:frontend/core/network/request_deduplicator.dart';
+import 'package:CivicPulse/core/network/exceptions/api_exception.dart';
+import 'package:CivicPulse/core/network/request_deduplicator.dart';
 
 class ApiClient {
   final Dio dio;

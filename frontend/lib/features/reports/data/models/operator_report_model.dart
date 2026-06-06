@@ -1,4 +1,4 @@
-import 'package:frontend/features/reports/domain/entities/operator_report.dart';
+import 'package:CivicPulse/features/reports/domain/entities/operator_report.dart';
 
 class OperatorReportModel extends OperatorReport {
   OperatorReportModel({

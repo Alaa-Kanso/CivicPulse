@@ -1,5 +1,5 @@
-import 'package:frontend/features/onboarding/data/dataSources/onboarding_local_datasource.dart';
-import 'package:frontend/features/onboarding/domain/repositories/onboarding_repository.dart';
+import 'package:CivicPulse/features/onboarding/data/dataSources/onboarding_local_datasource.dart';
+import 'package:CivicPulse/features/onboarding/domain/repositories/onboarding_repository.dart';
 
 class OnboardingRepositoryImpl extends OnboardingRepository {
   final OnboardingLocalDatasource local;

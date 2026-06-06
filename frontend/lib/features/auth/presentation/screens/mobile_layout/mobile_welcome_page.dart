@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/Component/components.dart';
-import 'package:frontend/features/auth/presentation/screens/PageComponent/welcome_page_component.dart';
+import 'package:CivicPulse/Component/components.dart';
+import 'package:CivicPulse/features/auth/presentation/screens/PageComponent/welcome_page_component.dart';
 
 class MobileWelcomePage extends StatefulWidget {
   const MobileWelcomePage({super.key});

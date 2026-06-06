@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:frontend/core/di/injection_container.dart';
-import 'package:frontend/core/session/session_manager.dart';
-import 'package:frontend/device_info.dart';
-import 'package:frontend/features/auth/data/dataSources/auth_local_datasource.dart';
-import 'package:frontend/features/auth/data/utils/token_decoder.dart';
+import 'package:CivicPulse/core/di/injection_container.dart';
+import 'package:CivicPulse/core/session/session_manager.dart';
+import 'package:CivicPulse/device_info.dart';
+import 'package:CivicPulse/features/auth/data/dataSources/auth_local_datasource.dart';
+import 'package:CivicPulse/features/auth/data/utils/token_decoder.dart';
 
 class RefreshInterceptor extends Interceptor {
   final AuthLocalDataSource authLocalDataSource;

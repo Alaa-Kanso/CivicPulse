@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/features/abuse_report/domain/entities/abuse_report.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/features/abuse_report/domain/entities/abuse_report.dart';
 
 // ── Abuse Report Summary Card ──
 class AbuseReportCard extends StatelessWidget {

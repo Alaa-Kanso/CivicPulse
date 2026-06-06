@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:frontend/features/abuse_report/domain/entities/abuse_report.dart';
+import 'package:CivicPulse/features/abuse_report/domain/entities/abuse_report.dart';
 
 abstract class AbuseReportState extends Equatable {
   @override

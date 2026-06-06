@@ -1,15 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/Component/components.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/core/di/injection_container.dart';
-import 'package:frontend/features/auth/domain/entities/user.dart';
-import 'package:frontend/features/operator/presentation/cubit/all_municipalities_cubit.dart';
-import 'package:frontend/features/reports/presentation/cubit/operator_reports_cubit.dart';
-import 'package:frontend/features/reports/presentation/screens/Admin/pages/admin_home_page.dart';
-import 'package:frontend/features/reports/presentation/screens/Citizen/nav/citizen_nav.dart';
-import 'package:frontend/features/reports/presentation/screens/operator/pages/operator_home_page.dart';
+import 'package:CivicPulse/Component/components.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/core/di/injection_container.dart';
+import 'package:CivicPulse/features/auth/domain/entities/user.dart';
+import 'package:CivicPulse/features/operator/presentation/cubit/all_municipalities_cubit.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/operator_reports_cubit.dart';
+import 'package:CivicPulse/features/reports/presentation/screens/Admin/pages/admin_home_page.dart';
+import 'package:CivicPulse/features/reports/presentation/screens/Citizen/nav/citizen_nav.dart';
+import 'package:CivicPulse/features/reports/presentation/screens/operator/pages/operator_home_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key, required this.user});

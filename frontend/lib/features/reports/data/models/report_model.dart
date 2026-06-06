@@ -1,4 +1,4 @@
-import 'package:frontend/features/reports/domain/entities/report.dart';
+import 'package:CivicPulse/features/reports/domain/entities/report.dart';
 
 class ReportModel extends Report {
   ReportModel({

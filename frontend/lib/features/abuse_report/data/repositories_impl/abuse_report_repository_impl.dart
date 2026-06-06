@@ -1,7 +1,7 @@
-import 'package:frontend/features/abuse_report/data/dataSources/abuse_report_remote_data_source.dart';
-import 'package:frontend/features/abuse_report/domain/entities/abuse_report.dart';
-import 'package:frontend/features/abuse_report/domain/entities/abuse_report_details.dart';
-import 'package:frontend/features/abuse_report/domain/repositories/abuse_report_repository.dart';
+import 'package:CivicPulse/features/abuse_report/data/dataSources/abuse_report_remote_data_source.dart';
+import 'package:CivicPulse/features/abuse_report/domain/entities/abuse_report.dart';
+import 'package:CivicPulse/features/abuse_report/domain/entities/abuse_report_details.dart';
+import 'package:CivicPulse/features/abuse_report/domain/repositories/abuse_report_repository.dart';
 
 class AbuseReportRepositoryImpl extends AbuseReportRepository {
   final AbuseReportRemoteDataSource abuseReportRemoteDataSource;

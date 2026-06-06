@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:frontend/core/network/api_client.dart';
-import 'package:frontend/device_info.dart';
-import 'package:frontend/features/auth/data/models/auth_response_model.dart';
-import 'package:frontend/features/auth/data/models/refresh_response_model.dart';
+import 'package:CivicPulse/core/network/api_client.dart';
+import 'package:CivicPulse/device_info.dart';
+import 'package:CivicPulse/features/auth/data/models/auth_response_model.dart';
+import 'package:CivicPulse/features/auth/data/models/refresh_response_model.dart';
 
 class AuthRemoteDatasource {
   final ApiClient api;
