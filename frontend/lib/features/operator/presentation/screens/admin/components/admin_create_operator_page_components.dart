@@ -42,7 +42,7 @@ class _MunicipalityAutocompleteState extends State<MunicipalityAutocomplete> {
               }
 
               return municipalities.where(
-                (municipality) => municipality.name.toLowerCase().contains(
+                (municipality) => municipality.name.toLowerCase().startsWith(
                   textEditingValue.text.toLowerCase(),
                 ),
               );
@@ -163,6 +163,7 @@ class _CreateOperatorFormState extends State<CreateOperatorForm> {
                 hintText: "********",
                 controller: widget.passwordController,
                 enabled: (state is CreateOperatorLoading) ? false : true,
+                isPassword: true,
               ),
               const SizedBox(height: 10.0),
               const BoldText(
@@ -193,7 +194,7 @@ class _CreateOperatorFormState extends State<CreateOperatorForm> {
                     context.read<CreateOperatorCubit>().createOperator(
                       email: widget.emailController.text.trim(),
                       password: widget.passwordController.text.trim(),
-                      municipalityId: selectedMunicipality!.id,
+                      municipality: selectedMunicipality,
                     );
                   },
                   borderColor: Colors.transparent,
