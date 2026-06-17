@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
-import 'package:frontend/features/reports/data/models/report_type_model.dart';
+import 'package:CivicPulse/features/reports/data/models/report_type_model.dart';
 
 abstract class CreateReportState extends Equatable {
   @override

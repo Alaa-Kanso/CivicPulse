@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/config/settings/app_colors.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
 
 class NormalText extends StatelessWidget {
   const NormalText({

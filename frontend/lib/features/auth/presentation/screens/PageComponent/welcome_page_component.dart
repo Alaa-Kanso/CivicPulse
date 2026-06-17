@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/Component/components.dart';
-import 'package:frontend/config/settings/app_colors.dart';
+import 'package:CivicPulse/Component/components.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
 
 class WelcomeMobileHeader extends StatelessWidget {
   const WelcomeMobileHeader({super.key});
@@ -87,7 +87,7 @@ class WelcomeWebHeader extends StatelessWidget {
                   textSize: 20.0,
                   buttonColor: Colors.white,
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, "/log-in");
+                    Navigator.pushNamed(context, "/log-in");
                   },
                   borderColor: Colors.transparent,
                   buttonWidth: 200,

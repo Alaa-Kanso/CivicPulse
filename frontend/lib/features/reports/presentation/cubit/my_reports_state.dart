@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:frontend/features/reports/data/models/report_type_model.dart';
-import 'package:frontend/features/reports/domain/entities/report_details.dart';
+import 'package:CivicPulse/features/reports/data/models/report_type_model.dart';
+import 'package:CivicPulse/features/reports/domain/entities/report_details.dart';
 
 abstract class MyReportsState extends Equatable {
   @override

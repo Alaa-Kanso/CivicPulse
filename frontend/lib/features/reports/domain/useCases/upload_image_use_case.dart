@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:frontend/features/reports/domain/repositories/report_repository.dart';
+import 'package:CivicPulse/features/reports/domain/repositories/report_repository.dart';
 
 class UploadImageUseCase {
   final ReportRepository repository;

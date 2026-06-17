@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/Component/components.dart';
-import 'package:frontend/config/settings/app_colors.dart';
+import 'package:CivicPulse/Component/components.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
 
 class AuthLoadingPage extends StatelessWidget {
   const AuthLoadingPage({super.key});

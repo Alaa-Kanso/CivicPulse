@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:frontend/core/di/injection_container.dart';
-import 'package:frontend/core/session/session_manager.dart';
-import 'package:frontend/device_info.dart';
-import 'package:frontend/features/auth/data/dataSources/auth_local_datasource.dart';
-import 'package:frontend/features/auth/data/utils/token_decoder.dart';
+import 'package:CivicPulse/core/di/injection_container.dart';
+import 'package:CivicPulse/core/session/session_manager.dart';
+import 'package:CivicPulse/device_info.dart';
+import 'package:CivicPulse/features/auth/data/dataSources/auth_local_datasource.dart';
+import 'package:CivicPulse/features/auth/data/utils/token_decoder.dart';
 
 class RefreshInterceptor extends Interceptor {
   final AuthLocalDataSource authLocalDataSource;
@@ -37,9 +37,7 @@ class RefreshInterceptor extends Interceptor {
 
     // ❌ refresh endpoint failed → logout
     if (options.path.contains('/auth/refresh')) {
-      final statusCode = err.response?.statusCode;
-
-      if (statusCode == 401 || statusCode == 403) {
+      if (statusCode == 401 || statusCode == 403 || statusCode == 400) {
         await _logout();
       }
 
@@ -93,7 +91,7 @@ class RefreshInterceptor extends Interceptor {
       if (e is DioException) {
         final statusCode = e.response?.statusCode;
 
-        if (statusCode == 401 || statusCode == 403) {
+        if (statusCode == 401 || statusCode == 403 || statusCode == 400) {
           await _logout();
         }
       }
@@ -109,6 +107,10 @@ class RefreshInterceptor extends Interceptor {
     try {
       final request = item.request;
 
+      if (sessionManager.accessToken != null) {
+        request.headers['Authorization'] = 'Bearer ${sessionManager.accessToken}';
+      }
+
       final response = await _dio.fetch(request);
 
       item.completer.complete(response);
@@ -121,8 +123,14 @@ class RefreshInterceptor extends Interceptor {
   // 🔑 REFRESH TOKEN
   // =========================
   Future<void> _refreshToken() async {
-    final refreshToken = await authLocalDataSource.getRefreshToken();
-
+    final refreshToken = sessionManager.refreshToken ?? await authLocalDataSource.getRefreshToken();
+    if (refreshToken == null || refreshToken.isEmpty) {
+      await _logout();
+      throw DioException(
+        requestOptions: RequestOptions(path: '/auth/refresh'),
+        error: 'Missing refresh token',
+      );
+    }
     final response = await _dio.post(
       '/auth/refresh',
       data: {
@@ -141,6 +149,7 @@ class RefreshInterceptor extends Interceptor {
 
     sessionManager.saveSessionWithListener(
       accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
       user: user,
     );
   }

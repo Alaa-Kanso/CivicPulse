@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/features/auth/domain/useCases/log_in_use_case.dart';
-import 'package:frontend/features/auth/presentation/cubit/log_in_state.dart';
+import 'package:CivicPulse/features/auth/domain/useCases/log_in_use_case.dart';
+import 'package:CivicPulse/features/auth/presentation/cubit/log_in_state.dart';
 
 class LogInCubit extends Cubit<LogInState> {
   LogInCubit({required this.logInUseCase}) : super(LogInInitial());
@@ -21,7 +21,6 @@ class LogInCubit extends Cubit<LogInState> {
       await logInUseCase.call(email, password);
       emit(LogInSuccess());
     } catch (e) {
-      print(e.toString());
       emit(LogInError(error: e.toString()));
     }
   }

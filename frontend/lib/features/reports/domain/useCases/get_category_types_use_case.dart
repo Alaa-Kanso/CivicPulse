@@ -1,5 +1,5 @@
-import 'package:frontend/features/reports/data/models/report_type_model.dart';
-import 'package:frontend/features/reports/domain/repositories/report_repository.dart';
+import 'package:CivicPulse/features/reports/data/models/report_type_model.dart';
+import 'package:CivicPulse/features/reports/domain/repositories/report_repository.dart';
 
 class GetCategoryTypesUseCase {
   final ReportRepository repository;

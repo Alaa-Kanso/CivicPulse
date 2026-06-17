@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/features/reports/data/models/report_type_model.dart';
-import 'package:frontend/features/reports/domain/entities/report_details.dart';
-import 'package:frontend/features/reports/domain/useCases/geocoding_location_use_case.dart';
-import 'package:frontend/features/reports/domain/useCases/get_category_types_use_case.dart';
-import 'package:frontend/features/reports/domain/useCases/get_my_reports_use_case.dart';
-import 'package:frontend/features/reports/presentation/cubit/my_reports_state.dart';
+import 'package:CivicPulse/features/reports/data/models/report_type_model.dart';
+import 'package:CivicPulse/features/reports/domain/entities/report_details.dart';
+import 'package:CivicPulse/features/reports/domain/useCases/geocoding_location_use_case.dart';
+import 'package:CivicPulse/features/reports/domain/useCases/get_category_types_use_case.dart';
+import 'package:CivicPulse/features/reports/domain/useCases/get_my_reports_use_case.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/my_reports_state.dart';
 
 class MyReportsCubit extends Cubit<MyReportsState> {
   MyReportsCubit({

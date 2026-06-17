@@ -1,4 +1,4 @@
-import 'package:frontend/features/auth/domain/entities/user.dart';
+import 'package:CivicPulse/features/auth/domain/entities/user.dart';
 
 abstract class AuthRepository {
   Future<void> signUp(String email, String password);

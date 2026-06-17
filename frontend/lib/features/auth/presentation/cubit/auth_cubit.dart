@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/core/session/session_manager.dart';
-import 'package:frontend/device_info.dart';
-import 'package:frontend/features/auth/domain/entities/user.dart';
-import 'package:frontend/features/auth/domain/useCases/check_authenticated_use_case.dart';
-import 'package:frontend/features/auth/domain/useCases/logout_use_case.dart';
-import 'package:frontend/features/auth/presentation/cubit/auth_state.dart';
-import 'package:frontend/features/onboarding/domain/useCases/seen_onboarding_use_case.dart';
+import 'package:CivicPulse/core/session/session_manager.dart';
+import 'package:CivicPulse/device_info.dart';
+import 'package:CivicPulse/features/auth/domain/entities/user.dart';
+import 'package:CivicPulse/features/auth/domain/useCases/check_authenticated_use_case.dart';
+import 'package:CivicPulse/features/auth/domain/useCases/logout_use_case.dart';
+import 'package:CivicPulse/features/auth/presentation/cubit/auth_state.dart';
+import 'package:CivicPulse/features/onboarding/domain/useCases/seen_onboarding_use_case.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit({

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/Component/components.dart';
+import 'package:CivicPulse/Component/components.dart';
 
 class WebSignUpPage extends StatefulWidget {
   const WebSignUpPage({super.key});

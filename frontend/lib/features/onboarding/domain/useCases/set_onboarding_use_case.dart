@@ -1,4 +1,4 @@
-import 'package:frontend/features/onboarding/domain/repositories/onboarding_repository.dart';
+import 'package:CivicPulse/features/onboarding/domain/repositories/onboarding_repository.dart';
 
 class SetOnboardingUseCase {
   final OnboardingRepository repository;

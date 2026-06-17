@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/features/auth/domain/useCases/sign_up_use_case.dart';
-import 'package:frontend/features/auth/presentation/cubit/sign_up_state.dart';
+import 'package:CivicPulse/features/auth/domain/useCases/sign_up_use_case.dart';
+import 'package:CivicPulse/features/auth/presentation/cubit/sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
   SignUpCubit({required this.signUpUseCase}) : super(SignUpInitial());

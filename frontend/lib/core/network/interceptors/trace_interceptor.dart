@@ -11,6 +11,7 @@ class TraceInterceptor extends Interceptor {
     print("=== REQUEST HEADERS ===");
     print(options.headers);
     print("EXTRA IN INTERCEPTOR => ${options.extra}");
+    print("DATA IN INTERCEPTOR => ${options.data}");
   }
 
   @override

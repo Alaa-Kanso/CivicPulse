@@ -1,4 +1,4 @@
-import 'package:frontend/features/auth/domain/entities/user.dart';
+import 'package:CivicPulse/features/auth/domain/entities/user.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 class TokenDecoder {

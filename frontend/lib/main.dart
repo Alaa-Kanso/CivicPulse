@@ -1,7 +1,7 @@
+import 'package:CivicPulse/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:CivicPulse/gates.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:frontend/gates.dart';
 
 import 'core/di/injection_container.dart';
 

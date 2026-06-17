@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/config/settings/app_colors.dart';
-import 'package:frontend/features/reports/presentation/cubit/create_report_cubit.dart';
-import 'package:frontend/features/reports/presentation/cubit/create_report_state.dart';
+import 'package:CivicPulse/config/settings/app_colors.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/create_report_cubit.dart';
+import 'package:CivicPulse/features/reports/presentation/cubit/create_report_state.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 

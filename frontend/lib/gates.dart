@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:frontend/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:frontend/features/auth/presentation/cubit/auth_state.dart';
-import 'package:frontend/features/auth/presentation/screens/PageComponent/auth_failure_page.dart';
-import 'package:frontend/features/auth/presentation/screens/PageComponent/auth_loading_page.dart';
-import 'package:frontend/features/auth/presentation/screens/nav/auth_nav.dart';
-import 'package:frontend/features/onboarding/presentation/screens/pages/onboarding_page.dart';
-import 'package:frontend/features/reports/presentation/screens/Pages/home_page.dart';
+import 'package:CivicPulse/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:CivicPulse/features/auth/presentation/cubit/auth_state.dart';
+import 'package:CivicPulse/features/auth/presentation/screens/PageComponent/auth_failure_page.dart';
+import 'package:CivicPulse/features/auth/presentation/screens/PageComponent/auth_loading_page.dart';
+import 'package:CivicPulse/features/auth/presentation/screens/nav/auth_nav.dart';
+import 'package:CivicPulse/features/onboarding/presentation/screens/pages/onboarding_page.dart';
+import 'package:CivicPulse/features/reports/presentation/screens/Pages/home_page.dart';
 
 class AuthGate extends StatefulWidget {
   const AuthGate({super.key});
